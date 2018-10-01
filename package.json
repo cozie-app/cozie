@@ -1,0 +1,25 @@
+{
+  "fitbit": {
+    "appUUID": "49782df6-255f-4483-80b0-de2627b72df0",
+    "appType": "clockface",
+    "appDisplayName": "Minimal-Clock",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "",
+    "requestedPermissions": [
+      "access_activity",
+      "access_heart_rate",
+      "access_location",
+      "access_internet",
+      "run_background",
+      "access_user_profile"
+    ],
+    "buildTargets": [
+      "meson"
+    ],
+    "i18n": {
+      "en": {
+        "name": "Minimal-Clock"
+      }
+    }
+  }
+}
