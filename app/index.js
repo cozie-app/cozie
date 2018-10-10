@@ -136,7 +136,3 @@ function sendEventIfReady(eventName) {
   }
 }
 
-
-
-
-

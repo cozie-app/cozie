@@ -21,5 +21,8 @@
         "name": "Minimal-Clock"
       }
     }
+  },
+  "devDependencies": {
+    "@fitbit/sdk": "~1.0.0"
   }
 }

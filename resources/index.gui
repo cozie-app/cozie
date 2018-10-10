@@ -11,24 +11,39 @@
         <rect x="0" y="0" width="348" height="2" fill="#505050" id='chargeLabel'/>
 
         <use  id="btn" href="#square-button" y="215" x="0" fill="fb-green">
-            <set href="#text" attributeName="text-buffer" to="Button" />
+            <set href="#text" attributeName="text-buffer" to="Comfy?" />
         </use>
     </svg>
     <svg id="feedBack" display="none">
-        <use  id="cold" href="#push-button" x="15" y="125" width="75" height="75" fill="#3366cc" font-size="20">
-          <set id="textCold" href="#text" attributeName="text-buffer" to="too cold"/>
+      
+        <use  id="cold" href="#push-button" x="15" y="125" width="75" height="75">
+          <set href="#text" attributeName="text-buffer" to=""/>
+          <set href="#text" attributeName="y" to="12" />
+        </use>
+      
+        <use  id="comfy" href="#push-button" x="115" y="125" width="75" height="75">
+          <set href="#text" attributeName="text-buffer" to=""/>
           <set href="#text" attributeName="y" to="12" />
         </use>
         
-        <use  id="comfy" href="#push-button" x="115" y="125" width="75" height="75" fill="#00cc44" font-size="20">
-          <set id="textCold" href="#text" attributeName="text-buffer" to="comfy"/>
+        <use  id="hot" href="#push-button" x="215" y="125" width="75" height="75">
+          <set href="#text" attributeName="text-buffer" to=""/>
           <set href="#text" attributeName="y" to="12" />
         </use>
         
-        <use  id="hot" href="#push-button" x="215" y="125" width="75" height="75" fill="#ff5500" font-size="20">
-          <set id="textCold" href="#text" attributeName="text-buffer" to="too hot"/>
-          <set href="#text" attributeName="y" to="12" />
+        <use  href="#static-image" x="15" y="125" width="75" height="75">
+            <set href="image" attributeName="href" to="cold.png"/>
         </use>
+      
+        <use  href="#static-image" x="115" y="125" width="75" height="75">
+            <set href="image" attributeName="href" to="comfy.png"/>
+        </use>
+      
+        <use href="#static-image" x="215" y="125" width="75" height="75">
+            <set href="image" attributeName="href" to="hot.png"/>
+        </use>
+        
+        
     
     </svg>
 </svg>
