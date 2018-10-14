@@ -9,6 +9,7 @@
 # Install  ClockFace to your own Fitbit Versa
 
 — The app is available only by the link for now. To install ClockFace follow the link [https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048](https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048) on your phone, it will redirect to FitBit app gallery.
+
 — In order to send data to the server from FitBit device:
 - watch should be connected to the phone via Bluetooth
 - To track user id, user should login first in settings of the clock face
