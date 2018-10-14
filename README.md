@@ -12,7 +12,8 @@
 
 — In order to send data to the server from FitBit device:
 - watch should be connected to the phone via Bluetooth
-- To track user id, user should login first in settings of the clock face
+- To track user id, user should login first in settings of the clock face. As shown below.
+
 ![screen-example](./screen/image3.jpg)
 ![screen-example](./screen/image4.jpg)
 
