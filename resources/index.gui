@@ -16,34 +16,20 @@
     </svg>
     <svg id="feedBack" display="none">
       
-        <use  id="cold" href="#push-button" x="15" y="125" width="75" height="75">
-          <set href="#text" attributeName="text-buffer" to=""/>
-          <set href="#text" attributeName="y" to="12" />
-        </use>
+        
+         <use id="cold" href="#square-button-icon" y="35" height="70" fill="blue">
+            <set href="#text" attributeName="text-buffer" to="Too cold" />
+            <image x="45" y="8" width="54" height="54" href="cold.png" load="sync" />
+         </use>
       
-        <use  id="comfy" href="#push-button" x="115" y="125" width="75" height="75">
-          <set href="#text" attributeName="text-buffer" to=""/>
-          <set href="#text" attributeName="y" to="12" />
-        </use>
-        
-        <use  id="hot" href="#push-button" x="215" y="125" width="75" height="75">
-          <set href="#text" attributeName="text-buffer" to=""/>
-          <set href="#text" attributeName="y" to="12" />
-        </use>
-        
-        <use  href="#static-image" x="15" y="125" width="75" height="75">
-            <set href="image" attributeName="href" to="cold.png"/>
-        </use>
-      
-        <use  href="#static-image" x="115" y="125" width="75" height="75">
-            <set href="image" attributeName="href" to="comfy.png"/>
-        </use>
-      
-        <use href="#static-image" x="215" y="125" width="75" height="75">
-            <set href="image" attributeName="href" to="hot.png"/>
-        </use>
-        
-        
+         <use id="comfy" href="#square-button-icon" y="115" height="70" fill="green">
+            <set href="#text"  attributeName="text-buffer" to="Comfy" />
+            <image x="45" y="8" width="54" height="54" href="comfy.png" load="sync" />
+         </use>
+         <use id="hot" href="#square-button-icon" y="195" height="70" fill="red">
+            <set href="#text"  attributeName="text-buffer" to="Too hot" />
+            <image x="45" y="8" width="54" height="54" href="hot.png" load="sync" />
+         </use>
     
     </svg>
 </svg>

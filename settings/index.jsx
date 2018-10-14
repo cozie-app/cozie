@@ -10,10 +10,11 @@ function mySettings(props) {
           status="Login"
           authorizeUrl="https://www.fitbit.com/oauth2/authorize"
           requestTokenUrl="https://api.fitbit.com/oauth2/token"
-          clientId="22D947"
+          clientId="XXXXX"
           clientSecret="XXXXX"
-          scope="XXXXX"
+          scope="profile"
           onAccessToken={async (data) => {
+            console.log(data['user_id'])
             props.settingsStorage.setItem('user_id', data['user_id'])
           }}
         />
