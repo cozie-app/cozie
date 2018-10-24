@@ -8,6 +8,7 @@ import { user } from "user-profile";
 import { goals } from "user-activity";
 import { battery } from "power";
 import * as messaging from "messaging";
+import { vibration } from "haptics";
 
 var months = {0: "Jan", 1: "Feb", 2: "Mar", 3: 'Apr', 4: "May", 5: 'Jun',
               6: "Jul", 7: "Aug", 8: "Sep", 9: "Oct", 10: "Nov", 11: "Dec"}; 
@@ -108,7 +109,7 @@ btn.addEventListener("click", () => {
   feedBack.style.display = "inline";
 });
 
-//Buttons send a requies to server
+//Buttons send a requests to server
 const cold = document.getElementById("cold");
 cold.addEventListener("click", () => {
   sendEventIfReady('tooCold');
@@ -132,7 +133,30 @@ function backToClockface() {
 function sendEventIfReady(eventName) {
   backToClockface();
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send({eventName: eventName});
+    messaging.peerSocket.send({eventName: eventName });
   }
 }
+
+setInterval(function() {
+  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    messaging.peerSocket.send({eventName: 'check' });
+  }
+  // Check every 30 min
+}, 1800000);
+
+//When companion sends a message
+messaging.peerSocket.onmessage = evt => {
+  vibration.start("ring");
+
+  //Change main clock face to response screen
+  clockFace.style.display = "none";
+  feedBack.style.display = "inline";
+  
+  //Stop vibration
+  setTimeout(function(){
+    vibration.stop()
+  }, 3000);
+}
+
+
 
