@@ -9,6 +9,7 @@ import { goals } from "user-activity";
 import { battery } from "power";
 import * as messaging from "messaging";
 import { vibration } from "haptics";
+import { geolocation } from "geolocation";
 
 var months = {0: "Jan", 1: "Feb", 2: "Mar", 3: 'Apr', 4: "May", 5: 'Jun',
               6: "Jul", 7: "Aug", 8: "Sep", 9: "Oct", 10: "Nov", 11: "Dec"}; 
@@ -132,9 +133,28 @@ function backToClockface() {
 
 function sendEventIfReady(eventName) {
   backToClockface();
-  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send({eventName: eventName });
+  geolocation.getCurrentPosition(locationSuccess, locationError);
+
+  function locationSuccess(position) {
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+      messaging.peerSocket.send({
+        eventName: eventName,
+        lat: position.coords.latitude,
+        lon: position.coords.longitude
+      });
+    }
   }
+
+  function locationError(error) {
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+      messaging.peerSocket.send({
+        eventName: eventName,
+        code: error.code,
+        message: error.message
+      });
+    } 
+  }
+  
 }
 
 setInterval(function() {
