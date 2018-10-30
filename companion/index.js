@@ -1,12 +1,11 @@
 import * as messaging from "messaging";
+import { geolocation } from "geolocation";
 import {
 	settingsStorage
 } from "settings";
 import {
 	me
 } from "companion"
-
-//messaging.peerSocket.send(JSON.stringify('data'));
 
 messaging.peerSocket.addEventListener("message", (evt) => {
 	//to get user_id from fitbit account, login in settings from mobile device 
@@ -29,24 +28,32 @@ messaging.peerSocket.addEventListener("message", (evt) => {
 			})
 			.then(function (data) {
 				if (data.data == true) {
-          			// Send data to the watch as a JSON string and make device virate
+          // Send data to the watch as a JSON string and make device virate
 					messaging.peerSocket.send(JSON.stringify(data)); 
 				}
 			})
 			.catch(function (error) {
 				console.log(error);
 			}); // Log any errors with Fetch
-  	// Response handler
+  // Response handler
 	} else if (evt.data) {
-		let url = `http://104.248.132.164:7070`
-		fetch(url, {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(evt.data)
-		});
+	// get location 
+    geolocation.getCurrentPosition(function(position) {
+      let url = `http://104.248.132.164:7070`
+      
+      evt.data.lat = position.coords.latitude
+      evt.data.lon = position.coords.longitude
+      
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(evt.data)
+      });
+    })
+		
 	} else {
 		console.log("Error! Can not send request to server.")
 	}
