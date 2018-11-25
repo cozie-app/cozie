@@ -102,6 +102,11 @@ clock.ontick = (evt) => {
 const btn = document.getElementById("btn");
 const clockFace = document.getElementById("clockFace");
 const feedBack = document.getElementById("feedBack");
+/* Location I'm now (Indoor) (Outdoor) */
+const location = document.getElementById("location");
+
+/* current status(cold, comfy, hot) */
+var status = null;
 
 /* On click hide main clockface
 and show feedback screen */
@@ -110,32 +115,54 @@ btn.addEventListener("click", () => {
   feedBack.style.display = "inline";
 });
 
+/* Screen change functions */
+function showLocationFeedback() {
+  feedBack.style.display = "none";
+  location.style.display = "inline";
+}
+
+function backToClockface() {
+  location.style.display = "none";
+  clockFace.style.display = "inline";
+}
+
 //Buttons send a requests to server
 const cold = document.getElementById("cold");
 cold.addEventListener("click", () => {
-  sendEventIfReady('tooCold');
+  showLocationFeedback()
+  status = 'tooCold'
 });
 
 const comfy = document.getElementById("comfy");
 comfy.addEventListener("click", () => {
-  sendEventIfReady('comfy');
+  showLocationFeedback()
+  status = 'comfy'
 });
 
 const hot = document.getElementById("hot");
 hot.addEventListener("click", () => {
-  sendEventIfReady('tooHot');
+  showLocationFeedback()
+  status = 'tooHot'
 });
 
-function backToClockface() {
-  clockFace.style.display = "inline";
-  feedBack.style.display = "none";
-}
+/* when user press indoor, isIndoor value set to true */
+const indoor = document.getElementById("indoor");
+indoor.addEventListener("click", () => {
+  sendEventIfReady(status, true);
+});
 
-function sendEventIfReady(eventName) {
+const outdoor = document.getElementById("outdoor");
+outdoor.addEventListener("click", () => {
+  sendEventIfReady(status, false);
+});
+
+
+function sendEventIfReady(eventName, isIndoor) {
   backToClockface();
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     messaging.peerSocket.send({
-      eventName: eventName
+      eventName: eventName,
+      isIndoor: isIndoor
     });
   }
   

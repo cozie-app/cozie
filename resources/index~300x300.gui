@@ -14,9 +14,8 @@
             <set href="#text" attributeName="text-buffer" to="Comfy?" />
         </use>
     </svg>
+  
     <svg id="feedBack" display="none">
-      
-        
          <use id="cold" href="#square-button-icon" y="35" height="70" fill="blue">
             <set href="#text" attributeName="text-buffer" to="Too cold" />
             <image x="45" y="8" width="54" height="54" href="cold.png" load="sync" />
@@ -30,7 +29,27 @@
             <set href="#text"  attributeName="text-buffer" to="Too hot" />
             <image x="45" y="8" width="54" height="54" href="hot.png" load="sync" />
          </use>
-    
+    </svg>
+  
+    <svg id="location" display="none">
+      <!-- Black background -->
+      <rect class="full-size" fill="fb-black" />
+
+      <!-- Title and text -->
+      <use href="#mixed-text-center-mid" class="dialog-mixed-text" fill="fb-white">
+        <!--<set href="#copy/text" attributeName="text-buffer" to="I'm now" />-->
+        <text font-size="45" x="25%" fill="#38f8df">Now I'm</text>
+      </use>
+
+      <!-- Left button -->
+      <use id="indoor" class="dialog-half-button-left" href="#square-button-neutral">
+        <set href="#text" attributeName="text-buffer" to="Indoor" />
+      </use>
+
+      <!-- Right button -->
+      <use id="outdoor" class="dialog-half-button-right" href="#square-button-neutral">
+        <set href="#text" attributeName="text-buffer" to="Outdoor"/>
+      </use>
     </svg>
 </svg>
 
