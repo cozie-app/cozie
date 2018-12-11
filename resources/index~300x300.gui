@@ -7,7 +7,7 @@
         <text id="secLabel" />
         <text id="hrm">42</text>
         <image x="162" y="10%" width="22" height="22" href="stat_steps_solid_48px.png" load="sync" />
-        <text id="steps" class='red'/>
+        <text id="steps" class='red'>0</text>
         <rect x="0" y="0" width="300" height="2" fill="#505050" id='chargeLabel'/>
 
         <use  id="btn" href="#square-button" y="215" x="0" fill="fb-green">
