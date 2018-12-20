@@ -14,7 +14,6 @@ function mySettings(props) {
           clientSecret="XXXXX"
           scope="profile"
           onAccessToken={async (data) => {
-            console.log(data['user_id'])
             props.settingsStorage.setItem('user_id', data['user_id'])
           }}
         />
