@@ -129,23 +129,33 @@ function backToClockface() {
 //Buttons send a requests to server
 const cold = document.getElementById("cold");
 cold.addEventListener("click", () => {
-  showLocationFeedback()
-  status = 'tooCold'
+  //showLocationFeedback()
+  status = 'tooCold';
+  feedBack.style.display = "none";
+  clockFace.style.display = "inline";
+  sendEventIfReady(status, null);
 });
 
 const comfy = document.getElementById("comfy");
 comfy.addEventListener("click", () => {
-  showLocationFeedback()
-  status = 'comfy'
+  //showLocationFeedback()
+  status = 'comfy';
+  feedBack.style.display = "none";
+  clockFace.style.display = "inline";
+  sendEventIfReady(status, null);
 });
 
 const hot = document.getElementById("hot");
 hot.addEventListener("click", () => {
-  showLocationFeedback()
-  status = 'tooHot'
+  //showLocationFeedback()
+  status = 'tooHot';
+  feedBack.style.display = "none";
+  clockFace.style.display = "inline";
+  sendEventIfReady(status, null);
 });
 
 /* when user press indoor, isIndoor value set to true */
+/*
 const indoor = document.getElementById("indoor");
 indoor.addEventListener("click", () => {
   sendEventIfReady(status, true);
@@ -155,7 +165,7 @@ const outdoor = document.getElementById("outdoor");
 outdoor.addEventListener("click", () => {
   sendEventIfReady(status, false);
 });
-
+*/
 
 function sendEventIfReady(eventName, isIndoor) {
   backToClockface();

@@ -14,7 +14,7 @@ messaging.peerSocket.addEventListener("message", (evt) => {
   
   // Device send check event every 30 min
 	if (evt.data.eventName == 'check') {
-		let url = `http://54.169.153.174:7070/check`
+		let url = `https://budslab.me/check`
 		fetch(url, {
 				method: 'POST',
 				headers: {
@@ -39,7 +39,7 @@ messaging.peerSocket.addEventListener("message", (evt) => {
 	} else if (evt.data) {
 	// get location 
     geolocation.getCurrentPosition(function(position) {
-      let url = `http://54.169.153.174:7070`
+      let url = `https://budslab.me`
       
       evt.data.lat = position.coords.latitude
       evt.data.lon = position.coords.longitude

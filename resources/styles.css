@@ -1,5 +1,5 @@
 #timeLabel {
-  font-size: 70;
+  font-size: 68;
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: middle;
@@ -9,7 +9,7 @@
 }
 
 #secLabel {
-  font-size: 32;
+  font-size: 30;
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: start;
@@ -19,7 +19,7 @@
 }
 
 #hrm {
-  font-size: 36;
+  font-size: 30;
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: start;
@@ -29,17 +29,17 @@
 }
 
 #steps {
-  font-size: 36;
+  font-size: 30;
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: start;
-  x: 320;
+  x: 260;
   y: 15%;
    /*  fill: #38f8df; */
 }
 
 #dateLabel {
-  font-size: 28;
+  font-size: 25;
   font-family: Colfax;
   text-length: 32;
   text-anchor: middle;
