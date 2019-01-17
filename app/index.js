@@ -9,7 +9,7 @@ import { goals } from "user-activity";
 import { battery } from "power";
 import * as messaging from "messaging";
 import { vibration } from "haptics";
-
+import * as fs from "fs";
 
 var months = {0: "Jan", 1: "Feb", 2: "Mar", 3: 'Apr', 4: "May", 5: 'Jun',
               6: "Jul", 7: "Aug", 8: "Sep", 9: "Oct", 10: "Nov", 11: "Dec"}; 
@@ -53,6 +53,7 @@ let secLabel = document.getElementById("secLabel");
 // console.log((today.local.steps || 0) + " steps");
 
 // Update the <text> element every tick with the current time
+let local_file;
 
 clock.ontick = (evt) => {
   let today_dt = evt.date;
@@ -169,11 +170,39 @@ outdoor.addEventListener("click", () => {
 
 function sendEventIfReady(eventName, isIndoor) {
   backToClockface();
+  
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     messaging.peerSocket.send({
       eventName: eventName,
       isIndoor: isIndoor
     });
+    
+    // read files saved during offline and send all on by one
+    try {
+      local_file = fs.readFileSync("local.txt", "json");
+      for(let elem of local_file) {
+        messaging.peerSocket.send(elem);
+      }
+      // delete local file
+      fs.unlinkSync("local.txt")
+    } catch(err) {
+      console.log(err)
+    }
+  } else {
+    // try to read file with local data
+    try {
+      local_file = fs.readFileSync("local.txt", "json");
+    } catch(err) {
+      // if can't read set local file to empty
+      local_file = []
+    } 
+    // push new reponce and save
+    local_file.push({
+      eventName: eventName,
+      isIndoor: isIndoor
+    })
+
+    fs.writeFileSync("local.txt", local_file, "json");
   }
   
 }
