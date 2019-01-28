@@ -169,12 +169,14 @@ outdoor.addEventListener("click", () => {
 */
 
 function sendEventIfReady(eventName, isIndoor) {
+  const currentdate = new Date(); 
   backToClockface();
   
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     messaging.peerSocket.send({
       eventName: eventName,
-      isIndoor: isIndoor
+      isIndoor: isIndoor,
+      currentdate: currentdate.toString()
     });
     
     // read files saved during offline and send all on by one
@@ -186,6 +188,7 @@ function sendEventIfReady(eventName, isIndoor) {
       // delete local file
       fs.unlinkSync("local.txt")
     } catch(err) {
+      local_file = []
       console.log(err)
     }
   } else {
@@ -199,7 +202,8 @@ function sendEventIfReady(eventName, isIndoor) {
     // push new reponce and save
     local_file.push({
       eventName: eventName,
-      isIndoor: isIndoor
+      isIndoor: isIndoor,
+      currentdate: currentdate.toString()
     })
 
     fs.writeFileSync("local.txt", local_file, "json");
