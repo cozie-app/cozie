@@ -96,6 +96,16 @@ clock.ontick = (evt) => {
     chargeLabel.style.fill = '#f83c40'
   } else { 
     chargeLabel.style.fill = '#505050'}
+  
+  // vibrate and change to response screen at  9, 11, 13, 15, 17
+  const currentHour = today_dt.getHours();
+  const currentMin = today_dt.getMinutes();
+  const currentSec = today_dt.getSeconds();
+  const vibrateAt = [9, 11, 13, 15, 17];
+
+  if(currentSec == 0 && currentMin == 0 && vibrateAt.indexOf(currentHour) != -1) {
+    vibrate();
+  }
 }
 
 
@@ -169,14 +179,12 @@ outdoor.addEventListener("click", () => {
 */
 
 function sendEventIfReady(eventName, isIndoor) {
-  const currentdate = new Date(); 
   backToClockface();
   
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     messaging.peerSocket.send({
       eventName: eventName,
-      isIndoor: isIndoor,
-      currentdate: currentdate.toString()
+      isIndoor: isIndoor
     });
     
     // read files saved during offline and send all on by one
@@ -188,7 +196,6 @@ function sendEventIfReady(eventName, isIndoor) {
       // delete local file
       fs.unlinkSync("local.txt")
     } catch(err) {
-      local_file = []
       console.log(err)
     }
   } else {
@@ -202,8 +209,7 @@ function sendEventIfReady(eventName, isIndoor) {
     // push new reponce and save
     local_file.push({
       eventName: eventName,
-      isIndoor: isIndoor,
-      currentdate: currentdate.toString()
+      isIndoor: isIndoor
     })
 
     fs.writeFileSync("local.txt", local_file, "json");
@@ -211,15 +217,8 @@ function sendEventIfReady(eventName, isIndoor) {
   
 }
 
-setInterval(function() {
-  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send({eventName: 'check' });
-  }
-  // Check every 30 min
-}, 1800000);
-
-//When companion sends a message
-messaging.peerSocket.onmessage = evt => {
+// vibrate for 3 sec and change screen to reponse
+function vibrate() {
   vibration.start("ring");
 
   //Change main clock face to response screen
