@@ -101,9 +101,13 @@ clock.ontick = (evt) => {
   const currentHour = today_dt.getHours();
   const currentMin = today_dt.getMinutes();
   const currentSec = today_dt.getSeconds();
-  const vibrateAt = [9, 11, 13, 15, 17];
-
-  if(currentSec == 0 && currentMin == 0 && vibrateAt.indexOf(currentHour) != -1) {
+  let found = false;
+   
+  if(currentHour === 9 || currentHour === 11 || currentHour === 13 || currentHour === 15 || currentHour === 17) {
+    found = true;
+  }
+  
+  if(currentSec === 0 && currentMin === 0 && found) {
     vibrate();
   }
 }
