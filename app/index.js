@@ -55,6 +55,7 @@ let secLabel = document.getElementById("secLabel");
 // Update the <text> element every tick with the current time
 let local_file;
 
+let found = false;
 clock.ontick = (evt) => {
   let today_dt = evt.date;
   let hours = today_dt.getHours();
@@ -100,16 +101,14 @@ clock.ontick = (evt) => {
   // vibrate and change to response screen at  9, 11, 13, 15, 17
   const currentHour = today_dt.getHours();
   const currentMin = today_dt.getMinutes();
-  const currentSec = today_dt.getSeconds();
-  let found = false;
-   
-  if(currentHour === 9 || currentHour === 11 || currentHour === 13 || currentHour === 15 || currentHour === 17) {
-    found = true;
-  }
   
-  if(currentSec === 0 && currentMin === 0 && found) {
+  // make vibration during first minute
+  if(!found && currentMin === 0 && (currentHour === 9 || currentHour === 11 || currentHour === 13 || currentHour === 15 || currentHour === 17)) {
     vibrate();
-  }
+    found = true;
+  } else if(currentMin != 0) {
+    found = false;
+  }  
 }
 
 
