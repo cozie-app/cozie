@@ -54,8 +54,22 @@ let secLabel = document.getElementById("secLabel");
 
 // Update the <text> element every tick with the current time
 let local_file;
-
+// intervals to check vibrations
 let found = false;
+setInterval(function() {
+  const currentDate = new Date();
+  // vibrate and change to response screen at  9, 11, 13, 15, 17
+  const currentHour = currentDate.getHours();
+  // make vibration during first minute
+  const vibrationTime = [9, 11, 13, 15, 17, 23, 7, 19, 21]
+  if(!found && vibrationTime.indexOf(currentHour) != -1) {
+      vibrate();
+      found = true;
+  } else if(vibrationTime.indexOf(currentHour) === -1){
+      found = false;
+  }  
+}, 1200000);
+
 clock.ontick = (evt) => {
   let today_dt = evt.date;
   let hours = today_dt.getHours();
@@ -96,19 +110,8 @@ clock.ontick = (evt) => {
   if (charge < 0.2) {
     chargeLabel.style.fill = '#f83c40'
   } else { 
-    chargeLabel.style.fill = '#505050'}
-  
-  // vibrate and change to response screen at  9, 11, 13, 15, 17
-  const currentHour = today_dt.getHours();
-  const currentMin = today_dt.getMinutes();
-  
-  // make vibration during first minute
-  if(!found && currentMin === 0 && (currentHour === 9 || currentHour === 11 || currentHour === 13 || currentHour === 15 || currentHour === 17)) {
-    vibrate();
-    found = true;
-  } else if(currentMin != 0) {
-    found = false;
-  }  
+    chargeLabel.style.fill = '#505050'
+  }
 }
 
 
@@ -174,7 +177,6 @@ const indoor = document.getElementById("indoor");
 indoor.addEventListener("click", () => {
   sendEventIfReady(status, true);
 });
-
 const outdoor = document.getElementById("outdoor");
 outdoor.addEventListener("click", () => {
   sendEventIfReady(status, false);
@@ -231,8 +233,5 @@ function vibrate() {
   //Stop vibration
   setTimeout(function(){
     vibration.stop()
-  }, 3000);
+  }, 5000);
 }
-
-
-
