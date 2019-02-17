@@ -61,7 +61,7 @@ setInterval(function() {
   // vibrate and change to response screen at  9, 11, 13, 15, 17
   const currentHour = currentDate.getHours();
   // make vibration during first minute
-  const vibrationTime = [9, 11, 13, 15, 17, 23, 7, 19, 21]
+  const vibrationTime = [9, 11, 13, 15, 17]
   if(!found && vibrationTime.indexOf(currentHour) != -1) {
       vibrate();
       found = true;
@@ -185,11 +185,14 @@ outdoor.addEventListener("click", () => {
 
 function sendEventIfReady(eventName, isIndoor) {
   backToClockface();
+  // Time when responce was made
+  const isoDate = new Date('yourdatehere').toISOString();
   
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     messaging.peerSocket.send({
-      eventName: eventName,
-      isIndoor: isIndoor
+      eventName,
+      isIndoor,
+      isoDate,
     });
     
     // read files saved during offline and send all on by one
@@ -213,8 +216,9 @@ function sendEventIfReady(eventName, isIndoor) {
     } 
     // push new reponce and save
     local_file.push({
-      eventName: eventName,
-      isIndoor: isIndoor
+      eventName,
+      isIndoor,
+      isoDate,
     })
 
     fs.writeFileSync("local.txt", local_file, "json");
