@@ -186,7 +186,7 @@ outdoor.addEventListener("click", () => {
 function sendEventIfReady(eventName, isIndoor) {
   backToClockface();
   // Time when responce was made
-  const isoDate = new Date('yourdatehere').toISOString();
+  const isoDate = new Date().toISOString();
   
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     messaging.peerSocket.send({
