@@ -17,8 +17,10 @@ messaging.peerSocket.addEventListener("message", (evt) => {
     geolocation.getCurrentPosition(function(position) {
       let url = `https://budslab.me`
       
-      evt.data.lat = position.coords.latitude
-      evt.data.lon = position.coords.longitude
+      if(evt.data.setLocation) {
+        evt.data.lat = position.coords.latitude
+        evt.data.lon = position.coords.longitude
+      }
       
       fetch(url, {
         method: 'POST',

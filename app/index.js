@@ -10,6 +10,7 @@ import { battery } from "power";
 import * as messaging from "messaging";
 import { vibration } from "haptics";
 import * as fs from "fs";
+import { geolocation } from "geolocation";
 
 var months = {0: "Jan", 1: "Feb", 2: "Mar", 3: 'Apr', 4: "May", 5: 'Jun',
               6: "Jul", 7: "Aug", 8: "Sep", 9: "Oct", 10: "Nov", 11: "Dec"}; 
@@ -188,13 +189,46 @@ function sendEventIfReady(eventName, isIndoor) {
   // Time when responce was made
   const isoDate = new Date().toISOString();
   
+  let data = {
+    eventName,
+    isIndoor,
+    isoDate,
+  }
+  
+  geolocation.getCurrentPosition(locationSuccess, locationError);
+  function locationSuccess(position) {
+    data.lat = position.coords.latitude,
+    data.lon = position.coords.longitude,
+    sendDataToCompanion(data);
+  }
+
+  function locationError(error) {
+    data.lat = null,
+    data.lon = null,
+    sendDataToCompanion(data);
+  }
+}
+
+// vibrate for 3 sec and change screen to reponse
+function vibrate() {
+  vibration.start("ring");
+
+  //Change main clock face to response screen
+  clockFace.style.display = "none";
+  feedBack.style.display = "inline";
+  
+  //Stop vibration
+  setTimeout(function(){
+    vibration.stop()
+  }, 5000);
+}
+
+function sendDataToCompanion(data) {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send({
-      eventName,
-      isIndoor,
-      isoDate,
-    });
-    
+    // if setLocation value is true then companion will set location
+    data.setLocation = true;
+    messaging.peerSocket.send(data);
+
     // read files saved during offline and send all on by one
     try {
       local_file = fs.readFileSync("local.txt", "json");
@@ -215,27 +249,8 @@ function sendEventIfReady(eventName, isIndoor) {
       local_file = []
     } 
     // push new reponce and save
-    local_file.push({
-      eventName,
-      isIndoor,
-      isoDate,
-    })
+    local_file.push(data)
 
     fs.writeFileSync("local.txt", local_file, "json");
   }
-  
-}
-
-// vibrate for 3 sec and change screen to reponse
-function vibrate() {
-  vibration.start("ring");
-
-  //Change main clock face to response screen
-  clockFace.style.display = "none";
-  feedBack.style.display = "inline";
-  
-  //Stop vibration
-  setTimeout(function(){
-    vibration.stop()
-  }, 5000);
 }
