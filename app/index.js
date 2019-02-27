@@ -193,6 +193,7 @@ function sendEventIfReady(eventName, isIndoor) {
     eventName,
     isIndoor,
     isoDate,
+    heartRate: hrm.heartRate,
   }
   
   geolocation.getCurrentPosition(locationSuccess, locationError);
