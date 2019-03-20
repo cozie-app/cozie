@@ -196,7 +196,7 @@ function sendEventIfReady(eventName, isIndoor) {
     heartRate: hrm.heartRate,
   }
   
-  geolocation.getCurrentPosition(locationSuccess, locationError);
+  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 5000});
   function locationSuccess(position) {
     data.lat = position.coords.latitude,
     data.lon = position.coords.longitude,
