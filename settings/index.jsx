@@ -18,6 +18,23 @@ function mySettings(props) {
           }}
         />
       </Section>
+      <Section>
+          <Select
+  label={`Selection`}
+  settingsKey="selection"
+  options={[
+    {name:"Vivid Vervet",   value:"6ZNXYW"},
+    {name:"Zesty Zapus",   value:"6M8KD2"},
+    {name:"Yakkety Yak", value:"72HKX6"},
+    {name:"Wily Werewolf", value:"6TMF75"},
+    {name:"Utopic Unicorn", value:"66NZJD"},
+    {name:"Saucy Salamander", value:"6WPGSS"},
+  ]}
+
+  onSelection={(option) => props.settingsStorage.setItem('user_id', option.values[0].value)}
+/>
+
+      </Section>
     </Page>
   );
 }
