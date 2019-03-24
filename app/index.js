@@ -195,8 +195,8 @@ function sendEventIfReady(eventName, isIndoor) {
     isoDate,
     heartRate: hrm.heartRate,
   }
+  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 5000});
   
-  geolocation.getCurrentPosition(locationSuccess, locationError);
   function locationSuccess(position) {
     data.lat = position.coords.latitude,
     data.lon = position.coords.longitude,
@@ -230,6 +230,9 @@ function sendDataToCompanion(data) {
     data.setLocation = true;
     messaging.peerSocket.send(data);
 
+    //remove data to prevent it beint sent twice
+    data=null
+
     // read files saved during offline and send all on by one
     try {
       local_file = fs.readFileSync("local.txt", "json");
@@ -254,4 +257,19 @@ function sendDataToCompanion(data) {
 
     fs.writeFileSync("local.txt", local_file, "json");
   }
+}
+
+messaging.peerSocket.onopen = function() {
+  // Have an event listener so that the moment a connection is open, files upload
+  // read files saved during offline and send all on by one
+    try {
+      local_file = fs.readFileSync("local.txt", "json");
+      for(let elem of local_file) {
+        messaging.peerSocket.send(elem);
+      }
+      // delete local file
+      fs.unlinkSync("local.txt")
+    } catch(err) {
+      console.log(err)
+    }
 }
