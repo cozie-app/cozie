@@ -1,5 +1,18 @@
 [![](http://www.budslab.org/buds-lab.github.io/budslab_banner.png)](http://www.budslab.org/)
 
+# Colaborating using git and fitbut
+
+1. first ensure that you have the latest nodejs installation https://nodejs.org/en/
+2. clone the repo `git clone git@github.com:buds-lab/fitbit-hotorcold-app.git`
+3. `cd fitbit-hotcold-app`
+4. `npm install`
+
+### Building and installing
+
+1. `npx fitbut-build` will build the project
+2. `npx fitbit` opens the browser, and logs into your fitbit account. From here you can connect to devices and install the app
+
+
 # Project structure
 — This guide explains the underlying structure of current and other Fitbit applications, and how the various elements are related. [dev.fitbit.com/build/guides/application/](https://dev.fitbit.com/build/guides/application/)
 — To get started with ClockFace development or to launch project read more at [Fitbit Developer Website](https://dev.fitbit.com/getting-started/).
