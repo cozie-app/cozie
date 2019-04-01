@@ -196,8 +196,7 @@ function sendEventIfReady(eventName, isIndoor) {
     isoDate,
     heartRate: hrm.heartRate,
   }
-  data.userHeight = user.height
-  console.log(data.isoDate)
+
   geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 5000});
   
   function locationSuccess(position) {
