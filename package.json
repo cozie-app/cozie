@@ -1,27 +1,30 @@
 {
   "fitbit": {
-    "appUUID": "731497ca-5e7c-4383-a702-18330587d048",
+    "appUUID": "128e7ea2-7385-475e-88b4-0177e3c49433",
     "appType": "clockface",
-    "appDisplayName": "ComfyApp",
+    "appDisplayName": "coolbit",
     "iconFile": "resources/icon.png",
     "wipeColor": "",
     "requestedPermissions": [
       "access_heart_rate",
       "access_location",
       "access_internet",
-      "run_background"
+      "run_background",
+      "access_activity",
+      "access_user_profile"
     ],
     "buildTargets": [
-      "meson",
-      "higgs"
+      "higgs",
+      "meson"
     ],
     "i18n": {
       "en": {
-        "name": "ComfyApp"
+        "name": "coolbit"
       }
-    }
+    },
+    "defaultLanguage": "en-US"
   },
   "devDependencies": {
-    "@fitbit/sdk": "~1.0.0"
+    "@fitbit/sdk": "~3.1.0"
   }
 }

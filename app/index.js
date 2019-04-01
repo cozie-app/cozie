@@ -188,6 +188,7 @@ function sendEventIfReady(eventName, isIndoor) {
   backToClockface();
   // Time when responce was made
   const isoDate = new Date().toISOString();
+  console.log("event created");
   
   let data = {
     eventName,
@@ -195,15 +196,19 @@ function sendEventIfReady(eventName, isIndoor) {
     isoDate,
     heartRate: hrm.heartRate,
   }
+  data.userHeight = user.height
+  console.log(data.isoDate)
   geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 5000});
   
   function locationSuccess(position) {
+    console.log("location success")
     data.lat = position.coords.latitude,
     data.lon = position.coords.longitude,
     sendDataToCompanion(data);
   }
 
   function locationError(error) {
+    console.log("location fail")
     data.lat = null,
     data.lon = null,
     sendDataToCompanion(data);
@@ -229,7 +234,8 @@ function sendDataToCompanion(data) {
     // if setLocation value is true then companion will set location
     data.setLocation = true;
     messaging.peerSocket.send(data);
-
+    console.log("data sent directly to companion")
+    
     //remove data to prevent it beint sent twice
     data=null
 
@@ -238,6 +244,7 @@ function sendDataToCompanion(data) {
       local_file = fs.readFileSync("local.txt", "json");
       for(let elem of local_file) {
         messaging.peerSocket.send(elem);
+        console.log("data sent from: " + elem.isoDate + "sent to companion" );
       }
       // delete local file
       fs.unlinkSync("local.txt")
@@ -246,13 +253,17 @@ function sendDataToCompanion(data) {
     }
   } else {
     // try to read file with local data
+    console.log("connection to companion not found, storing locally")
     try {
+      console.log("checking if local file exists")
       local_file = fs.readFileSync("local.txt", "json");
     } catch(err) {
       // if can't read set local file to empty
+      console.log("creating empty local.txt file")
       local_file = []
     } 
     // push new reponce and save
+    console.log("pushing new data to local file")
     local_file.push(data)
 
     fs.writeFileSync("local.txt", local_file, "json");
@@ -262,10 +273,12 @@ function sendDataToCompanion(data) {
 messaging.peerSocket.onopen = function() {
   // Have an event listener so that the moment a connection is open, files upload
   // read files saved during offline and send all on by one
+  console.log("peer socket to companion opened")
     try {
       local_file = fs.readFileSync("local.txt", "json");
       for(let elem of local_file) {
         messaging.peerSocket.send(elem);
+        console.log("data sent from: " + elem.isoDate + "sent to companion" );
       }
       // delete local file
       fs.unlinkSync("local.txt")

@@ -1,19 +1,20 @@
 import * as messaging from "messaging";
 import { geolocation } from "geolocation";
 import {
-	settingsStorage
+  settingsStorage
 } from "settings";
 import {
-	me
+  me
 } from "companion"
 
 messaging.peerSocket.addEventListener("message", (evt) => {
-	//to get user_id from fitbit account, login in settings from mobile device 
-	let user_id = settingsStorage.getItem('user_id');
-	evt.data.user_id = user_id
+  //to get user_id from fitbit account, login in settings from mobile device 
+  let user_id = settingsStorage.getItem('user_id');
+  evt.data.user_id = user_id
+  console.log("user id is " + user_id);
   
   if (evt.data) {
-	// get location 
+  // get location 
     geolocation.getCurrentPosition(function(position) {
       let url = `https://budslab.me`
       
@@ -31,7 +32,8 @@ messaging.peerSocket.addEventListener("message", (evt) => {
         body: JSON.stringify(evt.data)
       });
     })
-	} else {
-		console.log("Error! Can not send request to server.")
-	}
+    console.log("sent data")
+  } else {
+    console.log("Error! Can not send request to server.")
+  }
 });
