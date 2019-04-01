@@ -16,7 +16,7 @@
     </svg>
   
     <svg id="feedBack" display="none">
-         <use id="cold" href="#square-button-icon" y="10" height="65" fill="red">
+         <use id="cold" href="#square-button-icon" y="10" height="65" fill="tomato">
             <set href="#text" attributeName="text-buffer" to="Prefer Warmer" />
             <image x="10" y="8" width="48" height="48" href="images/cold.png" load="sync" />
          </use>
@@ -26,7 +26,7 @@
             <image x="10" y="8" width="48" height="48" href="images/comfy.png" load="sync" />
          </use>
       
-         <use id="hot" href="#square-button-icon" y="170" height="65" fill="blue">
+         <use id="hot" href="#square-button-icon" y="170" height="65" fill="steelblue">
             <set href="#text"  attributeName="text-buffer" to="Prefer Cooler" />
             <image x="10" y="8" width="48" height="48" href="images/hot.png" load="sync" />
          </use>
