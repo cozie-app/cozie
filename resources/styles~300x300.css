@@ -4,7 +4,7 @@
   text-length: 32;
   text-anchor: middle;
   x: 50%-10;
-  y: 50%+10;
+  y: 39%+10;
   fill: #ffffff;
 }
 
@@ -14,7 +14,7 @@
   text-length: 32;
   text-anchor: start;
   x: 70%+10;
-  y: 50%+10;
+  y: 39%+10;
   fill: #a0a0a0;
 }
 
@@ -44,7 +44,7 @@
   text-length: 32;
   text-anchor: middle;
   x: 50%;
-  y: 50%+40;
+  y: 39%+40;
   fill: #a0a0a0;
 }
 

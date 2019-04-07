@@ -1,0 +1,4 @@
+<symbol id="button">
+   	<circle id="circle" cx="75" cy="230" r="50" fill="red" />
+   	<image id="image" x="25" y="180" width="100" height="100" href="images/icons/nuetral.png" load="sync" />
+</symbol>

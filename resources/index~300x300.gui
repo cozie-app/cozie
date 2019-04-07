@@ -1,6 +1,4 @@
 <svg class="background">
   <link rel="import" href="views/clockface.gui" />
-  <link rel="import" href="views/feedback.gui" />
-  <link rel="import" href="views/location.gui" />
 </svg>
 

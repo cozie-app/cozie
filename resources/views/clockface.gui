@@ -9,7 +9,34 @@
   <text id="steps" class='red'>0</text>
   <rect x="0" y="0" width="300" height="2" fill="#505050" id='chargeLabel'/>
 
-  <use  id="btn" href="#square-button" y="215" x="0" fill="fb-green">
-      <set href="#text" attributeName="text-buffer" to="Comfy?" />
+  <!-- import buttons component -->
+  <link rel="import" href="../components/buttons.gui" />
+
+  <use href="#button">
+    <set href="circle" attributeName="fill" to="blue"/>
+    <set href="circle" attributeName="cx" to="75"/>
+    <set href="circle" attributeName="cy" to="230"/>
+    <set href="circle" attributeName="r" to="50"/>
+
+    <set href="image" attributeName="fill" to="blue"/>
+    <set href="image" attributeName="x" to="25"/>
+    <set href="image" attributeName="y" to="180"/>
+    <set href="image" attributeName="width" to="100"/>
+    <set href="image" attributeName="height" to="100"/>
+    <set href="image" attributeName="href" to="images/icons/sad.png"/>
+  </use>
+
+  <use href="#button">
+    <set href="circle" attributeName="fill" to="blue"/>
+    <set href="circle" attributeName="cx" to="225"/>
+    <set href="circle" attributeName="cy" to="230"/>
+    <set href="circle" attributeName="r" to="50"/>
+
+    <set href="image" attributeName="fill" to="blue"/>
+    <set href="image" attributeName="x" to="175"/>
+    <set href="image" attributeName="y" to="180"/>
+    <set href="image" attributeName="width" to="100"/>
+    <set href="image" attributeName="height" to="100"/>
+    <set href="image" attributeName="href" to="images/icons/happy.png"/>
   </use>
 </svg>
