@@ -1,0 +1,46 @@
+<svg id="warm-cold">
+  <!-- import buttons component -->
+  <link rel="import" href="../components/buttons.gui" />
+
+  <use href="#button">
+    <set href="circle" attributeName="fill" to="blue"/>
+    <set href="circle" attributeName="cx" to="150"/>
+    <set href="circle" attributeName="cy" to="75"/>
+    <set href="circle" attributeName="r" to="50"/>
+
+    <set href="image" attributeName="fill" to="blue"/>
+    <set href="image" attributeName="x" to="100"/>
+    <set href="image" attributeName="y" to="25"/>
+    <set href="image" attributeName="width" to="100"/>
+    <set href="image" attributeName="height" to="100"/>
+    <set href="image" attributeName="href" to="images/icons/comfy.png"/>
+  </use>
+
+  <use href="#button">
+    <set href="circle" attributeName="fill" to="blue"/>
+    <set href="circle" attributeName="cx" to="75"/>
+    <set href="circle" attributeName="cy" to="225"/>
+    <set href="circle" attributeName="r" to="50"/>
+
+    <set href="image" attributeName="fill" to="blue"/>
+    <set href="image" attributeName="x" to="25"/>
+    <set href="image" attributeName="y" to="175"/>
+    <set href="image" attributeName="width" to="100"/>
+    <set href="image" attributeName="height" to="100"/>
+    <set href="image" attributeName="href" to="images/icons/prefer_brighter.png"/>
+  </use>
+
+  <use href="#button">
+    <set href="circle" attributeName="fill" to="blue"/>
+    <set href="circle" attributeName="cx" to="225"/>
+    <set href="circle" attributeName="cy" to="225"/>
+    <set href="circle" attributeName="r" to="50"/>
+
+    <set href="image" attributeName="fill" to="blue"/>
+    <set href="image" attributeName="x" to="175"/>
+    <set href="image" attributeName="y" to="175"/>
+    <set href="image" attributeName="width" to="100"/>
+    <set href="image" attributeName="height" to="100"/>
+    <set href="image" attributeName="href" to="images/icons/prefer_dimmer.png"/>
+  </use>
+</svg>

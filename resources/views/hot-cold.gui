@@ -1,0 +1,32 @@
+<svg id="clockFace">
+  <!-- import buttons component -->
+  <link rel="import" href="../components/buttons.gui" />
+
+  <use href="#button">
+    <set href="circle" attributeName="fill" to="blue"/>
+    <set href="circle" attributeName="cx" to="75"/>
+    <set href="circle" attributeName="cy" to="150"/>
+    <set href="circle" attributeName="r" to="50"/>
+
+    <set href="image" attributeName="fill" to="blue"/>
+    <set href="image" attributeName="x" to="35"/>
+    <set href="image" attributeName="y" to="110"/>
+    <set href="image" attributeName="width" to="80"/>
+    <set href="image" attributeName="height" to="80"/>
+    <set href="image" attributeName="href" to="images/icons/indoor.png"/>
+  </use>
+
+  <use href="#button">
+    <set href="circle" attributeName="fill" to="blue"/>
+    <set href="circle" attributeName="cx" to="225"/>
+    <set href="circle" attributeName="cy" to="150"/>
+    <set href="circle" attributeName="r" to="50"/>
+
+    <set href="image" attributeName="fill" to="blue"/>
+    <set href="image" attributeName="x" to="185"/>
+    <set href="image" attributeName="y" to="110"/>
+    <set href="image" attributeName="width" to="80"/>
+    <set href="image" attributeName="height" to="80"/>
+    <set href="image" attributeName="href" to="images/icons/outdoor.png"/>
+  </use>
+</svg>
