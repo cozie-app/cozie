@@ -115,6 +115,98 @@ clock.ontick = (evt) => {
   }
 }
 
+// views
+const clockface = document.getElementById("clockface");
+const indoorOutdoor = document.getElementById("indoor-outdoor");
+const warmCold = document.getElementById("warm-cold");
+const brightDim = document.getElementById("bright-dim");
+const loudQuite = document.getElementById("loud-quite");
+const happySad = document.getElementById("happy-sad");
+
+// buttons
+const comfy = document.getElementById("comfy");
+const notComfy = document.getElementById("not-comfy");
+// buttons
+const indoor = document.getElementById("indoor");
+const outdoor = document.getElementById("outdoor");
+// buttons
+const warm = document.getElementById("warm");
+const cold = document.getElementById("cold");
+// buttons
+const bright = document.getElementById("bright");
+const dim = document.getElementById("dim");
+// buttons
+const loud = document.getElementById("loud");
+const quite = document.getElementById("quite");
+// buttons
+const happy = document.getElementById("happy");
+const sad = document.getElementById("sad");
+
+// on click events
+comfy.addEventListener("click", () => {
+  clockface.style.display = "none";
+  indoorOutdoor.style.display = "inline";
+});
+notComfy.addEventListener("click", () => {
+  clockface.style.display = "none";
+  indoorOutdoor.style.display = "inline";
+});
+
+// on click events
+indoor.addEventListener("click", () => {
+  indoorOutdoor.style.display = "none";
+  warmCold.style.display = "inline";
+});
+
+outdoor.addEventListener("click", () => {
+  indoorOutdoor.style.display = "none";
+  warmCold.style.display = "inline";
+});
+
+// on click events
+warm.addEventListener("click", () => {
+  warmCold.style.display = "none";
+  brightDim.style.display = "inline";
+});
+
+cold.addEventListener("click", () => {
+  warmCold.style.display = "none";
+  brightDim.style.display = "inline";
+});
+
+// on click events
+bright.addEventListener("click", () => {
+  brightDim.style.display = "none";
+  loudQuite.style.display = "inline";
+});
+
+dim.addEventListener("click", () => {
+  brightDim.style.display = "none";
+  loudQuite.style.display = "inline";
+});
+
+// on click events
+loud.addEventListener("click", () => {
+  loudQuite.style.display = "none";
+  happySad.style.display = "inline";
+});
+
+quite.addEventListener("click", () => {
+  loudQuite.style.display = "none";
+  happySad.style.display = "inline";
+});
+
+// on click events
+happy.addEventListener("click", () => {
+  happySad.style.display = "none";
+  clockface.style.display = "inline";
+});
+
+sad.addEventListener("click", () => {
+  happySad.style.display = "none";
+  clockface.style.display = "inline";
+});
+
 
 // button to make an action, not working code
 const btn = document.getElementById("btn");

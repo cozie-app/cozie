@@ -1,4 +1,4 @@
-<svg id="clockFace">
+<svg id="hot-cold" display="none">
   <!-- import buttons component -->
   <link rel="import" href="../components/buttons.gui" />
 

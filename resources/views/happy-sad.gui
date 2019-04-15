@@ -1,9 +1,9 @@
-<svg id="warm-cold">
+<svg id="happy-sad" display="none">
   <!-- import buttons component -->
   <link rel="import" href="../components/buttons.gui" />
 
   <use href="#button">
-    <set href="circle" attributeName="fill" to="blue"/>
+    <set href="circle" attributeName="fill" to="#FFCC33"/>
     <set href="circle" attributeName="cx" to="150"/>
     <set href="circle" attributeName="cy" to="75"/>
     <set href="circle" attributeName="r" to="50"/>
@@ -16,8 +16,8 @@
     <set href="image" attributeName="href" to="images/icons/nuetral.png"/>
   </use>
 
-  <use href="#button">
-    <set href="circle" attributeName="fill" to="blue"/>
+  <use href="#button" id="happy" pointer-events="visible">
+    <set href="circle" attributeName="fill" to="#20B2AA"/>
     <set href="circle" attributeName="cx" to="75"/>
     <set href="circle" attributeName="cy" to="225"/>
     <set href="circle" attributeName="r" to="50"/>
@@ -30,8 +30,8 @@
     <set href="image" attributeName="href" to="images/icons/happy.png"/>
   </use>
 
-  <use href="#button">
-    <set href="circle" attributeName="fill" to="blue"/>
+  <use href="#button" id="sad" pointer-events="visible">
+    <set href="circle" attributeName="fill" to="#FC6B3A"/>
     <set href="circle" attributeName="cx" to="225"/>
     <set href="circle" attributeName="cy" to="225"/>
     <set href="circle" attributeName="r" to="50"/>
