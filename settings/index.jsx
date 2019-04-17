@@ -53,10 +53,38 @@ function mySettings(props) {
            {name: "aurek22", value: "aurek22"},
            {name: "aurek23", value: "aurek23"},
            {name: "aurek24", value: "aurek24"},
-           {name: "aurek25", value: "aurek25"}
+           {name: "aurek25", value: "aurek25"},
+           {name: "debug", value: "debug"}
   ]}
 
   onSelection={(option) => props.settingsStorage.setItem('user_id', option.values[0].value)}
+/>
+
+      </Section>
+
+      <Section>
+        <Select
+  label={`Multi-Selection`}
+  multiple
+  settingsKey="flow_index"
+  options={[
+    {name:"Thermal",   value: "showThermal", subLabel: "Prefer Warmer, Prefer Cooler, Comfy"},
+    {name:"Light",   value:"showLight", subLabel: "Prefer Brighter, Prefer Dimmer, Comfy"},
+    {name:"Noise", value:"showNoise", subLabel: "Prefer Louder, Prefer Quieter, Comfy"},
+    {name:"Indoor / Outdoor", value:"showIndoor", subLabel: "Indoor, Outdoor"},
+    {name:"Mood", value:"showMood", subLabel: "Good, Not So Good"},
+  ]}
+  // renderItem={
+  //   (option) =>
+  //     <TextImageRow
+  //       label={option.name}
+  //       sublabel={option.subLabel}
+  //       icon="https://tinyurl.com/ybbmpxxq"
+  //     />
+  // }
+//  onSelection={(selection) => { 
+//    props.settingsStorage.setItem('flow_index', JSON.stringify(selection))
+//  }} 
 />
 
       </Section>
