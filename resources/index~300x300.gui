@@ -5,6 +5,7 @@
   <link rel="import" href="views/bright-dim.gui" />
   <link rel="import" href="views/loud-quite.gui" />
   <link rel="import" href="views/happy-sad.gui" />
+  <link rel="import" href="views/thankyou.gui" />
 
 </svg>
 

@@ -1,57 +1,10 @@
 <svg class="background">
-    <svg id="clockFace">
-        <rect x="0" y="0" width="100%" height="100%" fill="black" />
-        <image x="10" y="8%" width="22" height="22" href="images/stat_hr_solid_48px.png" load="sync" />
-        <text id="dateLabel" />
-        <text id="timeLabel" />
-        <text id="secLabel" />
-        <text id="hrm">42</text>
-        <image x="222" y="8%" width="22" height="22" href="images/stat_steps_solid_48px.png" load="sync" />
-        <text id="steps" class='red'>0</text>
-        <rect x="0" y="0" width="348" height="2" fill="#505050" id='chargeLabel'/>
-
-        <use  id="btn" href="#square-button" y="170" x="0" fill="fb-green">
-            <set href="#text" attributeName="text-buffer" to="Comfy?" />
-        </use>
-    </svg>
-  
-    <svg id="feedBack" display="none">
-         <use id="cold" href="#square-button-icon" y="10" height="65" fill="tomato">
-            <set href="#text" attributeName="text-buffer" to="Prefer Warmer" />
-            <image x="10" y="8" width="48" height="48" href="images/cold.png" load="sync" />
-         </use>
-      
-         <use id="comfy" href="#square-button-icon" y="90" height="65" fill="green">
-            <set href="#text"  attributeName="text-buffer" to="Comfy" />
-            <image x="10" y="8" width="48" height="48" href="images/comfy.png" load="sync" />
-         </use>
-      
-         <use id="hot" href="#square-button-icon" y="170" height="65" fill="steelblue">
-            <set href="#text"  attributeName="text-buffer" to="Prefer Cooler" />
-            <image x="10" y="8" width="48" height="48" href="images/hot.png" load="sync" />
-         </use>
-    </svg>
-  
-    <svg id="location" display="none">
-      <!-- Black background -->
-      <rect class="full-size" fill="fb-black" />
-
-      <!-- Title and text -->
-      <use href="#mixed-text-center-mid" class="dialog-mixed-text" fill="fb-white">
-        <!--<set href="#copy/text" attributeName="text-buffer" to="I'm now" />-->
-        <text font-size="45" x="29%" fill="#38f8df">Now I'm</text>
-      </use>
-
-      <!-- Left button -->
-      <use id="indoor" class="dialog-half-button-left" href="#square-button-neutral">
-        <set href="#text" attributeName="text-buffer" to="Indoor" />
-      </use>
-
-      <!-- Right button -->
-      <use id="outdoor" class="dialog-half-button-right" href="#square-button-neutral">
-        <set href="#text" attributeName="text-buffer" to="Outdoor"/>
-      </use>
-    </svg>
+  <link rel="import" href="views/clockface.gui" />
+  <link rel="import" href="views/indoor-outdoor.gui" />
+  <link rel="import" href="views/warm-cold.gui" />
+  <link rel="import" href="views/bright-dim.gui" />
+  <link rel="import" href="views/loud-quite.gui" />
+  <link rel="import" href="views/happy-sad.gui" />
+  <link rel="import" href="views/thankyou.gui" />
 </svg>
 
-<!-- 348x250 -->
