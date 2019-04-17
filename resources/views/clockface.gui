@@ -12,31 +12,17 @@
   <!-- import buttons component -->
   <link rel="import" href="../components/buttons.gui" />
 
-  <use href="#button" id="not-comfy" pointer-events="visible">
+  <use href="#left-button" id="not-comfy" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#F08080"/>
-    <set href="circle" attributeName="cx" to="75"/>
-    <set href="circle" attributeName="cy" to="230"/>
-    <set href="circle" attributeName="r" to="50"/>
 
-    <set href="image" attributeName="fill" to="blue"/>
-    <set href="image" attributeName="x" to="25"/>
-    <set href="image" attributeName="y" to="180"/>
-    <set href="image" attributeName="width" to="100"/>
-    <set href="image" attributeName="height" to="100"/>
+
     <set href="image" attributeName="href" to="images/icons/not-comfy.png"/>
   </use>
 
-  <use href="#button" id="comfy" pointer-events="visible">
+  <use href="#right-button" id="comfy" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#9ACD32"/>
-    <set href="circle" attributeName="cx" to="225"/>
-    <set href="circle" attributeName="cy" to="230"/>
-    <set href="circle" attributeName="r" to="50"/>
 
-    <set href="image" attributeName="fill" to="blue"/>
-    <set href="image" attributeName="x" to="175"/>
-    <set href="image" attributeName="y" to="180"/>
-    <set href="image" attributeName="width" to="100"/>
-    <set href="image" attributeName="height" to="100"/>
     <set href="image" attributeName="href" to="images/icons/comfy.png"/>
+
   </use>
 </svg>

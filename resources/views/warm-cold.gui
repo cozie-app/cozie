@@ -2,45 +2,20 @@
   <!-- import buttons component -->
   <link rel="import" href="../components/buttons.gui" />
 
-  <use href="#button">
+  <use href="#button" id = "thermal_comfy" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#9ACD32"/>
-    <set href="circle" attributeName="cx" to="150"/>
-    <set href="circle" attributeName="cy" to="75"/>
-    <set href="circle" attributeName="r" to="50"/>
-
-    <set href="image" attributeName="fill" to="blue"/>
-    <set href="image" attributeName="x" to="100"/>
-    <set href="image" attributeName="y" to="25"/>
-    <set href="image" attributeName="width" to="100"/>
-    <set href="image" attributeName="height" to="100"/>
-    <set href="image" attributeName="href" to="images/icons/comfy.png"/>
   </use>
 
-  <use href="#button" id="prefer_warm" pointer-events="visible">
+  <use href="#left-button" id="prefer_warm" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FF8F42"/>
-    <set href="circle" attributeName="cx" to="75"/>
-    <set href="circle" attributeName="cy" to="225"/>
-    <set href="circle" attributeName="r" to="50"/>
-
-    <set href="image" attributeName="fill" to="blue"/>
-    <set href="image" attributeName="x" to="25"/>
-    <set href="image" attributeName="y" to="175"/>
-    <set href="image" attributeName="width" to="100"/>
-    <set href="image" attributeName="height" to="100"/>
     <set href="image" attributeName="href" to="images/icons/prefer_warmer.png"/>
+    <set href="text"  attributeName="text-buffer" to="Prefer Warmer" />
   </use>
 
-  <use href="#button" id="prefer_cold" pointer-events="visible">
+  <use href="#right-button" id="prefer_cold" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#61C3FF"/>
-    <set href="circle" attributeName="cx" to="225"/>
-    <set href="circle" attributeName="cy" to="225"/>
-    <set href="circle" attributeName="r" to="50"/>
 
-    <set href="image" attributeName="fill" to="blue"/>
-    <set href="image" attributeName="x" to="175"/>
-    <set href="image" attributeName="y" to="175"/>
-    <set href="image" attributeName="width" to="100"/>
-    <set href="image" attributeName="height" to="100"/>
     <set href="image" attributeName="href" to="images/icons/prefer_cold.png"/>
+    <set href="text"  attributeName="text-buffer" to="Prefer Cooler" />
   </use>
 </svg>

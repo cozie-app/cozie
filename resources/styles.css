@@ -48,6 +48,14 @@
   fill: #a0a0a0;
 }
 
+.comfyLabel {
+  font-size: 25;
+  font-family: Colfax;
+  text-length: 32;
+  text-anchor: middle;
+  fill: #a0a0a0;
+}
+
 #indoor {
   fill: #09f6d6;
 }

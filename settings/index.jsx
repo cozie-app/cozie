@@ -64,7 +64,7 @@ function mySettings(props) {
 
       <Section>
         <Select
-  label={`Multi-Selection`}
+  label={`Select Questions`}
   multiple
   settingsKey="flow_index"
   options={[
@@ -74,14 +74,14 @@ function mySettings(props) {
     {name:"Indoor / Outdoor", value:"showIndoor", subLabel: "Indoor, Outdoor"},
     {name:"Mood", value:"showMood", subLabel: "Good, Not So Good"},
   ]}
-  // renderItem={
-  //   (option) =>
-  //     <TextImageRow
-  //       label={option.name}
-  //       sublabel={option.subLabel}
-  //       icon="https://tinyurl.com/ybbmpxxq"
-  //     />
-  // }
+  renderItem={
+    (option) =>
+      <TextImageRow
+        label={option.name}
+        sublabel={option.subLabel}
+        icon="https://tinyurl.com/ybbmpxxq"
+      />
+  }
 //  onSelection={(selection) => { 
 //    props.settingsStorage.setItem('flow_index', JSON.stringify(selection))
 //  }} 

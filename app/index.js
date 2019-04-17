@@ -119,13 +119,16 @@ clock.ontick = (evt) => {
 }
 
 let flowSelector
-var flow=[]
-const allFlows = [showThermal, showLight, showNoise, showMood, showIndoor]
+var flow=[showThankyou]
+const allFlows = [showThermal, showLight, showNoise, showIndoor, showMood ]
 
 messaging.peerSocket.onmessage = function(evt) {
   console.log("settings received on device");
   console.log(JSON.stringify(evt))
   console.log(evt.data.value.selected)
+  flowSelector = evt.data.value.selected
+  console.log("flow selector from peer socket is" , flowSelector)
+  mapFlows(flowSelector)
   console.log("end message socket")
 }
 
@@ -137,9 +140,7 @@ function processAllFiles() {
     let flowSelector_file = fs.readFileSync(`${fileName}`, "cbor");
     console.log(JSON.stringify(flowSelector_file));
     flowSelector = flowSelector_file.value.selected
-    console.log("flow selector from inbox is" , flowSelector)
     mapFlows(flowSelector)
-
 
   }
 }
@@ -175,9 +176,10 @@ const clockface = document.getElementById("clockface");
 const indoorOutdoor = document.getElementById("indoor-outdoor");
 const warmCold = document.getElementById("warm-cold");
 const brightDim = document.getElementById("bright-dim");
-const loudQuiet = document.getElementById("loud-quiet"); // TODO: fix spelling error
+const loudQuiet = document.getElementById("loud-quiet");
 const happySad = document.getElementById("happy-sad");
 const thankyou = document.getElementById("thankyou");
+//Useed to set all views to none when switching between screens
 const allViews = [clockface, indoorOutdoor, warmCold, brightDim, loudQuiet, happySad, thankyou]
 
 
@@ -188,15 +190,19 @@ const notComfy = document.getElementById("not-comfy");
 const indoor = document.getElementById("indoor");
 const outdoor = document.getElementById("outdoor");
 // buttons
+const thermal_comfy = document.getElementById('thermal_comfy')
 const prefer_warm = document.getElementById("prefer_warm");
 const prefer_cold = document.getElementById("prefer_cold");
 // buttons
+const noise_comfy = document.getElementById('noise_comfy')
 const prefer_bright = document.getElementById("prefer_bright");
 const prefer_dim = document.getElementById("prefer_dim");
 // buttons
+const light_comfy = document.getElementById('light_comfy')
 const prefer_loud = document.getElementById("prefer_loud");
 const prefer_quiet = document.getElementById("prefer_quiet");
 // buttons
+const neutral = document.getElementById('neutral')
 const happy = document.getElementById("happy");
 const sad = document.getElementById("sad");
 
@@ -302,72 +308,82 @@ outdoor.addEventListener("click", () => {
 });
 
 // on click events
-prefer_warm.addEventListener("click", () => {
-  console.log("too Hot selected")
-  feedback_data.thermal = "tooCold"
-  console.log(JSON.stringify(feedback_data))
+
+thermal_comfy.addEventListener("click", () => {
+  console.log("thermal comfy clicked");
+  feedback_data.thermal = "comfy";
+  console.log(JSON.stringify(feedback_data));
   flow[currentView]()
-  // warmCold.style.display = "none";
-  // brightDim.style.display = "inline";
+})
+
+prefer_warm.addEventListener("click", () => {
+  feedback_data.thermal = "tooCold"
+  flow[currentView]()
 });
 
 prefer_cold.addEventListener("click", () => {
   feedback_data.thermal = "tooHot"
   console.log(JSON.stringify(feedback_data))
   flow[currentView]()
-  // warmCold.style.display = "none";
-  // brightDim.style.display = "inline";
 });
 
 // on click events
+
+light_comfy.addEventListener("click", () => {
+  feedback_data.light = "comfy"
+  console.log(JSON.stringify(feedback_data))
+  flow[currentView]()
+})
+
 prefer_bright.addEventListener("click", () => {
   feedback_data.light = "tooDim"
   console.log(JSON.stringify(feedback_data))
   flow[currentView]()
-  // brightDim.style.display = "none";
-  // loudQuiet.style.display = "inline";
 });
 
 prefer_dim.addEventListener("click", () => {
   feedback_data.light = "tooBright"
   console.log(JSON.stringify(feedback_data))
   flow[currentView]()
-  // brightDim.style.display = "none";
-  // loudQuiet.style.display = "inline";
 });
 
 // on click events
-prefer_loud.addEventListener("click", () => {
+
+noise_comfy.addEventListener("click", () => {
+  feedback_data.noise = "comfy"
   console.log(JSON.stringify(feedback_data))
+  flow[currentView]()
+})
+
+prefer_loud.addEventListener("click", () => {
   feedback_data.noise = "tooQuiet"
   flow[currentView]()
-  // loudQuiet.style.display = "none";
-  // happySad.style.display = "inline";
 });
 
 prefer_quiet.addEventListener("click", () => {
   console.log(JSON.stringify(feedback_data))
   feedback_data.noise = "tooLoud"
   flow[currentView]()
-  // loudQuiet.style.display = "none";
-  // happySad.style.display = "inline";
 });
 
 // on click events
+
+neutral.addEventListener("click", () => {
+  feedback_data.mood = "neutral"
+  console.log(JSON.stringify(feedback_data))
+  flow[currentView]()
+})
+
 happy.addEventListener("click", () => {
   console.log(JSON.stringify(feedback_data))
   feedback_data.mood = "positive"
   flow[currentView]()
-  // happySad.style.display = "none";
-  // clockface.style.display = "inline";
 });
 
 sad.addEventListener("click", () => {
   console.log(JSON.stringify(feedback_data))
   feedback_data.mood = "negative"
   flow[currentView]()
-  // happySad.style.display = "none";
-  // clockface.style.display = "inline";
 });
 
 
