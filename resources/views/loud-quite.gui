@@ -1,4 +1,4 @@
-<svg id="loud-quite" display="none">
+<svg id="loud-quiet" display="none">
   <!-- import buttons component -->
   <link rel="import" href="../components/buttons.gui" />
 
@@ -16,7 +16,7 @@
     <set href="image" attributeName="href" to="images/icons/comfy.png"/>
   </use>
 
-  <use href="#button" id="quite" pointer-events="visible">
+  <use href="#button" id="prefer_quiet" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#C26EFF"/>
     <set href="circle" attributeName="cx" to="75"/>
     <set href="circle" attributeName="cy" to="225"/>
@@ -30,7 +30,7 @@
     <set href="image" attributeName="href" to="images/icons/prefer_louder.png"/>
   </use>
 
-  <use href="#button" id="loud" pointer-events="visible">
+  <use href="#button" id="prefer_loud" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FF6347"/>
     <set href="circle" attributeName="cx" to="225"/>
     <set href="circle" attributeName="cy" to="225"/>

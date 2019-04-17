@@ -16,7 +16,7 @@
     <set href="image" attributeName="href" to="images/icons/comfy.png"/>
   </use>
 
-  <use href="#button" id="dim" pointer-events="visible">
+  <use href="#button" id="prefer_dim" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FFC730"/>
     <set href="circle" attributeName="cx" to="75"/>
     <set href="circle" attributeName="cy" to="225"/>
@@ -30,7 +30,7 @@
     <set href="image" attributeName="href" to="images/icons/prefer_brighter.png"/>
   </use>
 
-  <use href="#button" id="bright" pointer-events="visible">
+  <use href="#button" id="prefer_bright" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#708090"/>
     <set href="circle" attributeName="cx" to="225"/>
     <set href="circle" attributeName="cy" to="225"/>

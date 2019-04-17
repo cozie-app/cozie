@@ -125,7 +125,7 @@ const clockface = document.getElementById("clockface");
 const indoorOutdoor = document.getElementById("indoor-outdoor");
 const warmCold = document.getElementById("warm-cold");
 const brightDim = document.getElementById("bright-dim");
-const loudQuiet = document.getElementById("loud-quite"); // TODO: fix spelling error
+const loudQuiet = document.getElementById("loud-quiet"); // TODO: fix spelling error
 const happySad = document.getElementById("happy-sad");
 const thankyou = document.getElementById("thankyou");
 const allViews = [clockface, indoorOutdoor, warmCold, brightDim, loudQuiet, happySad, thankyou]
@@ -138,14 +138,14 @@ const notComfy = document.getElementById("not-comfy");
 const indoor = document.getElementById("indoor");
 const outdoor = document.getElementById("outdoor");
 // buttons
-const warm = document.getElementById("warm");
-const cold = document.getElementById("cold");
+const prefer_warm = document.getElementById("prefer_warm");
+const prefer_cold = document.getElementById("prefer_cold");
 // buttons
-const bright = document.getElementById("bright");
-const dim = document.getElementById("dim");
+const prefer_bright = document.getElementById("prefer_bright");
+const prefer_dim = document.getElementById("prefer_dim");
 // buttons
-const loud = document.getElementById("loud");
-const quite = document.getElementById("quite");
+const prefer_loud = document.getElementById("prefer_loud");
+const prefer_quiet = document.getElementById("prefer_quiet");
 // buttons
 const happy = document.getElementById("happy");
 const sad = document.getElementById("sad");
@@ -186,6 +186,8 @@ function showIndoor(){
 function showThankyou(){
   allViews.map(v => v.style.display = "none")
   thankyou.style.display = "inline"
+  sendEventIfReady(feedback_data)
+  feedback_data = {}
   setTimeout(()=>{showClock()}, 2000)
   currentView=0
 }
@@ -197,11 +199,25 @@ function showClock(){
   currentView=0
 }
 
+//Global variable for handling feedback_data TODO: Check if there's a better way
+var feedback_data
+
+function initiateFeedbackData() {
+  const isoDate = new Date().toISOString();
+  feedback_data = {
+    isoDate,
+    heartRate: hrm.heartRate,
+  }
+
+}
 
 // on click events
 comfy.addEventListener("click", () => {
   console.log("comfy clicked")
-  console.log(currentView)
+  
+  initiateFeedbackData();
+  feedback_data.comfort = "comfy"
+  console.log(JSON.stringify(feedback_data))
   flow[currentView]()
   //console.log(flow[currentView]())
   // clockface.style.display = "none";
@@ -209,6 +225,10 @@ comfy.addEventListener("click", () => {
 });
 notComfy.addEventListener("click", () => {
   console.log("not comfy clicked")
+  
+  initiateFeedbackData();
+  feedback_data.comfort = "notComfy"
+  console.log(JSON.stringify(feedback_data))
   flow[currentView]()
   // clockface.style.display = "none";
   // indoorOutdoor.style.display = "inline";
@@ -216,52 +236,68 @@ notComfy.addEventListener("click", () => {
 
 // on click events
 indoor.addEventListener("click", () => {
+  feedback_data.indoorOutdoor = "indoor"
+  console.log(JSON.stringify(feedback_data))
   flow[currentView]()
   // indoorOutdoor.style.display = "none";
   // warmCold.style.display = "inline";
 });
 
 outdoor.addEventListener("click", () => {
+  feedback_data.indoorOutdoor = "outdoor"
+  console.log(JSON.stringify(feedback_data))
   flow[currentView]()
   // indoorOutdoor.style.display = "none";
   // warmCold.style.display = "inline";
 });
 
 // on click events
-warm.addEventListener("click", () => {
-  console.log("warm selected")
+prefer_warm.addEventListener("click", () => {
+  console.log("too Hot selected")
+  feedback_data.thermal = "tooCold"
+  console.log(JSON.stringify(feedback_data))
   flow[currentView]()
   // warmCold.style.display = "none";
   // brightDim.style.display = "inline";
 });
 
-cold.addEventListener("click", () => {
+prefer_cold.addEventListener("click", () => {
+  feedback_data.thermal = "tooHot"
+  console.log(JSON.stringify(feedback_data))
   flow[currentView]()
   // warmCold.style.display = "none";
   // brightDim.style.display = "inline";
 });
 
 // on click events
-bright.addEventListener("click", () => {
+prefer_bright.addEventListener("click", () => {
+  feedback_data.light = "tooDim"
+  console.log(JSON.stringify(feedback_data))
   flow[currentView]()
   // brightDim.style.display = "none";
   // loudQuiet.style.display = "inline";
 });
 
-dim.addEventListener("click", () => {
+prefer_dim.addEventListener("click", () => {
+  feedback_data.light = "tooBright"
+  console.log(JSON.stringify(feedback_data))
   flow[currentView]()
   // brightDim.style.display = "none";
   // loudQuiet.style.display = "inline";
 });
 
 // on click events
-loud.addEventListener("click", () => {
+prefer_loud.addEventListener("click", () => {
+  console.log(JSON.stringify(feedback_data))
+  feedback_data.noise = "tooQuiet"
   flow[currentView]()
   // loudQuiet.style.display = "none";
   // happySad.style.display = "inline";
 });
 
-quite.addEventListener("click", () => {
+prefer_quiet.addEventListener("click", () => {
+  console.log(JSON.stringify(feedback_data))
+  feedback_data.noise = "tooLoud"
   flow[currentView]()
   // loudQuiet.style.display = "none";
   // happySad.style.display = "inline";
@@ -269,12 +305,16 @@ quite.addEventListener("click", () => {
 
 // on click events
 happy.addEventListener("click", () => {
+  console.log(JSON.stringify(feedback_data))
+  feedback_data.mood = "positive"
   flow[currentView]()
   // happySad.style.display = "none";
   // clockface.style.display = "inline";
 });
 
 sad.addEventListener("click", () => {
+  console.log(JSON.stringify(feedback_data))
+  feedback_data.mood = "negative"
   flow[currentView]()
   // happySad.style.display = "none";
   // clockface.style.display = "inline";
@@ -286,7 +326,7 @@ sad.addEventListener("click", () => {
 
 
 // button to make an action, not working code
-console.log("pj was heree")
+console.log("pj was here!")
 //const btn = document.getElementById("btn");
 const clockFace = document.getElementById("clockFace");
 const feedBack = document.getElementById("feedBack");
@@ -299,21 +339,21 @@ var status = null;
 /* On click hide main clockface
 and show feedback screen */
 // btn.addEventListener("click", () => {
-//   clockFace.style.display = "none";
+//  clockFace.style.display = "none";
 //   feedBack.style.display = "inline";
 // });
 
 /* Screen change functions */
-function showLocationFeedback() {
-  console.log("showing location feedback")
-  feedBack.style.display = "none";
-  location.style.display = "inline";
-}
+// function showLocationFeedback() {
+//   console.log("showing location feedback")
+//   feedBack.style.display = "none";
+//   location.style.display = "inline";
+// }
 
-function backToClockface() {
-  location.style.display = "none";
-  clockFace.style.display = "inline";
-}
+// function backToClockface() {
+//   location.style.display = "none";
+//   clockFace.style.display = "inline";
+// }
 
 // //Buttons send a requests to server
 // const cold = document.getElementById("cold");
@@ -355,33 +395,34 @@ outdoor.addEventListener("click", () => {
 });
 */
 
-function sendEventIfReady(eventName, isIndoor) {
-  backToClockface();
-  // Time when responce was made
-  const isoDate = new Date().toISOString();
-  console.log("event created");
-  
-  let data = {
-    eventName,
-    isIndoor,
-    isoDate,
-    heartRate: hrm.heartRate,
-  }
+function sendEventIfReady(feedback_data) {
+  console.log("sending feedback_data")
+  console.log(JSON.stringify(feedback_data))
+  //backToClockface();
 
-  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 5000});
+  
+  // let data = {
+  //   eventName,
+  //   isIndoor,
+  //   isoDate,
+  //   heartRate: hrm.heartRate,
+  // }
+
+  //set timeout of gps aquisition to 10 seconds
+  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 10000});
   
   function locationSuccess(position) {
     console.log("location success")
-    data.lat = position.coords.latitude,
-    data.lon = position.coords.longitude,
-    sendDataToCompanion(data);
+    feedback_data.lat = position.coords.latitude,
+    feedback_data.lon = position.coords.longitude,
+    sendDataToCompanion(feedback_data);
   }
 
   function locationError(error) {
     console.log("location fail")
-    data.lat = null,
-    data.lon = null,
-    sendDataToCompanion(data);
+    feedback_data.lat = null,
+    feedback_data.lon = null,
+    sendDataToCompanion(feedback_data);
   }
 }
 
