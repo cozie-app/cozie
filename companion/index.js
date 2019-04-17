@@ -15,13 +15,8 @@ messaging.peerSocket.addEventListener("message", (evt) => {
   
   if (evt.data) {
   // get location 
-    geolocation.getCurrentPosition(function(position) {
       let url = `https://budslabZXXXXXX.me`
-      
-      if(evt.data.setLocation) {
-        evt.data.lat = position.coords.latitude
-        evt.data.lon = position.coords.longitude
-      }
+
       
       fetch(url, {
         method: 'POST',
@@ -31,7 +26,6 @@ messaging.peerSocket.addEventListener("message", (evt) => {
         },
         body: JSON.stringify(evt.data)
       });
-    })
     console.log("sent data")
   } else {
     console.log("Error! Can not send request to server.")
