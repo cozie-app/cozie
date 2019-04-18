@@ -9,13 +9,15 @@
   <use href="#left-button" id="prefer_warm" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FF8F42"/>
     <set href="image" attributeName="href" to="images/icons/prefer_warmer.png"/>
-    <set href="text"  attributeName="text-buffer" to="Prefer Warmer" />
+    <set href="text"  attributeName="text-buffer" to="Prefer" />
+    <set href="second-text"  attributeName="text-buffer" to="Warmer" />
   </use>
 
   <use href="#right-button" id="prefer_cold" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#61C3FF"/>
 
     <set href="image" attributeName="href" to="images/icons/prefer_cold.png"/>
-    <set href="text"  attributeName="text-buffer" to="Prefer Cooler" />
+    <set href="text"  attributeName="text-buffer" to="Prefer" />
+    <set href="second-text"  attributeName="text-buffer" to="Cooler" />
   </use>
 </svg>

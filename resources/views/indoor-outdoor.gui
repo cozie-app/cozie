@@ -1,6 +1,5 @@
 <svg id="indoor-outdoor" display="none">
-  <!-- import buttons component -->
-  <link rel="import" href="../components/buttons.gui" />
+
 
   <use href="#left-button" id="outdoor" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FFCC33"/>

@@ -1,0 +1,15 @@
+<svg id="inoffice" display="none">
+
+
+  <use href="#left-button" id="out-office" pointer-events="visible">
+    <set href="circle" attributeName="fill" to="#FFCC33"/>
+    <set href="image" attributeName="href" to="images/icons/outdoor.png"/>
+    <set href="text"  attributeName="text-buffer" to="Out of Office" />
+  </use>
+
+  <use href="#right-button" id="in-office" pointer-events="visible">
+    <set href="circle" attributeName="fill" to="#7090B5"/>
+    <set href="image" attributeName="href" to="images/icons/indoor.png"/>
+    <set href="text"  attributeName="text-buffer" to="In Office" />
+  </use>
+</svg>

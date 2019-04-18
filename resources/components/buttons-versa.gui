@@ -1,0 +1,19 @@
+<symbol id="button">
+   	<circle id="circle" cx="150" cy="60" r="35" fill="red" />
+   	<image id="image" x="115" y="25" width="70" height="70" href="images/icons/comfy.png" load="sync" />
+   	<text id= "text" x="150" y="125" class= "comfyLabel"> Comfy </text>
+</symbol>
+
+<symbol id="left-button">
+   	<circle id="circle" cx="75" cy="200" r="35" fill="red" />
+   	<image id="image" x="40" y="165" width="70" height="70" href="images/icons/nuetral.png" load="sync" />
+   	<text id= "text" x="75" y="260" class= "comfyLabel"> Not Comfy </text>
+   	<text id= "second-text" x="75" y="285" class= "comfyLabel">  </text>
+</symbol>
+
+<symbol id="right-button">
+   	<circle id="circle" cx="225" cy="200" r="35" fill="red" />
+   	<image id="image" x="190" y="165" width="70" height="70" href="images/icons/nuetral.png" load="sync" />
+   	<text id= "text" x="225" y="260" class= "comfyLabel"> Comfy </text>
+   	<text id= "second-text" x="225" y="285" class= "comfyLabel"> </text>
+</symbol>

@@ -98,7 +98,7 @@ clock.ontick = (evt) => {
   
   
   // Steps
-  steps.text = (today.adjusted.steps || 0);
+  steps.text = `${(Math.floor(today.adjusted.steps/1000) || 0)}k`;
   if (steps.text >= (goals.steps || 0)) {
     steps.style.fill = '#b8fc68'; //green
   } else if (steps.text >= (goals.steps || 0)/2) {
@@ -109,6 +109,8 @@ clock.ontick = (evt) => {
   
   
   // Charge 
+
+  //get screen width 
   let charge = battery.chargeLevel/100;
   chargeLabel.width = 300*charge;
   if (charge < 0.2) {
@@ -120,7 +122,7 @@ clock.ontick = (evt) => {
 
 let flowSelector
 var flow=[showThankyou]
-const allFlows = [showThermal, showLight, showNoise, showIndoor, showMood ]
+const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood ]
 
 messaging.peerSocket.onmessage = function(evt) {
   console.log("settings received on device");
@@ -148,10 +150,13 @@ function processAllFiles() {
 
 function mapFlows(flowSelector){
   flow=[]
+  if (flowSelector) {
   flowSelector.map(index => flow.push(allFlows[index]))
+  }
     flow.push(showThankyou)
   console.log(flow)
 }
+
 
 inbox.addEventListener("newfile", processAllFiles);
 processAllFiles();
@@ -167,20 +172,20 @@ processAllFiles();
 
 //flowSelector = [0, 1, 3] //this should come via the settings app
 
-console.log(flow)
 var currentView = 0 //current view of flow
 
 
 // views
 const clockface = document.getElementById("clockface");
 const indoorOutdoor = document.getElementById("indoor-outdoor");
+const inOffice = document.getElementById("inoffice");
 const warmCold = document.getElementById("warm-cold");
 const brightDim = document.getElementById("bright-dim");
 const loudQuiet = document.getElementById("loud-quiet");
 const happySad = document.getElementById("happy-sad");
 const thankyou = document.getElementById("thankyou");
 //Useed to set all views to none when switching between screens
-const allViews = [clockface, indoorOutdoor, warmCold, brightDim, loudQuiet, happySad, thankyou]
+const allViews = [clockface, indoorOutdoor, inOffice, warmCold, brightDim, loudQuiet, happySad, thankyou]
 
 
 // buttons
@@ -189,6 +194,9 @@ const notComfy = document.getElementById("not-comfy");
 // buttons
 const indoor = document.getElementById("indoor");
 const outdoor = document.getElementById("outdoor");
+// buttons
+const in_office = document.getElementById("in-office");
+const out_office = document.getElementById("out-office");
 // buttons
 const thermal_comfy = document.getElementById('thermal_comfy')
 const prefer_warm = document.getElementById("prefer_warm");
@@ -239,8 +247,15 @@ function showIndoor(){
   currentView++
 }
 
+function showInOffice(){
+  allViews.map(v => v.style.display = "none")
+  inOffice.style.display = "inline"
+  currentView++
+}
+
 function showThankyou(){
   allViews.map(v => v.style.display = "none")
+  clockface.style.display = "inline"
   thankyou.style.display = "inline"
   sendEventIfReady(feedback_data)
   feedback_data = {}
@@ -301,6 +316,23 @@ indoor.addEventListener("click", () => {
 
 outdoor.addEventListener("click", () => {
   feedback_data.indoorOutdoor = "outdoor"
+  console.log(JSON.stringify(feedback_data))
+  flow[currentView]()
+  // indoorOutdoor.style.display = "none";
+  // warmCold.style.display = "inline";
+});
+
+// on click events
+in_office.addEventListener("click", () => {
+  feedback_data.inOffice = "inOffice"
+  console.log(JSON.stringify(feedback_data))
+  flow[currentView]()
+  // indoorOutdoor.style.display = "none";
+  // warmCold.style.display = "inline";
+});
+
+out_office.addEventListener("click", () => {
+  feedback_data.inOffice = "outOffice"
   console.log(JSON.stringify(feedback_data))
   flow[currentView]()
   // indoorOutdoor.style.display = "none";

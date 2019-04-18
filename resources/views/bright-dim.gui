@@ -10,7 +10,8 @@
     <set href="circle" attributeName="fill" to="#FFC730"/>
 
     <set href="image" attributeName="href" to="images/icons/prefer_brighter.png"/>
-    <set href="text"  attributeName="text-buffer" to="Prefer Brighter" />
+    <set href="text"  attributeName="text-buffer" to="Prefer" />
+    <set href="second-text"  attributeName="text-buffer" to="Brighter" />
   </use>
 
   <use href="#right-button" id="prefer_bright" pointer-events="visible">
@@ -18,6 +19,7 @@
 
 
     <set href="image" attributeName="href" to="images/icons/prefer_dimmer.png"/>
-    <set href="text"  attributeName="text-buffer" to="Prefer Dimmer" />
+    <set href="text"  attributeName="text-buffer" to="Prefer" />
+    <set href="second-text"  attributeName="text-buffer" to="Dimmer" />
   </use>
 </svg>

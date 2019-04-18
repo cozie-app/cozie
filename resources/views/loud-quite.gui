@@ -1,6 +1,4 @@
 <svg id="loud-quiet" display="none">
-  <!-- import buttons component -->
-  <link rel="import" href="../components/buttons.gui" />
 
   <use href="#button" id = "noise_comfy" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#9ACD32"/>
@@ -9,12 +7,14 @@
   <use href="#left-button" id="prefer_quiet" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#C26EFF"/>
     <set href="image" attributeName="href" to="images/icons/prefer_louder.png"/>
-    <set href="text"  attributeName="text-buffer" to="Prefer Louderr" />
+    <set href="text"  attributeName="text-buffer" to="Prefer" />
+    <set href="second-text"  attributeName="text-buffer" to="Louder" />
   </use>
 
   <use href="#right-button" id="prefer_loud" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FF6347"/>
     <set href="image" attributeName="href" to="images/icons/prefer_quieter.png"/>
-    <set href="text"  attributeName="text-buffer" to="Prefer Quieter" />
+    <set href="text"  attributeName="text-buffer" to="Prefer" />
+    <set href="second-text"  attributeName="text-buffer" to="Quieter" />
   </use>
 </svg>

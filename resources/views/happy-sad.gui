@@ -1,6 +1,5 @@
 <svg id="happy-sad" display="none">
-  <!-- import buttons component -->
-  <link rel="import" href="../components/buttons.gui" />
+
 
   <use href="#button" id="neutral" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FFCC33"/>
@@ -17,6 +16,7 @@
   <use href="#right-button" id="sad" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FC6B3A"/>
     <set href="image" attributeName="href" to="images/icons/sad.png"/>
-    <set href="text"  attributeName="text-buffer" to="Not So Good" />
+    <set href="text"  attributeName="text-buffer" to="Not So" />
+    <set href="second-text"  attributeName="text-buffer" to="Good" />
   </use>
 </svg>

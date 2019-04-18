@@ -1,17 +1,19 @@
 <symbol id="button">
-   	<circle id="circle" cx="175" cy="75" r="25" fill="red" />
-   	<image id="image" x="150" y="50" width="50" height="50" href="images/icons/comfy.png" load="sync" />
+   	<circle id="circle" cx="175" cy="60" r="35" fill="red" />
+   	<image id="image" x="140" y="25" width="70" height="70" href="images/icons/comfy.png" load="sync" />
    	<text id= "text" x="175" y="125" class= "comfyLabel"> Comfy </text>
 </symbol>
 
 <symbol id="left-button">
-   	<circle id="circle" cx="100" cy="190" r="25" fill="red" />
-   	<image id="image" x="75" y="165" width="50" height="50" href="images/icons/nuetral.png" load="sync" />
-   	<text id= "text" x="100" y="240" class= "comfyLabel"> Not Comfy </text>
+   	<circle id="circle" cx="100" cy="160" r="35" fill="red" />
+   	<image id="image" x="65" y="125" width="70" height="70" href="images/icons/nuetral.png" load="sync" />
+   	<text id= "text" x="100" y="220" class= "comfyLabel"> Not Comfy </text>
+   	<text id= "second-text" x="100" y="245" class= "comfyLabel"> </text>
 </symbol>
 
 <symbol id="right-button">
-   	<circle id="circle" cx="250" cy="190" r="25" fill="red" />
-   	<image id="image" x="225" y="165" width="50" height="50" href="images/icons/nuetral.png" load="sync" />
-   	<text id= "text" x="250" y="240" class= "comfyLabel"> Comfy </text>
+   	<circle id="circle" cx="250" cy="160" r="35" fill="red" />
+   	<image id="image" x="215" y="125" width="70" height="70" href="images/icons/nuetral.png" load="sync" />
+   	<text id= "text" x="250" y="220" class= "comfyLabel"> Comfy </text>
+   	<text id= "second-text" x="250" y="245" class= "comfyLabel"> </text>
 </symbol>
