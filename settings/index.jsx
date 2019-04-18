@@ -5,8 +5,17 @@ function mySettings(props) {
       <Section>
       <TextInput
     label="User ID"
-    settingsKey="text"
+    settingsKey="user_id"
     oninput={(selection) => props.settingsStorage.setItem('user_id', selection)}
+  />
+
+      </Section>
+
+            <Section>
+      <TextInput
+    label="Unique Experiment ID"
+    settingsKey="experiment_id"
+    oninput={(selection) => props.settingsStorage.setItem('experiment_id', selection)}
   />
 
       </Section>
