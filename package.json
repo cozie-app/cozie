@@ -1,6 +1,5 @@
 {
   "fitbit": {
-    "appUUID": "128e7ea2-7385-475e-88b4-0177e3c49433",
     "appType": "clockface",
     "appDisplayName": "coolbit",
     "iconFile": "resources/icon.png",
@@ -23,7 +22,8 @@
         "name": "coolbit"
       }
     },
-    "defaultLanguage": "en-US"
+    "defaultLanguage": "en-US",
+    "appUUID": "d787c911-ce11-432e-8b68-69da0f3446c8"
   },
   "devDependencies": {
     "@fitbit/sdk": "~3.1.0"

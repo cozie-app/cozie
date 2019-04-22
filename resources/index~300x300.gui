@@ -1,10 +1,13 @@
 <svg class="background">
+  <link rel="import" href="components/buttons-versa.gui" />
   <link rel="import" href="views/clockface.gui" />
   <link rel="import" href="views/indoor-outdoor.gui" />
   <link rel="import" href="views/warm-cold.gui" />
   <link rel="import" href="views/bright-dim.gui" />
   <link rel="import" href="views/loud-quite.gui" />
   <link rel="import" href="views/happy-sad.gui" />
+  <link rel="import" href="views/in-office.gui" />
+  <link rel="import" href="views/thankyou.gui" />
 
 </svg>
 
