@@ -69,9 +69,13 @@ function sendSettingData(data) {
 //Listen for peer socket from fitbit to send data to budslab.me
 messaging.peerSocket.addEventListener("message", (evt) => {
   //to get user_id from fitbit account, login in settings from mobile device 
-  let user_id = settingsStorage.getItem('user_id');
+  const user_id = JSON.parse(settingsStorage.getItem('user_id')).name;
+  const experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;
+
   evt.data.user_id = user_id
   console.log("user id is " + user_id);
+  evt.data.experiment_id = experiment_id
+  console.log("experiment id is " + experiment_id);
   
   if (evt.data) {
   // get location 
