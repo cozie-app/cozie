@@ -1,3 +1,10 @@
+import thermal from '../resources/images/icons/prefer_warmer.png';
+import light from '../resources/images/icons/prefer_brighter.png';
+import noise from '../resources/images/icons/prefer_louder.png';
+import indoorOutdoor from '../resources/images/icons/indoor.png';
+import inofficeOutoffice from '../resources/images/icons/indoor.png';
+import mood from '../resources/images/icons/not-comfy.png';
+
 function mySettings(props) {
   return (
     <Page>
@@ -30,35 +37,45 @@ function mySettings(props) {
             {
               name: "Thermal",
               value: "showThermal",
-              subLabel: "Prefer Warmer, Prefer Cooler, Comfy"
+              subLabel: "Prefer Warmer, Prefer Cooler, Comfy",
+              img: thermal
             },
             {
               name: "Light",
               value: "showLight",
-              subLabel: "Prefer Brighter, Prefer Dimmer, Comfy"
+              subLabel: "Prefer Brighter, Prefer Dimmer, Comfy",
+              img: light
             },
             {
               name: "Noise",
               value: "showNoise",
-              subLabel: "Prefer Louder, Prefer Quieter, Comfy"
+              subLabel: "Prefer Louder, Prefer Quieter, Comfy",
+              img: noise
             },
             {
               name: "Indoor / Outdoor",
               value: "showIndoor",
-              subLabel: "Indoor, Outdoor"
+              subLabel: "Indoor, Outdoor",
+              img: indoorOutdoor
             },
             {
               name: "In Office",
               value: "showInOffice",
-              subLabel: "In Office, Out of Office"
+              subLabel: "In Office, Out of Office",
+              img: inofficeOutoffice
             },
-            { name: "Mood", value: "showMood", subLabel: "Good, Not So Good" }
+            { 
+              name: "Mood",
+              value: "showMood",
+              subLabel: "Good,Not So Good",
+              img: mood
+            }
           ]}
           renderItem={option => (
             <TextImageRow
               label={option.name}
               sublabel={option.subLabel}
-              icon="https://tinyurl.com/ybbmpxxq"
+              icon={option.img}
             />
           )}
           //  onSelection={(selection) => {
