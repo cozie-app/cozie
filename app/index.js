@@ -314,7 +314,7 @@ let buttons = [{
     attribute: 'thermal',
   }, {
     value: 'prefer_cold',
-    obj: prefer_warm,
+    obj: prefer_cold,
     attribute: 'thermal',
   }, {
     value: 'light_comfy',
@@ -326,7 +326,7 @@ let buttons = [{
     attribute: 'light',
   }, {
     value: 'prefer_dim',
-    obj: prefer_bright,
+    obj: prefer_dim,
     attribute: 'light',
   }, {
     value: 'noise_comfy',
