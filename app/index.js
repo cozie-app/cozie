@@ -14,6 +14,7 @@ import { geolocation } from "geolocation";
 
 import { inbox } from "file-transfer"
 import * as cbor from "cbor";
+import { listDirSync } from "fs";
 
 var months = {0: "Jan", 1: "Feb", 2: "Mar", 3: 'Apr', 4: "May", 5: 'Jun',
               6: "Jul", 7: "Aug", 8: "Sep", 9: "Oct", 10: "Nov", 11: "Dec"}; 
@@ -174,8 +175,6 @@ processAllFiles();
 
 var currentView = 0 //current view of flow
 
-
-// views
 const clockface = document.getElementById("clockface");
 const indoorOutdoor = document.getElementById("indoor-outdoor");
 const inOffice = document.getElementById("inoffice");
@@ -213,7 +212,6 @@ const prefer_quiet = document.getElementById("prefer_quiet");
 const neutral = document.getElementById('neutral')
 const happy = document.getElementById("happy");
 const sad = document.getElementById("sad");
-
 
 function showThermal(){
   console.log("Showing Thermal Feedback");
@@ -282,231 +280,100 @@ function initiateFeedbackData() {
 
 }
 
-// on click events
-comfy.addEventListener("click", () => {
-  console.log("comfy clicked")
-  
-  initiateFeedbackData();
-  feedback_data.comfort = "comfy"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-  //console.log(flow[currentView]())
-  // clockface.style.display = "none";
-  // indoorOutdoor.style.display = "inline";
-});
-notComfy.addEventListener("click", () => {
-  console.log("not comfy clicked")
-  
-  initiateFeedbackData();
-  feedback_data.comfort = "notComfy"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-  // clockface.style.display = "none";
-  // indoorOutdoor.style.display = "inline";
-});
-
-// on click events
-indoor.addEventListener("click", () => {
-  feedback_data.indoorOutdoor = "indoor"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-  // indoorOutdoor.style.display = "none";
-  // warmCold.style.display = "inline";
-});
-
-outdoor.addEventListener("click", () => {
-  feedback_data.indoorOutdoor = "outdoor"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-  // indoorOutdoor.style.display = "none";
-  // warmCold.style.display = "inline";
-});
-
-// on click events
-in_office.addEventListener("click", () => {
-  feedback_data.inOffice = "inOffice"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-  // indoorOutdoor.style.display = "none";
-  // warmCold.style.display = "inline";
-});
-
-out_office.addEventListener("click", () => {
-  feedback_data.inOffice = "outOffice"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-  // indoorOutdoor.style.display = "none";
-  // warmCold.style.display = "inline";
-});
-
-// on click events
-
-thermal_comfy.addEventListener("click", () => {
-  console.log("thermal comfy clicked");
-  feedback_data.thermal = "comfy";
-  console.log(JSON.stringify(feedback_data));
-  flow[currentView]()
-})
-
-prefer_warm.addEventListener("click", () => {
-  feedback_data.thermal = "tooCold"
-  flow[currentView]()
-});
-
-prefer_cold.addEventListener("click", () => {
-  feedback_data.thermal = "tooHot"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-});
-
-// on click events
-
-light_comfy.addEventListener("click", () => {
-  feedback_data.light = "comfy"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-})
-
-prefer_bright.addEventListener("click", () => {
-  feedback_data.light = "tooDim"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-});
-
-prefer_dim.addEventListener("click", () => {
-  feedback_data.light = "tooBright"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-});
-
-// on click events
-
-noise_comfy.addEventListener("click", () => {
-  feedback_data.noise = "comfy"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-})
-
-prefer_loud.addEventListener("click", () => {
-  feedback_data.noise = "tooQuiet"
-  flow[currentView]()
-});
-
-prefer_quiet.addEventListener("click", () => {
-  console.log(JSON.stringify(feedback_data))
-  feedback_data.noise = "tooLoud"
-  flow[currentView]()
-});
-
-// on click events
-
-neutral.addEventListener("click", () => {
-  feedback_data.mood = "neutral"
-  console.log(JSON.stringify(feedback_data))
-  flow[currentView]()
-})
-
-happy.addEventListener("click", () => {
-  console.log(JSON.stringify(feedback_data))
-  feedback_data.mood = "positive"
-  flow[currentView]()
-});
-
-sad.addEventListener("click", () => {
-  console.log(JSON.stringify(feedback_data))
-  feedback_data.mood = "negative"
-  flow[currentView]()
-});
+let buttons = [{
+    value: 'comfy',
+    obj: comfy,
+    attribute: 'comfort',
+  }, {
+    value: 'notComfy',
+    obj: notComfy,
+    attribute: 'comfort',
+  }, {
+    value: 'indoor',
+    obj: indoor,
+    attribute: 'indoorOutdoor',
+  }, {
+    value: 'outdoor',
+    obj: outdoor,
+    attribute: 'indoorOutdoor',
+  }, {
+    value: 'in_office',
+    obj: in_office,
+    attribute: 'inOffice',
+  }, {
+    value: 'out_office',
+    obj: out_office,
+    attribute: 'inOffice',
+  }, {
+    value: 'thermal_comfy',
+    obj: thermal_comfy,
+    attribute: 'thermal',
+  }, {
+    value: 'prefer_warm',
+    obj: prefer_warm,
+    attribute: 'thermal',
+  }, {
+    value: 'prefer_cold',
+    obj: prefer_cold,
+    attribute: 'thermal',
+  }, {
+    value: 'light_comfy',
+    obj: light_comfy,
+    attribute: 'light',
+  }, {
+    value: 'prefer_bright',
+    obj: prefer_bright,
+    attribute: 'light',
+  }, {
+    value: 'prefer_dim',
+    obj: prefer_dim,
+    attribute: 'light',
+  }, {
+    value: 'noise_comfy',
+    obj: noise_comfy,
+    attribute: 'noise',
+  }, {
+    value: 'prefer_loud',
+    obj: prefer_loud,
+    attribute: 'noise',
+  }, {
+    value: 'prefer_quiet',
+    obj: prefer_quiet,
+    attribute: 'noise',
+  }, {
+    value: 'neutral',
+    obj: neutral,
+    attribute: 'mood',
+  }, {
+    value: 'happy',
+    obj: happy,
+    attribute: 'mood',
+  }, {
+    value: 'sad',
+    obj: sad,
+    attribute: 'mood',
+  }]
 
 
+for(const button of buttons) {
+  button.obj.addEventListener("click", () => {
+    // init data object on first view click
+    if (button.attribute === 'comfort') {
+      initiateFeedbackData();
+    }
 
-
-
-
-// button to make an action, not working code
-console.log("pj was here!")
-//const btn = document.getElementById("btn");
-const clockFace = document.getElementById("clockFace");
-const feedBack = document.getElementById("feedBack");
-/* Location I'm now (Indoor) (Outdoor) */
-const location = document.getElementById("location");
-
-/* current status(cold, comfy, hot) */
-var status = null;
-
-/* On click hide main clockface
-and show feedback screen */
-// btn.addEventListener("click", () => {
-//  clockFace.style.display = "none";
-//   feedBack.style.display = "inline";
-// });
-
-/* Screen change functions */
-// function showLocationFeedback() {
-//   console.log("showing location feedback")
-//   feedBack.style.display = "none";
-//   location.style.display = "inline";
-// }
-
-// function backToClockface() {
-//   location.style.display = "none";
-//   clockFace.style.display = "inline";
-// }
-
-// //Buttons send a requests to server
-// const cold = document.getElementById("cold");
-// cold.addEventListener("click", () => {
-//   //showLocationFeedback()
-//   status = 'tooCold';
-//   feedBack.style.display = "none";
-//   clockFace.style.display = "inline";
-//   sendEventIfReady(status, null);
-// });
-
-// const comfy = document.getElementById("comfy");
-// comfy.addEventListener("click", () => {
-//   //showLocationFeedback()
-//   status = 'comfy';
-//   feedBack.style.display = "none";
-//   clockFace.style.display = "inline";
-//   sendEventIfReady(status, null);
-// });
-
-// const hot = document.getElementById("hot");
-// hot.addEventListener("click", () => {
-//   //showLocationFeedback()
-//   status = 'tooHot';
-//   feedBack.style.display = "none";
-//   clockFace.style.display = "inline";
-//   sendEventIfReady(status, null);
-// });
-
-/* when user press indoor, isIndoor value set to true */
-/*
-const indoor = document.getElementById("indoor");
-indoor.addEventListener("click", () => {
-  sendEventIfReady(status, true);
-});
-const outdoor = document.getElementById("outdoor");
-outdoor.addEventListener("click", () => {
-  sendEventIfReady(status, false);
-});
-*/
+    // console.log(`${button.value} clicked`)
+    feedback_data[button.attribute] = button.value;
+    // console.log(JSON.stringify(feedback_data))
+    flow[currentView]()
+  });
+}
 
 function sendEventIfReady(feedback_data) {
   console.log("sending feedback_data")
   console.log(JSON.stringify(feedback_data))
-  //backToClockface();
 
-  
-  // let data = {
-  //   eventName,
-  //   isIndoor,
-  //   isoDate,
-  //   heartRate: hrm.heartRate,
-  // }
-
-  //set timeout of gps aquisition to 10 seconds
+  // set timeout of gps aquisition to 10 seconds
   geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 10000});
   
   function locationSuccess(position) {
