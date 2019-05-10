@@ -21,6 +21,7 @@ settingsStorage.onchange = function(evt) {
 //Fire via event listner of settings storage
 settingsStorage.addEventListener("change", function(){
   console.log("settings storage via addEventListner fired")
+  //nothing for now, however this could be another method
 });
 
 // Fire when innactive and settings change has been detected via reasons
@@ -46,7 +47,8 @@ function sendValue(key, val) {
 function sendSettingData(data) {
   // If we have a MessageSocket, send the data to the device
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send(data);
+    console.log(data.value.selected)
+    messaging.peerSocket.send(data.value.selected);
     console.log("data sent from companion")
   } else {
     console.log("No peerSocket connection. Attempting to send via file transfer");
