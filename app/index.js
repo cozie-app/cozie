@@ -125,17 +125,18 @@ let flowSelector
 var flow=[showThankyou]
 const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood ]
 
+//recieve message via peer socket
 messaging.peerSocket.onmessage = function(evt) {
   console.log("settings received on device");
   console.log(JSON.stringify(evt))
-  console.log(evt.data.value.selected)
-  flowSelector = evt.data.value.selected
+  console.log(evt.data)
+  flowSelector = evt.data
   console.log("flow selector from peer socket is" , flowSelector)
   mapFlows(flowSelector)
   console.log("end message socket")
 }
 
-
+// receive message via inbox
 function processAllFiles() {
   let fileName;
   while (fileName = inbox.nextFile()) {
@@ -173,6 +174,7 @@ processAllFiles();
 
 //flowSelector = [0, 1, 3] //this should come via the settings app
 
+
 var currentView = 0 //current view of flow
 
 const clockface = document.getElementById("clockface");
@@ -182,9 +184,13 @@ const warmCold = document.getElementById("warm-cold");
 const brightDim = document.getElementById("bright-dim");
 const loudQuiet = document.getElementById("loud-quiet");
 const happySad = document.getElementById("happy-sad");
+//Clock manipulation guis
 const thankyou = document.getElementById("thankyou");
+const clockblock = document.getElementById("clockblock");
+
 //Useed to set all views to none when switching between screens
-const allViews = [clockface, indoorOutdoor, inOffice, warmCold, brightDim, loudQuiet, happySad, thankyou]
+const allViews = [clockface, indoorOutdoor, inOffice, warmCold, brightDim, loudQuiet, happySad, thankyou, clockblock]
+
 
 
 // buttons
@@ -277,7 +283,6 @@ function initiateFeedbackData() {
     isoDate,
     heartRate: hrm.heartRate,
   }
-
 }
 
 let buttons = [{
@@ -396,8 +401,7 @@ function vibrate() {
   vibration.start("ring");
 
   //Change main clock face to response screen
-  clockFace.style.display = "none";
-  feedBack.style.display = "inline";
+  clockblock.style.display = "inline";
   
   //Stop vibration
   setTimeout(function(){
