@@ -128,7 +128,7 @@ clock.ontick = (evt) => {
 
 //-------- READING EXPERIMENT QUESTIONS FROM PHONE SETTINGS -----------
 
-let flowSelector
+let flowSelector = []
 var flow=[showThankyou]
 const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood ]
 var settingsUpdateTime = 0;
@@ -288,6 +288,10 @@ function showInOffice(){
 
 function showThankyou(){
   allViews.map(v => v.style.display = "none")
+  smallIcons.map(icon => icon.style.opacity = 0.2)
+  flowSelector.map(index => {
+    smallIcons[index].style.opacity = 1.0;
+    })
   clockface.style.display = "inline"
   thankyou.style.display = "inline"
   sendEventIfReady(feedback_data)
@@ -393,6 +397,7 @@ for(const button of buttons) {
   button.obj.addEventListener("click", () => {
     // init data object on first view click
     if (button.attribute === 'comfort') {
+      smallIcons.map(icon => icon.style.opacity = 0);
       initiateFeedbackData();
     }
 

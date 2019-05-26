@@ -18,6 +18,7 @@ let storage_key = "flow_index";
 
 // Fire when settings are changed on phone, usuall doesn't work
 settingsStorage.onchange = function(evt) {
+  console.log(evt.key)
   console.log("settings storage on change fired (route 1), sending value");
   sendValue(evt.key, evt.newValue);
 }
@@ -39,13 +40,18 @@ if (me.launchReasons.settingsChanged) {
 //The ammunition that gets fired from each of the three guns above
 function sendValue(key, val) {
   if (val) {
+    // check that the change was a change in the flow
+    if(key=="flow_index"){
 
-    var sendTime = new Date().getTime();
-    sendSettingData({
-      key: key,
-      value: JSON.parse(val),
-      time: sendTime
-    });
+      var sendTime = new Date().getTime();
+      sendSettingData({
+        key: key,
+        value: JSON.parse(val),
+        time: sendTime
+      });
+    }else{
+      console.log("change made was not related to the flow")
+    }
   }
 }
 
