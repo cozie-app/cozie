@@ -139,7 +139,6 @@ messaging.peerSocket.onmessage = function(evt) {
   console.log(JSON.stringify(evt))
   flowSelector = evt.data.data
   settingsUpdateTime = evt.data.time
-  console.log(settingsUpdateTime)
   console.log("flow selector from peer socket is" , flowSelector)
   mapFlows(flowSelector)
   console.log("end message socket")
@@ -152,10 +151,11 @@ function processAllFiles() {
     console.log(`/private/data/${fileName} is now available`);
     let flowSelector_file = fs.readFileSync(`${fileName}`, "cbor");
     console.log(JSON.stringify(flowSelector_file));
-    if(flowSelector_file.time < settingsUpdateTime){
+    if(flowSelector_file.time > settingsUpdateTime){
       flowSelector = flowSelector_file.data
       mapFlows(flowSelector)
       console.log("settings updated via file transfer")
+      settingsUpdateTime = flowSelector_file.time
     } else {
       console.log("settings already updated via peer socket")
     }
