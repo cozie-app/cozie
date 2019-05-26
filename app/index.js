@@ -133,6 +133,21 @@ var flow=[showThankyou]
 const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood ]
 var settingsUpdateTime = 0;
 
+//read small icons 
+
+// const smallThermal = document.getElementById("small-thermal")
+// const smallLight = document.getElementById("small-light")
+// const smallNoise = document.getElementById("small-noise")
+// const smallIndoor = document.getElementById("small-indoor")
+// const smallOffice = document.getElementById("small-office")
+// const smallMood = document.getElementById("small-mood")
+
+const smallIcons = [document.getElementById("small-thermal"), 
+                    document.getElementById("small-light"), 
+                    document.getElementById("small-noise"),
+                    document.getElementById("small-indoor"),
+                    document.getElementById("small-office"),
+                    document.getElementById("small-mood")]
 //recieve message via peer socket
 messaging.peerSocket.onmessage = function(evt) {
   console.log("settings received on device");
@@ -167,10 +182,17 @@ function processAllFiles() {
 
 function mapFlows(flowSelector){
   flow=[]
+  //set opacity of all icons to 0.2
+  smallIcons.map(icon => icon.style.opacity = 0.2)
   if (flowSelector) {
-  flowSelector.map(index => flow.push(allFlows[index]))
+  flowSelector.map(index => {
+    flow.push(allFlows[index]);
+    smallIcons[index].style.opacity = 1.0;
+    })
   }
     flow.push(showThankyou)
+
+
   console.log(flow)
 }
 
