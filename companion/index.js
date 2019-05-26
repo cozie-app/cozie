@@ -36,9 +36,12 @@ if (me.launchReasons.settingsChanged) {
 //The ammunition that gets fired from each of the three guns above
 function sendValue(key, val) {
   if (val) {
+
+    var sendTime = new Date().getTime();
     sendSettingData({
       key: key,
-      value: JSON.parse(val)
+      value: JSON.parse(val),
+      time: sendTime
     });
   }
 }
@@ -47,14 +50,14 @@ function sendValue(key, val) {
 function sendSettingData(data) {
   // If we have a MessageSocket, send the data to the device
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    console.log(data.value.selected)
-    messaging.peerSocket.send(data.value.selected);
+    console.log(data)
+    messaging.peerSocket.send({data: data.value.selected, time: data.time});
     console.log("data sent from companion")
   } else {
     console.log("No peerSocket connection. Attempting to send via file transfer");
 
       //Fire the Guideed Missile via outbox Woosh
-      outbox.enqueue('flow_index.cbor', cbor.encode(data))
+      outbox.enqueue('flow_index.cbor', cbor.encode({data: data.value.selected, time: data.time}))
         .then((ft) => {
           console.log(`Transfer of ${ft.name} successfully queued.`);
           })
