@@ -6,40 +6,52 @@ import * as cbor from "cbor";
 import { outbox } from "file-transfer";
 import { settingsPrefix } from "../common/constants";
 
+
+//-------- SENDING SETTINGS DATA TO WATCH -----------
+
 //Send Settings Data to Fitbit
 // All guns blazing. Using every possible command in the fitbit environment to get the message across
 // There might be a way to make this less extreme, but so far this is the only way to garuntee the communication
+
 
 let storage_key = "flow_index";
 
 // Fire when settings are changed on phone, usuall doesn't work
 settingsStorage.onchange = function(evt) {
-  console.log("settings storage on change fired");
+  console.log(evt.key)
+  console.log("settings storage on change fired (route 1), sending value");
   sendValue(evt.key, evt.newValue);
 }
 
 //Fire via event listner of settings storage
 settingsStorage.addEventListener("change", function(){
-  console.log("settings storage via addEventListner fired")
+  console.log("settings storage via addEventListner fired. No code here")
   //nothing for now, however this could be another method
 });
 
 // Fire when innactive and settings change has been detected via reasons
 if (me.launchReasons.settingsChanged) {
   // Send the value of the setting
-   console.log("settings changed launch reasons fired");
+   console.log("settings changed launch reasons fired (route 2), sending value");
    console.log(settingsStorage.getItem(storage_key))
   sendValue(storage_key, settingsStorage.getItem(storage_key));
 }
 
-
 //The ammunition that gets fired from each of the three guns above
 function sendValue(key, val) {
   if (val) {
-    sendSettingData({
-      key: key,
-      value: JSON.parse(val)
-    });
+    // check that the change was a change in the flow
+    if(key=="flow_index"){
+
+      var sendTime = new Date().getTime();
+      sendSettingData({
+        key: key,
+        value: JSON.parse(val),
+        time: sendTime
+      });
+    }else{
+      console.log("change made was not related to the flow")
+    }
   }
 }
 
@@ -47,14 +59,15 @@ function sendValue(key, val) {
 function sendSettingData(data) {
   // If we have a MessageSocket, send the data to the device
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    console.log(data.value.selected)
-    messaging.peerSocket.send(data.value.selected);
+    console.log(data)
+    messaging.peerSocket.send({data: data.value.selected, time: data.time});
     console.log("data sent from companion")
   } else {
+    // Note that the index.js is checking the time, and will only update via file transfer if the time made in data.time is greater
     console.log("No peerSocket connection. Attempting to send via file transfer");
 
       //Fire the Guideed Missile via outbox Woosh
-      outbox.enqueue('flow_index.cbor', cbor.encode(data))
+      outbox.enqueue('flow_index.cbor', cbor.encode({data: data.value.selected, time: data.time}))
         .then((ft) => {
           console.log(`Transfer of ${ft.name} successfully queued.`);
           })
@@ -63,10 +76,11 @@ function sendSettingData(data) {
         });
   }
 
-
-
 }
 
+//-------- END (SENDING SETTINGS DATA TO WATCH) -----------
+
+//-------- SENDING DATA TO AWS -----------
 
 //Listen for peer socket from fitbit to send data to budslab.me
 messaging.peerSocket.addEventListener("message", (evt) => {
