@@ -95,7 +95,8 @@ messaging.peerSocket.addEventListener("message", (evt) => {
   
   if (evt.data) {
   // get location 
-      let url = `https://budslab.me`
+      // AWS API gateway link, triggers lambda function
+      let url = `https://ay1bwnlt74.execute-api.us-east-1.amazonaws.com/test`
 
       
       fetch(url, {
