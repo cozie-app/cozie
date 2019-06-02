@@ -16,7 +16,7 @@ import { settingsPrefix } from "../common/constants";
 
 let storage_key = "flow_index";
 
-// Fire when settings are changed on phone, usuall doesn't work
+// Fire when settings are changed on phone
 settingsStorage.onchange = function(evt) {
   console.log(evt.key)
   console.log("settings storage on change fired (route 1), sending value");
@@ -25,16 +25,15 @@ settingsStorage.onchange = function(evt) {
 
 //Fire via event listner of settings storage
 settingsStorage.addEventListener("change", function(){
-  console.log("settings storage via addEventListner fired. No code here")
+  console.log("settings storage via addEventListner fired (route 2 - disabled). No code here")
   //nothing for now, however this could be another method
 });
 
 // Fire when innactive and settings change has been detected via reasons
 if (me.launchReasons.settingsChanged) {
-  // Send the value of the setting
-   console.log("settings changed launch reasons fired (route 2), sending value");
-   console.log(settingsStorage.getItem(storage_key))
-  sendValue(storage_key, settingsStorage.getItem(storage_key));
+  // Currently deactivating as it might be the reason for teh settings resetting during sleep
+   console.log("settings changed launch reasons fired (route 3 - disabled), code temporarily disabled");
+  // sendValue(storage_key, settingsStorage.getItem(storage_key));
 }
 
 //The ammunition that gets fired from each of the three guns above
