@@ -16,6 +16,9 @@ import { inbox } from "file-transfer"
 import * as cbor from "cbor";
 import { listDirSync } from "fs";
 
+import { memory } from "system";
+
+
 
 //-------- CLOCK FACE DESIGN -----------
 
@@ -128,7 +131,14 @@ clock.ontick = (evt) => {
 
 //-------- READING EXPERIMENT QUESTIONS FROM PHONE SETTINGS -----------
 
-let flowSelector = []
+console.log("WARNING!! APP HAS RESET")
+//let flowSelector = []
+
+
+
+
+
+
 var flow=[showThankyou]
 const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood ]
 var settingsUpdateTime = 0;
@@ -148,6 +158,25 @@ const smallIcons = [document.getElementById("small-thermal"),
                     document.getElementById("small-indoor"),
                     document.getElementById("small-office"),
                     document.getElementById("small-mood")]
+
+var flowFileRead
+var flowFileWrite
+
+try {
+      var flowFileRead = fs.readFileSync("flow.txt", "json");
+      console.log(JSON.stringify(flowFileRead))
+      console.log(JSON.stringify(flowFileRead.flowSelector))
+      flowSelector = flowFileRead.flowSelector
+      mapFlows(flowSelector)
+      console.log("flows loaded via file sync")
+    } catch(err) {
+      console.log(err)
+      console.log("resetting flows")
+      let flowSelector = []
+    }
+
+
+
 //recieve message via peer socket
 messaging.peerSocket.onmessage = function(evt) {
   console.log("settings received on device");
@@ -156,6 +185,15 @@ messaging.peerSocket.onmessage = function(evt) {
   settingsUpdateTime = evt.data.time
   console.log("flow selector from peer socket is" , flowSelector)
   mapFlows(flowSelector)
+
+  //save flows locally in event of app rest
+  flowFileWrite = {flowSelector: flowSelector}
+  console.log(JSON.stringify(flowFileWrite))
+  fs.writeFileSync("flow.txt", flowFileWrite, "json")
+  console.log("files saved locally")
+
+
+
   console.log("end message socket")
 }
 
@@ -433,6 +471,7 @@ function sendEventIfReady(feedback_data) {
   console.log("sending feedback_data")
   console.log(JSON.stringify(feedback_data))
 
+  console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
   // set timeout of gps aquisition to 10 seconds
   geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 10000});
   
