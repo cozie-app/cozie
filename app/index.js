@@ -209,6 +209,12 @@ function processAllFiles() {
       mapFlows(flowSelector)
       console.log("settings updated via file transfer")
       settingsUpdateTime = flowSelector_file.time
+
+      //save flows locally in event of app rest
+      flowFileWrite = {flowSelector: flowSelector}
+      console.log(JSON.stringify(flowFileWrite))
+      fs.writeFileSync("flow.txt", flowFileWrite, "json")
+      console.log("files saved locally")
     } else {
       console.log("settings already updated via peer socket")
     }
