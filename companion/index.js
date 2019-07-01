@@ -14,8 +14,6 @@ import { settingsPrefix } from "../common/constants";
 // There might be a way to make this less extreme, but so far this is the only way to garuntee the communication
 
 
-let storage_key = "flow_index";
-
 // Fire when settings are changed on phone
 settingsStorage.onchange = function(evt) {
   console.log(evt.key)
@@ -33,7 +31,7 @@ settingsStorage.addEventListener("change", function(){
 if (me.launchReasons.settingsChanged) {
   // Currently deactivating as it might be the reason for teh settings resetting during sleep
    console.log("settings changed launch reasons fired (route 3 - disabled), code temporarily disabled");
-  // sendValue(storage_key, settingsStorage.getItem(storage_key));
+
 }
 
 //The ammunition that gets fired from each of the three guns above

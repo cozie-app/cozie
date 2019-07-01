@@ -67,19 +67,21 @@ let secLabel = document.getElementById("secLabel");
 let local_file;
 // intervals to check vibrations
 let found = false;
+const vibrationTime = [9, 11, 13, 15, 17]
+
+
 setInterval(function() {
   const currentDate = new Date();
   // vibrate and change to response screen at  9, 11, 13, 15, 17
   const currentHour = currentDate.getHours();
   // make vibration during first minute
-  const vibrationTime = [9, 11, 13, 15, 17]
   if(!found && vibrationTime.indexOf(currentHour) != -1) {
       vibrate();
       found = true;
   } else if(vibrationTime.indexOf(currentHour) === -1){
       found = false;
   }  
-}, 1200000);
+}, 1200000); // timeout for 20 minutes
 
 clock.ontick = (evt) => {
   let today_dt = evt.date;

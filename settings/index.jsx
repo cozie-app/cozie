@@ -83,6 +83,44 @@ function mySettings(props) {
           //  }}
         />
       </Section>
+
+      <Section>
+        <Select
+          label={`Select Buzz Time`}
+          settingsKey="buzz_time"
+          options={[
+            {
+              name: "Off",
+              value: "h0",
+              subLabel: "No Buzzing",
+            },
+            {
+              name: "Every Hour",
+              value: "h1",
+              subLabel: "Buzz every hour between 9:00 - 18:00",
+            },            
+            {
+              name: "Every 2 Hours",
+              value: "h2",
+              subLabel: "Buzz every 2 hours between 9:00 - 18:00",
+            },
+            {
+              name: "Every 3 Hours",
+              value: "h3",
+              subLabel: "Buzz every 3 hours between 9:00 - 16:00",
+            }
+          ]}
+          renderItem={option => (
+            <TextImageRow
+              label={option.name}
+              sublabel={option.subLabel}
+            />
+          )}
+          //  onSelection={(selection) => {
+          //    props.settingsStorage.setItem('flow_index', JSON.stringify(selection))
+          //  }}
+        />
+      </Section>
     </Page>
   );
 }

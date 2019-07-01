@@ -6,7 +6,7 @@
     <set href="circle" attributeName="fill" to="#9ACD32"/>
   </use>
 
-  <use href="#left-button" id="prefer_dim" pointer-events="visible">
+  <use href="#left-button" id="prefer_bright" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FFC730"/>
 
     <set href="image" attributeName="href" to="images/icons/prefer_brighter.png"/>
@@ -14,7 +14,7 @@
     <set href="second-text"  attributeName="text-buffer" to="Brighter" />
   </use>
 
-  <use href="#right-button" id="prefer_bright" pointer-events="visible">
+  <use href="#right-button" id="prefer_dim" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#708090"/>
 
 
