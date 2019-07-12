@@ -107,6 +107,8 @@ messaging.peerSocket.addEventListener("message", (evt) => {
       .then(res => {
           console.log("sent data")
           console.log(JSON.stringify(evt.data))
+          console.log(JSON.stringify(res))
+          console.log(res.body)
           console.log(res.status);
       })
       .catch(function(error) {
