@@ -12,37 +12,37 @@
   <link rel="import" href="views/clockblock.gui" />
 
   <g id="small-thermal" opacity="0.2">
-    <circle id="small-thermal" cx="125" cy="240" r="6" fill="orange"  />
+    <circle cx="125" cy="240" r="6" fill="orange"  />
     <image id="image" x="120" y="235" width="10" height="10" href="images/icons/prefer_warmer.png" load="sync" />
   </g>
 
   <g id="small-light" opacity="0.2">
-    <circle id="small-light" cx="145" cy="240" r="6" fill="yellow"  />
+    <circle  cx="145" cy="240" r="6" fill="yellow"  />
     <image id="image" x="140" y="235" width="10" height="10" href="images/icons/prefer_brighter.png" load="sync" />
   </g>
 
   <g id="small-noise" opacity="0.2">
-    <circle id="small-noise" cx="165" cy="240" r="6" fill="#FF6347"  />
+    <circle  cx="165" cy="240" r="6" fill="#FF6347"  />
     <image id="image" x="160" y="235" width="10" height="10" href="images/icons/prefer_louder.png" load="sync" />
   </g>
 
   <g id="small-indoor" opacity="0.2">
-    <circle id="small-indoor" cx="185" cy="240" r="6" fill="#FFCC33"  />
+    <circle cx="185" cy="240" r="6" fill="#FFCC33"  />
     <image id="image" x="180" y="235" width="10" height="10" href="images/icons/outdoor.png" load="sync" />
   </g>
 
   <g id="small-office" opacity="0.2">
-    <circle id="small-office" cx="205" cy="240" r="6" fill="#7090B5"  />
+    <circle cx="205" cy="240" r="6" fill="#7090B5"  />
     <image id="image" x="200" y="235" width="10" height="10" href="images/icons/indoor.png" load="sync" />
   </g>
 
   <g id="small-mood" opacity="0.2">
-    <circle id="small-mood" cx="225" cy="240" r="6" fill="#20B2AA"  />
+    <circle cx="225" cy="240" r="6" fill="#20B2AA"  />
     <image id="image" x="220" y="235" width="10" height="10" href="images/icons/happy.png" load="sync" />
   </g>
 
   <g id="small-clothing" opacity="0.2">
-    <circle id="small-clothing" cx="245" cy="240" r="6" fill="#61C3FF"  />
+    <circle cx="245" cy="240" r="6" fill="#61C3FF"  />
     <image id="image" x="240" y="235" width="10" height="10" href="images/icons/light_clothes.png" load="sync" />
   </g>
 </svg>
