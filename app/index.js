@@ -142,24 +142,17 @@ console.log("WARNING!! APP HAS RESET")
 
 
 var flow=[showThankyou]
-const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood ]
+const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood, showClothing ]
 var settingsUpdateTime = 0;
 
 //read small icons 
-
-// const smallThermal = document.getElementById("small-thermal")
-// const smallLight = document.getElementById("small-light")
-// const smallNoise = document.getElementById("small-noise")
-// const smallIndoor = document.getElementById("small-indoor")
-// const smallOffice = document.getElementById("small-office")
-// const smallMood = document.getElementById("small-mood")
-
 const smallIcons = [document.getElementById("small-thermal"), 
                     document.getElementById("small-light"), 
                     document.getElementById("small-noise"),
                     document.getElementById("small-indoor"),
                     document.getElementById("small-office"),
-                    document.getElementById("small-mood")]
+                    document.getElementById("small-mood"),
+                    document.getElementById("small-clothing")]
 
 var flowFileRead
 var flowFileWrite
@@ -228,7 +221,7 @@ function processAllFiles() {
 
 function mapFlows(flowSelector){
   flow=[]
-  //set opacity of all icons to 0.2
+  //set opacity of all small icons to 0.2
   smallIcons.map(icon => icon.style.opacity = 0.2)
   if (flowSelector) {
   flowSelector.map(index => {
@@ -252,6 +245,7 @@ processAllFiles();
 
 var currentView = 0 //current view of flow
 
+//Flow GUIs
 const clockface = document.getElementById("clockface");
 const indoorOutdoor = document.getElementById("indoor-outdoor");
 const inOffice = document.getElementById("inoffice");
@@ -259,12 +253,13 @@ const warmCold = document.getElementById("warm-cold");
 const brightDim = document.getElementById("bright-dim");
 const loudQuiet = document.getElementById("loud-quiet");
 const happySad = document.getElementById("happy-sad");
+const clothing = document.getElementById("clothing");
 //Clock manipulation guis
 const thankyou = document.getElementById("thankyou");
 const clockblock = document.getElementById("clockblock");
 
 //Useed to set all views to none when switching between screens
-const allViews = [clockface, indoorOutdoor, inOffice, warmCold, brightDim, loudQuiet, happySad, thankyou, clockblock]
+const allViews = [clockface, indoorOutdoor, inOffice, warmCold, brightDim, loudQuiet, happySad, clothing, thankyou, clockblock]
 
 
 
@@ -293,6 +288,10 @@ const prefer_quiet = document.getElementById("prefer_quiet");
 const neutral = document.getElementById('neutral')
 const happy = document.getElementById("happy");
 const sad = document.getElementById("sad");
+// buttons
+const light_clothes = document.getElementById('light_clothes')
+const medium_clothes = document.getElementById("medium_clothes");
+const heavy_clothes = document.getElementById("heavy_clothes");
 
 function showThermal(){
   console.log("Showing Thermal Feedback");
@@ -329,6 +328,12 @@ function showIndoor(){
 function showInOffice(){
   allViews.map(v => v.style.display = "none")
   inOffice.style.display = "inline"
+  currentView++
+}
+
+function showClothing(){
+  allViews.map(v => v.style.display = "none")
+  clothing.style.display = "inline"
   currentView++
 }
 
@@ -436,6 +441,18 @@ let buttons = [{
     value: 'sad',
     obj: sad,
     attribute: 'mood',
+  }, {
+    value: 'light_clothes',
+    obj: light_clothes,
+    attribute: 'clothing',
+  }, {
+    value: 'medium_clothes',
+    obj: medium_clothes,
+    attribute: 'clothing',
+  }, {
+    value: 'heavy_clothes',
+    obj: heavy_clothes,
+    attribute: 'clothing',
   }]
 
 
@@ -449,8 +466,14 @@ for(const button of buttons) {
 
     // console.log(`${button.value} clicked`)
     feedback_data[button.attribute] = button.value;
-    // console.log(JSON.stringify(feedback_data))
-    flow[currentView]()
+    
+    //Go straight to end if comfortable
+    if (button.attribute === 'comfort' & button.value === "comfy") {
+          showThankyou();
+    } else {
+      // continue the flow
+      flow[currentView]()
+    }
   });
 }
 
@@ -462,14 +485,18 @@ function vibrate() {
   vibration.start("ring");
 
   //Change main clock face to response screen
-  clockblock.style.display = "inline";
-  
+  if (flow.length === 1) {
+    clockblock.style.display = "inline";
+  } else {
+    smallIcons.map(icon => icon.style.opacity = 0);
+    initiateFeedbackData();
+    flow[currentView]()
+  }
   //Stop vibration
   setTimeout(function(){
     vibration.stop()
-  }, 5000);
+  }, 2000);
 }
-
 
 
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------

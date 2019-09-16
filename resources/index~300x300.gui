@@ -7,6 +7,7 @@
   <link rel="import" href="views/loud-quite.gui" />
   <link rel="import" href="views/happy-sad.gui" />
   <link rel="import" href="views/in-office.gui" />
+  <link rel="import" href="views/clothing.gui" />
   <link rel="import" href="views/thankyou.gui" />
   <link rel="import" href="views/clockblock.gui" />
 
@@ -27,5 +28,8 @@
 
     <circle id="small-mood" cx="200" cy="280" r="6" fill="#20B2AA" opacity="0.2" />
     <image id="image" x="195" y="275" width="10" height="10" href="images/icons/happy.png" load="sync" />
+
+    <circle id="small-clothing" cx="220" cy="280" r="6" fill="#61C3FF" opacity="0.2" />
+    <image id="image" x="215" y="275" width="8" height="8" href="images/icons/light_clothes.png" load="sync" />
 </svg>
 

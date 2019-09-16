@@ -4,6 +4,7 @@ import noise from '../resources/images/icons/prefer_louder.png';
 import indoorOutdoor from '../resources/images/icons/indoor.png';
 import inofficeOutoffice from '../resources/images/icons/indoor.png';
 import mood from '../resources/images/icons/not-comfy.png';
+import clothing from '../resources/images/icons/light_clothes.png';
 
 function mySettings(props) {
   return (
@@ -69,6 +70,12 @@ function mySettings(props) {
               value: "showMood",
               subLabel: "Good,Not So Good",
               img: mood
+            },
+            { 
+              name: "Clothing",
+              value: "showClothing",
+              subLabel: "Light, Medium, Heavy",
+              img: clothing
             }
           ]}
           renderItem={option => (
