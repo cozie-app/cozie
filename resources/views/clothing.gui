@@ -13,7 +13,7 @@
     <set href="circle" attributeName="fill" to="#61C3FF"/>
     <set href="circle" attributeName="cy" to="210"/>
     <set href="image" attributeName="href" to="images/icons/light_clothes.png"/>
-    <set href="image" attributeName="y" to="170"/>
+    <set href="image" attributeName="y" to="175"/>
     <set href="text"  attributeName="text-buffer" to="" />
     <set href="second-text"  attributeName="text-buffer" to="" />
   </use>
@@ -22,7 +22,7 @@
     <set href="circle" attributeName="fill" to="#20B2AA"/>
     <set href="circle" attributeName="cy" to="210"/>
     <set href="image" attributeName="href" to="images/icons/heavy_clothes.png"/>
-    <set href="image" attributeName="y" to="170"/>
+    <set href="image" attributeName="y" to="175"/>
     <set href="text"  attributeName="text-buffer" to="" />
   </use>
 </svg>
