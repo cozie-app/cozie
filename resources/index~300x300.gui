@@ -44,7 +44,7 @@
 
   <g id="small-clothing" opacity="0.2">
     <circle cx="220" cy="280" r="6" fill="#61C3FF" />
-    <image id="image" x="215" y="275" width="8" height="8" href="images/icons/light_clothes.png" load="sync" />
+    <image id="image" x="215" y="275" width="10" height="10" href="images/icons/light_clothes.png" load="sync" />
   </g>
 </svg>
 
