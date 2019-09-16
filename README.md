@@ -18,19 +18,74 @@
 — To get started with ClockFace development or to launch project read more at [Fitbit Developer Website](https://dev.fitbit.com/getting-started/).
 
 
-Supported Devices: Ionic, Versa
+Supported Devices: Ionic, Versa, Versa-Lite
 The app is available by the link. To install ClockFace follow the link https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048 on your phone, it will redirect to FitBit app gallery.
 
+# How Data is Mapped to Integers for storage on InfluxDB
 
-— The clock face has two parts:
+```python
+        if bodyData['comfort'] == 'comfy':
+            fields.update({'comfort': 10})
+            #response = 10
+        elif bodyData['comfort'] == 'notComfy':
+            fields.update({'comfort': 9})
+            #response = 9
+        else:
+            return {'statusCode': 404, 'body': json.dumps('Response name not found')}
 
-- The top part is a digital time, date, heartbeat, and step count. 
-- The bottom part has a button — when this button is tapped on the clock face, it goes to a screen that will have three colored buttons. The first button (on the top) is blue and say “too cold”, the middle is green and say “comfy” and the last one (on the bottom) say “too hot”. 
-- After the user picks one of the buttons (too cold/comfy/too hot) ~~and (indoor/outdoor)~~, the clock face goes back to the original setting. On the backend, the clock face sends a POST request to the server [https://budslab.me](https://budslab.me). Request with a JSON body has "user_id", "eventName", "lon", "lat",~~"isIndoor"~~keys. To get the location device use smartphone GPS, it means latitude and longitude will be null if there is no connection to phone with GPS. 
--- eventName is a string value (tooCold/comfy/tooHot)
-~~-- isIndoor is a boolean value (true/false)~~
-- At 9, 11, 13, 15, 17(according to device settings) device will vibrate for 3 seconds and change to response screen with too cold/comfy/too hot buttons.
-- Responses made without mobile phone connection will be saved on the Fitbit device memory and will be sent to the server when the user respond next time with phone and internet connection.
+        if 'thermal' in bodyData:
+            if bodyData['thermal'] == 'thermal_comfy':
+                fields.update({'thermal': 10})
+            elif bodyData['thermal'] == 'prefer_warm':
+                fields.update({'thermal': 9})
+            elif bodyData['thermal'] == 'prefer_cold':
+                fields.update({'thermal': 11})
+
+        if 'light' in bodyData:
+            if bodyData['light'] == 'light_comfy':
+                fields.update({'light': 10})
+            elif bodyData['light'] == 'prefer_bright':
+                fields.update({'light': 9})
+            elif bodyData['light'] == 'prefer_dim':
+                fields.update({'light': 11})
+
+        if 'noise' in bodyData:
+            if bodyData['noise'] == 'noise_comfy':
+                fields.update({'noise': 10})
+            elif bodyData['noise'] == 'prefer_louder':
+                fields.update({'noise': 9})
+            elif bodyData['noise'] == 'prefer_quiet':
+                fields.update({'noise': 11})
+
+        if 'indoorOutdoor' in bodyData:
+            if bodyData['indoorOutdoor'] == 'indoor':
+                fields.update({'indoorOutdoor': 11})
+            elif bodyData['indoorOutdoor'] == 'outdoor':
+                fields.update({'indoorOutdoor': 9})
+
+        if 'inOffice' in bodyData:
+            if bodyData['inOffice'] == 'in_office':
+                fields.update({'inOffice': 11})
+            elif bodyData['inOffice'] == 'out_office':
+                fields.update({'inOffice': 9})
+
+        if 'mood' in bodyData:
+            if bodyData['mood'] == 'neutral':
+                fields.update({'mood': 10})
+            elif bodyData['mood'] == 'sad':
+                fields.update({'mood': 9})
+            elif bodyData['mood'] == 'happy':
+                fields.update({'mood': 11})
+
+        if 'clothing' in bodyData:
+            if bodyData['clothing'] == 'light_clothes':
+                fields.update({'clothing': 9})
+            elif bodyData['clothing'] == 'medium_clothes':
+                fields.update({'clothing': 10})
+            elif bodyData['clothing'] == 'heavy_clothes':
+                fields.update({'clothing': 11})
+```
+
 
 # Install  ClockFace to your own Fitbit Versa
 
@@ -66,5 +121,3 @@ The app is available by the link. To install ClockFace follow the link https://g
 
 https://github.com/gedankenstuecke/Minimal-Clock was used as a starter template.
 
-[This link](https://github.com/Fitbit/ossapps) may be useful. A non-exhaustive list of open sourced clock faces, applications, and modules from the community.
-© 2018 

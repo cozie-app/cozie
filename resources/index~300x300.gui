@@ -11,6 +11,10 @@
   <link rel="import" href="views/thankyou.gui" />
   <link rel="import" href="views/clockblock.gui" />
 
+ <g id="emptyForSymetry" opacity="0.2">  
+    <circle cx="80" cy="280" r="6" fill="orange" />
+    <image id="image" x="75" y="275" width="10" height="10" href="images/icons/prefer_cold.png" load="sync" />
+  </g>
 
   <g id="small-thermal" opacity="0.2">  
     <circle cx="100" cy="280" r="6" fill="orange" />

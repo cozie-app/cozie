@@ -19,7 +19,7 @@
   </use>
 
   <use href="#right-button" id="heavy_clothes" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#20B2AA"/>
+    <set href="circle" attributeName="fill" to="#FF8F42"/>
     <set href="circle" attributeName="cy" to="210"/>
     <set href="image" attributeName="href" to="images/icons/heavy_clothes.png"/>
     <set href="image" attributeName="y" to="175"/>
