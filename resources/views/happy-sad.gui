@@ -7,16 +7,17 @@
     <set href="text"  attributeName="text-buffer" to="Neutral" />
   </use>
 
-  <use href="#left-button" id="happy" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#20B2AA"/>
-    <set href="image" attributeName="href" to="images/icons/happy.png"/>
-    <set href="text"  attributeName="text-buffer" to="Good Mood" />
-  </use>
 
-  <use href="#right-button" id="sad" pointer-events="visible">
+  <use href="#left-button" id="sad" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FC6B3A"/>
     <set href="image" attributeName="href" to="images/icons/sad.png"/>
     <set href="text"  attributeName="text-buffer" to="Not So" />
     <set href="second-text"  attributeName="text-buffer" to="Good" />
+  </use>
+
+  <use href="#right-button" id="happy" pointer-events="visible">
+    <set href="circle" attributeName="fill" to="#20B2AA"/>
+    <set href="image" attributeName="href" to="images/icons/happy.png"/>
+    <set href="text"  attributeName="text-buffer" to="Good Mood" />
   </use>
 </svg>

@@ -6,20 +6,20 @@
     <set href="circle" attributeName="fill" to="#9ACD32"/>
   </use>
 
-  <use href="#left-button" id="prefer_bright" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#FFC730"/>
 
+
+  <use href="#left-button" id="prefer_dim" pointer-events="visible">
+    <set href="circle" attributeName="fill" to="#708090"/>
+    <set href="image" attributeName="href" to="images/icons/prefer_dimmer.png"/>
+    <set href="text"  attributeName="text-buffer" to="Prefer" />
+    <set href="second-text"  attributeName="text-buffer" to="Dimmer" />
+  </use>
+
+  <use href="#right-button" id="prefer_bright" pointer-events="visible">
+    <set href="circle" attributeName="fill" to="#FFC730"/>
     <set href="image" attributeName="href" to="images/icons/prefer_brighter.png"/>
     <set href="text"  attributeName="text-buffer" to="Prefer" />
     <set href="second-text"  attributeName="text-buffer" to="Brighter" />
   </use>
 
-  <use href="#right-button" id="prefer_dim" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#708090"/>
-
-
-    <set href="image" attributeName="href" to="images/icons/prefer_dimmer.png"/>
-    <set href="text"  attributeName="text-buffer" to="Prefer" />
-    <set href="second-text"  attributeName="text-buffer" to="Dimmer" />
-  </use>
 </svg>
