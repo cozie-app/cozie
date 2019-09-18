@@ -490,7 +490,7 @@ for(const button of buttons) {
 
 // vibrate for 3 sec and change screen to reponse
 function vibrate() {
-  vibration.start("ping");
+  vibration.start("ring");
 
   //Change main clock face to response screen
   if (flow.length === 1) {
@@ -500,11 +500,12 @@ function vibrate() {
     initiateFeedbackData();
     flow[currentView]()
   }
-  //Stop vibration
+  //Stop vibration after 5 seconds
   setTimeout(function(){
     vibration.stop()
-  }, 10000);
+  }, 5000);
 }
+
 
 
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------
