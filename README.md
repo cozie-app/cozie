@@ -1,6 +1,6 @@
 [![](http://www.budslab.org/buds-lab.github.io/budslab_banner.png)](http://www.budslab.org/)
 
-# Colaborating using git and fitbut
+# Colaborating using git and fitbit
 
 1. first ensure that you have the latest nodejs installation https://nodejs.org/en/
 2. clone the repo `git clone git@github.com:buds-lab/fitbit-hotorcold-app.git`

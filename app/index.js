@@ -345,6 +345,14 @@ function showThankyou(){
     })
   clockface.style.display = "inline"
   thankyou.style.display = "inline"
+
+  //Find out how many seconds has passed to give response
+  const endFeedback = new Date();
+  const startFeedback = new Date(feedback_data['isoDate'])
+  feedback_data['responseSpeed'] = (endFeedback - startFeedback)/1000.0
+  console.log(feedback_data['responseSpeed'])
+
+  //send feedback to companion
   sendEventIfReady(feedback_data)
   feedback_data = {}
   setTimeout(()=>{showClock()}, 2000)
@@ -482,7 +490,7 @@ for(const button of buttons) {
 
 // vibrate for 3 sec and change screen to reponse
 function vibrate() {
-  vibration.start("ring");
+  vibration.start("ping");
 
   //Change main clock face to response screen
   if (flow.length === 1) {
@@ -495,7 +503,7 @@ function vibrate() {
   //Stop vibration
   setTimeout(function(){
     vibration.stop()
-  }, 2000);
+  }, 10000);
 }
 
 
