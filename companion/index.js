@@ -90,7 +90,7 @@ messaging.peerSocket.addEventListener("message", (evt) => {
     experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;
   } catch {
     console.log("experiment id not defined, setting default")
-    experiment_id = "defult"
+    experiment_id = "default"
   }
 
   evt.data.user_id = user_id
