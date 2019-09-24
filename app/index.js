@@ -519,7 +519,7 @@ function sendEventIfReady(feedback_data) {
 
   console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
   // set timeout of gps aquisition to 10 seconds
-  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 10000});
+  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 5000});
   
   function locationSuccess(position) {
     console.log("location success")
