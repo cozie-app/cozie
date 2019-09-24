@@ -348,8 +348,9 @@ function showThankyou(){
 
   //Find out how many seconds has passed to give response
   const endFeedback = new Date();
-  const startFeedback = new Date(feedback_data['isoDate'])
+  const startFeedback = new Date(feedback_data['startFeedback'])
   feedback_data['responseSpeed'] = (endFeedback - startFeedback)/1000.0
+  feedback_data['endFeedback'] = endFeedback.toISOString();
   console.log(feedback_data['responseSpeed'])
 
   //send feedback to companion
@@ -370,9 +371,9 @@ function showClock(){
 var feedback_data
 
 function initiateFeedbackData() {
-  const isoDate = new Date().toISOString();
+  const startFeedback = new Date().toISOString();
   feedback_data = {
-    isoDate,
+    startFeedback,
     heartRate: hrm.heartRate,
   }
 }
@@ -476,12 +477,13 @@ for(const button of buttons) {
     feedback_data[button.attribute] = button.value;
     
     //Go straight to end if comfortable
-    if (button.attribute === 'comfort' & button.value === "comfy") {
-          showThankyou();
-    } else {
-      // continue the flow
-      flow[currentView]()
-    }
+    flow[currentView]() // temporarily doing this for the experiment
+    // if (button.attribute === 'comfort' & button.value === "comfy") {
+    //       showThankyou();
+    // } else {
+    //   // continue the flow
+    //   flow[currentView]()
+    // }
   });
 }
 
@@ -550,7 +552,7 @@ function sendDataToCompanion(data) {
       local_file = fs.readFileSync("local.txt", "json");
       for(let elem of local_file) {
         messaging.peerSocket.send(elem);
-        console.log("data sent from: " + elem.isoDate + "sent to companion" );
+        console.log("data sent from: " + elem.startFeedback + "sent to companion" );
       }
       // delete local file
       fs.unlinkSync("local.txt")
@@ -584,7 +586,7 @@ messaging.peerSocket.onopen = function() {
       local_file = fs.readFileSync("local.txt", "json");
       for(let elem of local_file) {
         messaging.peerSocket.send(elem);
-        console.log("data sent from: " + elem.isoDate + "sent to companion" );
+        console.log("data sent from: " + elem.startFeedback + "sent to companion" );
       }
       // delete local file
       fs.unlinkSync("local.txt")

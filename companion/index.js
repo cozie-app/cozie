@@ -84,14 +84,15 @@ messaging.peerSocket.addEventListener("message", (evt) => {
   //get user id
   const user_id = JSON.parse(settingsStorage.getItem('user_id')).name;
 
+  
+  const experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;
   //get experiment id and set empty value to "default"
-  var experiment_id;
-  try {
-    experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;
-  } catch {
-    console.log("experiment id not defined, setting default")
-    experiment_id = "default"
-  }
+  // try {
+  //   experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;
+  // } catch {
+  //   console.log("experiment id not defined, setting default")
+  //   experiment_id = "default"
+  // }
 
   evt.data.user_id = user_id
   console.log("user id is " + user_id);
