@@ -576,10 +576,9 @@ function sendDataToCompanion(data) {
    .enqueueFile("local.txt")
    .then((ft) => {
      console.log(`Transfer of ${ft.name} successfully queued.`);
-     // delete local.txt file as data is now in queue
-     fs.unlinkSync("local.txt")
+     
      // Let user know that data is in queue
-     storageLabel.text = `q`
+     storageLabel.text = `q ${local_file.length}`
      // On change of ft, launch file transfer event
      ft.onchange = onFileTransferEvent;
    })
@@ -596,7 +595,9 @@ function sendDataToCompanion(data) {
  function onFileTransferEvent(e) {
    console.log(this.readyState)
    if (this.readyState === "transferred") {
-     console.log("trasnferred successfully")
+     console.log("transferred successfully")
+     // delete local.txt file as data is now trasnferred
+     fs.unlinkSync("local.txt")
      storageLabel.text = ``
    }
    if (this.readyState === "error"){
