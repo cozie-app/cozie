@@ -61,6 +61,7 @@ const timeLabel = document.getElementById("timeLabel");
 let steps = document.getElementById("steps");
 let dateLabel = document.getElementById("dateLabel");
 let secLabel = document.getElementById("secLabel");
+let storageLabel = document.getElementById("storageLabel")
 // console.log((today.local.steps || 0) + " steps");
 
 // Update the <text> element every tick with the current time
@@ -543,7 +544,7 @@ function sendDataToCompanion(data) {
     data.setLocation = true;
     messaging.peerSocket.send(data);
     console.log("data sent directly to companion")
-    
+
     //remove data to prevent it beint sent twice
     data=null
 
@@ -556,6 +557,7 @@ function sendDataToCompanion(data) {
       }
       // delete local file
       fs.unlinkSync("local.txt")
+      storageLabel.text = ``
     } catch(err) {
       console.log(err)
     }
@@ -575,6 +577,7 @@ function sendDataToCompanion(data) {
     local_file.push(data)
 
     fs.writeFileSync("local.txt", local_file, "json");
+    storageLabel.text = `${local_file.length}`
   }
 }
 
@@ -590,6 +593,7 @@ messaging.peerSocket.onopen = function() {
       }
       // delete local file
       fs.unlinkSync("local.txt")
+      storageLabel.text = ``
     } catch(err) {
       console.log(err)
     }
