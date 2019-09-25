@@ -518,20 +518,20 @@ function sendEventIfReady(feedback_data) {
   console.log(JSON.stringify(feedback_data))
 
   console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
-  // set timeout of gps aquisition to 10 seconds
-  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 5000});
+  // set timeout of gps aquisition to 5 seconds and allow cached geo locations up to 1min to be allowed
+  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 5000, maximumAge: 60000});
   
   function locationSuccess(position) {
     console.log("location success")
-    feedback_data.lat = position.coords.latitude,
-    feedback_data.lon = position.coords.longitude,
+    feedback_data.lat = position.coords.latitude
+    feedback_data.lon = position.coords.longitude
     sendDataToCompanion(feedback_data);
   }
 
   function locationError(error) {
     console.log("location fail")
-    feedback_data.lat = null,
-    feedback_data.lon = null,
+    feedback_data.lat = null
+    feedback_data.lon = null
     sendDataToCompanion(feedback_data);
   }
 }
