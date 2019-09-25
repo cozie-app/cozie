@@ -13,6 +13,7 @@ import * as fs from "fs";
 import { geolocation } from "geolocation";
 
 import { inbox } from "file-transfer"
+import { outbox } from "file-transfer";
 import * as cbor from "cbor";
 import { listDirSync } from "fs";
 
@@ -128,6 +129,7 @@ clock.ontick = (evt) => {
   } else { 
     chargeLabel.style.fill = '#505050'
   }
+  
 }
 
 //-------- END (CLOCK FACE DESIGN) -----------
@@ -548,22 +550,10 @@ function sendDataToCompanion(data) {
     //remove data to prevent it beint sent twice
     data=null
 
-    // read files saved during offline and send all on by one
-    try {
-      local_file = fs.readFileSync("local.txt", "json");
-      for(let elem of local_file) {
-        messaging.peerSocket.send(elem);
-        console.log("data sent from: " + elem.startFeedback + "sent to companion" );
-      }
-      // delete local file
-      fs.unlinkSync("local.txt")
-      storageLabel.text = ``
-    } catch(err) {
-      console.log(err)
-    }
   } else {
-    // try to read file with local data
-    console.log("connection to companion not found, storing locally")
+    console.log("No peerSocket connection. Attempting to send via file transfer");
+
+        // try to read file with local data
     try {
       console.log("checking if local file exists")
       local_file = fs.readFileSync("local.txt", "json");
@@ -572,29 +562,46 @@ function sendDataToCompanion(data) {
       console.log("creating empty local.txt file")
       local_file = []
     } 
-    // push new reponce and save
+
+        // push new reponce and save
     console.log("pushing new data to local file")
     local_file.push(data)
 
     fs.writeFileSync("local.txt", local_file, "json");
+    // Note on device how many locally stored files are present
     storageLabel.text = `${local_file.length}`
+
+    // Prepare outbox for file transfer
+    outbox
+   .enqueueFile("local.txt")
+   .then((ft) => {
+     console.log(`Transfer of ${ft.name} successfully queued.`);
+     // delete local.txt file as data is now in queue
+     fs.unlinkSync("local.txt")
+     // Let user know that data is in queue
+     storageLabel.text = `q`
+     // On change of ft, launch file transfer event
+     ft.onchange = onFileTransferEvent;
+   })
+   .catch((error) => {
+     console.log(`Failed to schedule transfer: ${error}`);
+     storageLabel.text = `${local_file.length}`
+   })
+    
+
   }
 }
 
-messaging.peerSocket.onopen = function() {
-  // Have an event listener so that the moment a connection is open, files upload
-  // read files saved during offline and send all on by one
-  console.log("peer socket to companion opened")
-    try {
-      local_file = fs.readFileSync("local.txt", "json");
-      for(let elem of local_file) {
-        messaging.peerSocket.send(elem);
-        console.log("data sent from: " + elem.startFeedback + "sent to companion" );
-      }
-      // delete local file
-      fs.unlinkSync("local.txt")
-      storageLabel.text = ``
-    } catch(err) {
-      console.log(err)
-    }
-}
+// function to determine changes in the status of the file transfer
+ function onFileTransferEvent(e) {
+   console.log(this.readyState)
+   if (this.readyState === "transferred") {
+     console.log("trasnferred successfully")
+     storageLabel.text = ``
+   }
+   if (this.readyState === "error"){
+     console.log("WARNING: ERROR IN FILE TRANSFER")
+     storageLabel.text = `Error`
+   }
+  //console.log(`onFileTransferEvent(): name=${this.name} readyState=${this.readyState};${Date.now()};`);
+  }
