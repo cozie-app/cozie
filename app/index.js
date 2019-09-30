@@ -522,7 +522,7 @@ function sendEventIfReady(feedback_data) {
 
   console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
   // set timeout of gps aquisition to 5 seconds and allow cached geo locations up to 1min to be allowed
-  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 5000, maximumAge: 60000});
+  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 20000, maximumAge: 60000});
   
   function locationSuccess(position) {
     console.log("location success")
