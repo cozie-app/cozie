@@ -4,15 +4,14 @@ import { me } from "companion";
 
 import * as cbor from "cbor";
 import { outbox } from "file-transfer";
+import { inbox } from "file-transfer";
 import { settingsPrefix } from "../common/constants";
+
 
 
 //-------- SENDING SETTINGS DATA TO WATCH -----------
 
 //Send Settings Data to Fitbit
-// All guns blazing. Using every possible command in the fitbit environment to get the message across
-// There might be a way to make this less extreme, but so far this is the only way to garuntee the communication
-
 
 // Fire when settings are changed on phone
 settingsStorage.onchange = function(evt) {
@@ -77,23 +76,66 @@ function sendSettingData(data) {
 
 //-------- END (SENDING SETTINGS DATA TO WATCH) -----------
 
-//-------- SENDING DATA TO AWS -----------
+//-------- READING DATA FROM WATCH -----------
 
 //Listen for peer socket from fitbit to send data to budslab.me
 messaging.peerSocket.addEventListener("message", (evt) => {
-  //to get user_id from fitbit account, login in settings from mobile device 
-  const user_id = JSON.parse(settingsStorage.getItem('user_id')).name;
-  const experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;
-
-  evt.data.user_id = user_id
-  console.log("user id is " + user_id);
-  evt.data.experiment_id = experiment_id
-  console.log("experiment id is " + experiment_id);
+  //get user id
   
   if (evt.data) {
   // get location 
       // AWS API gateway link, triggers lambda function
+      sendDataToInflux(evt.data)
+
+  } else {
+    console.log("Error! Can not send request to server.")
+  }
+});
+
+
+// receive message via inbox
+async function processAllFiles() {
+  
+   let file;
+
+   while ((file = await inbox.pop())) {
+     const input_data_file = JSON.parse(await file.text());
+     //console.log(`file contents: ${input_data_file}`);
+     input_data_file.map(data => {
+
+       sendDataToInflux(data);
+     });
+     //console.log(`file contents: ${JSON.stringify(input_data_file)}`);
+   }
+}
+
+// Process new files as they are received
+inbox.addEventListener("newfile", processAllFiles);
+
+// Also process any files that arrived when the companion wasn’t running
+processAllFiles()
+
+//-------- END (READING DATA FROM WATCH) -----------
+
+
+//-------- SENDING DATA TO AWS -----------
+
+function sendDataToInflux(data) {
+
       let url = `https://ay1bwnlt74.execute-api.us-east-1.amazonaws.com/test`
+      
+        //get experiment id and set empty value to "default"
+  // try {
+  //   experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;
+  // } catch {
+  //   console.log("experiment id not defined, setting default")
+  //   experiment_id = "default"
+  // }
+   const user_id = JSON.parse(settingsStorage.getItem('user_id')).name;
+   const experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;
+         data.user_id = user_id;
+       data.experiment_id = experiment_id;
+
 
       
       fetch(url, {
@@ -102,20 +144,16 @@ messaging.peerSocket.addEventListener("message", (evt) => {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(evt.data)
+        body: JSON.stringify(data)
       })
       .then(res => {
           console.log("sent data")
-          console.log(JSON.stringify(evt.data))
+          console.log(JSON.stringify(data))
           console.log(JSON.stringify(res))
-          console.log(res.body)
+          console.log(JSON.stringify(res.body))
           console.log(res.status);
       })
       .catch(function(error) {
           console.log('There has been a problem with your fetch operation: ', error.message);
       });
-
-  } else {
-    console.log("Error! Can not send request to server.")
-  }
-});
+    }

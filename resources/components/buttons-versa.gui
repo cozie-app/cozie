@@ -2,6 +2,7 @@
    	<circle id="circle" cx="150" cy="60" r="35" fill="red" />
    	<image id="image" x="115" y="25" width="70" height="70" href="images/icons/comfy.png" load="sync" />
    	<text id= "text" x="150" y="125" class= "comfyLabel"> Comfy </text>
+      <text id= "second-text" x="150" y="150" class= "comfyLabel"> </text>
 </symbol>
 
 <symbol id="left-button">

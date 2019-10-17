@@ -13,6 +13,7 @@ import * as fs from "fs";
 import { geolocation } from "geolocation";
 
 import { inbox } from "file-transfer"
+import { outbox } from "file-transfer";
 import * as cbor from "cbor";
 import { listDirSync } from "fs";
 
@@ -61,6 +62,7 @@ const timeLabel = document.getElementById("timeLabel");
 let steps = document.getElementById("steps");
 let dateLabel = document.getElementById("dateLabel");
 let secLabel = document.getElementById("secLabel");
+let storageLabel = document.getElementById("storageLabel")
 // console.log((today.local.steps || 0) + " steps");
 
 // Update the <text> element every tick with the current time
@@ -127,6 +129,7 @@ clock.ontick = (evt) => {
   } else { 
     chargeLabel.style.fill = '#505050'
   }
+  
 }
 
 //-------- END (CLOCK FACE DESIGN) -----------
@@ -142,24 +145,17 @@ console.log("WARNING!! APP HAS RESET")
 
 
 var flow=[showThankyou]
-const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood ]
+const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood, showClothing ]
 var settingsUpdateTime = 0;
 
 //read small icons 
-
-// const smallThermal = document.getElementById("small-thermal")
-// const smallLight = document.getElementById("small-light")
-// const smallNoise = document.getElementById("small-noise")
-// const smallIndoor = document.getElementById("small-indoor")
-// const smallOffice = document.getElementById("small-office")
-// const smallMood = document.getElementById("small-mood")
-
 const smallIcons = [document.getElementById("small-thermal"), 
                     document.getElementById("small-light"), 
                     document.getElementById("small-noise"),
                     document.getElementById("small-indoor"),
                     document.getElementById("small-office"),
-                    document.getElementById("small-mood")]
+                    document.getElementById("small-mood"),
+                    document.getElementById("small-clothing")]
 
 var flowFileRead
 var flowFileWrite
@@ -228,7 +224,7 @@ function processAllFiles() {
 
 function mapFlows(flowSelector){
   flow=[]
-  //set opacity of all icons to 0.2
+  //set opacity of all small icons to 0.2
   smallIcons.map(icon => icon.style.opacity = 0.2)
   if (flowSelector) {
   flowSelector.map(index => {
@@ -252,6 +248,7 @@ processAllFiles();
 
 var currentView = 0 //current view of flow
 
+//Flow GUIs
 const clockface = document.getElementById("clockface");
 const indoorOutdoor = document.getElementById("indoor-outdoor");
 const inOffice = document.getElementById("inoffice");
@@ -259,12 +256,13 @@ const warmCold = document.getElementById("warm-cold");
 const brightDim = document.getElementById("bright-dim");
 const loudQuiet = document.getElementById("loud-quiet");
 const happySad = document.getElementById("happy-sad");
+const clothing = document.getElementById("clothing");
 //Clock manipulation guis
 const thankyou = document.getElementById("thankyou");
 const clockblock = document.getElementById("clockblock");
 
 //Useed to set all views to none when switching between screens
-const allViews = [clockface, indoorOutdoor, inOffice, warmCold, brightDim, loudQuiet, happySad, thankyou, clockblock]
+const allViews = [clockface, indoorOutdoor, inOffice, warmCold, brightDim, loudQuiet, happySad, clothing, thankyou, clockblock]
 
 
 
@@ -293,6 +291,10 @@ const prefer_quiet = document.getElementById("prefer_quiet");
 const neutral = document.getElementById('neutral')
 const happy = document.getElementById("happy");
 const sad = document.getElementById("sad");
+// buttons
+const light_clothes = document.getElementById('light_clothes')
+const medium_clothes = document.getElementById("medium_clothes");
+const heavy_clothes = document.getElementById("heavy_clothes");
 
 function showThermal(){
   console.log("Showing Thermal Feedback");
@@ -332,6 +334,12 @@ function showInOffice(){
   currentView++
 }
 
+function showClothing(){
+  allViews.map(v => v.style.display = "none")
+  clothing.style.display = "inline"
+  currentView++
+}
+
 function showThankyou(){
   allViews.map(v => v.style.display = "none")
   smallIcons.map(icon => icon.style.opacity = 0.2)
@@ -340,6 +348,15 @@ function showThankyou(){
     })
   clockface.style.display = "inline"
   thankyou.style.display = "inline"
+
+  //Find out how many seconds has passed to give response
+  const endFeedback = new Date();
+  const startFeedback = new Date(feedback_data['startFeedback'])
+  feedback_data['responseSpeed'] = (endFeedback - startFeedback)/1000.0
+  feedback_data['endFeedback'] = endFeedback.toISOString();
+  console.log(feedback_data['responseSpeed'])
+
+  //send feedback to companion
   sendEventIfReady(feedback_data)
   feedback_data = {}
   setTimeout(()=>{showClock()}, 2000)
@@ -357,9 +374,9 @@ function showClock(){
 var feedback_data
 
 function initiateFeedbackData() {
-  const isoDate = new Date().toISOString();
+  const startFeedback = new Date().toISOString();
   feedback_data = {
-    isoDate,
+    startFeedback,
     heartRate: hrm.heartRate,
   }
 }
@@ -436,6 +453,18 @@ let buttons = [{
     value: 'sad',
     obj: sad,
     attribute: 'mood',
+  }, {
+    value: 'light_clothes',
+    obj: light_clothes,
+    attribute: 'clothing',
+  }, {
+    value: 'medium_clothes',
+    obj: medium_clothes,
+    attribute: 'clothing',
+  }, {
+    value: 'heavy_clothes',
+    obj: heavy_clothes,
+    attribute: 'clothing',
   }]
 
 
@@ -449,8 +478,15 @@ for(const button of buttons) {
 
     // console.log(`${button.value} clicked`)
     feedback_data[button.attribute] = button.value;
-    // console.log(JSON.stringify(feedback_data))
-    flow[currentView]()
+    
+    //Go straight to end if comfortable
+    flow[currentView]() // temporarily doing this for the experiment
+    // if (button.attribute === 'comfort' & button.value === "comfy") {
+    //       showThankyou();
+    // } else {
+    //   // continue the flow
+    //   flow[currentView]()
+    // }
   });
 }
 
@@ -462,9 +498,14 @@ function vibrate() {
   vibration.start("ring");
 
   //Change main clock face to response screen
-  clockblock.style.display = "inline";
-  
-  //Stop vibration
+  if (flow.length === 1) {
+    clockblock.style.display = "inline";
+  } else {
+    smallIcons.map(icon => icon.style.opacity = 0);
+    initiateFeedbackData();
+    flow[currentView]()
+  }
+  //Stop vibration after 5 seconds
   setTimeout(function(){
     vibration.stop()
   }, 5000);
@@ -480,20 +521,20 @@ function sendEventIfReady(feedback_data) {
   console.log(JSON.stringify(feedback_data))
 
   console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
-  // set timeout of gps aquisition to 10 seconds
-  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 10000});
+  // set timeout of gps aquisition to 5 seconds and allow cached geo locations up to 1min to be allowed
+  geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 20000, maximumAge: 60000});
   
   function locationSuccess(position) {
     console.log("location success")
-    feedback_data.lat = position.coords.latitude,
-    feedback_data.lon = position.coords.longitude,
+    feedback_data.lat = position.coords.latitude
+    feedback_data.lon = position.coords.longitude
     sendDataToCompanion(feedback_data);
   }
 
   function locationError(error) {
     console.log("location fail")
-    feedback_data.lat = null,
-    feedback_data.lon = null,
+    feedback_data.lat = null
+    feedback_data.lon = null
     sendDataToCompanion(feedback_data);
   }
 }
@@ -505,25 +546,14 @@ function sendDataToCompanion(data) {
     data.setLocation = true;
     messaging.peerSocket.send(data);
     console.log("data sent directly to companion")
-    
+
     //remove data to prevent it beint sent twice
     data=null
 
-    // read files saved during offline and send all on by one
-    try {
-      local_file = fs.readFileSync("local.txt", "json");
-      for(let elem of local_file) {
-        messaging.peerSocket.send(elem);
-        console.log("data sent from: " + elem.isoDate + "sent to companion" );
-      }
-      // delete local file
-      fs.unlinkSync("local.txt")
-    } catch(err) {
-      console.log(err)
-    }
   } else {
-    // try to read file with local data
-    console.log("connection to companion not found, storing locally")
+    console.log("No peerSocket connection. Attempting to send via file transfer");
+
+        // try to read file with local data
     try {
       console.log("checking if local file exists")
       local_file = fs.readFileSync("local.txt", "json");
@@ -532,27 +562,47 @@ function sendDataToCompanion(data) {
       console.log("creating empty local.txt file")
       local_file = []
     } 
-    // push new reponce and save
+
+        // push new reponce and save
     console.log("pushing new data to local file")
     local_file.push(data)
 
     fs.writeFileSync("local.txt", local_file, "json");
+    // Note on device how many locally stored files are present
+    storageLabel.text = `${local_file.length}`
+
+    // Prepare outbox for file transfer
+    outbox
+   .enqueueFile("local.txt")
+   .then((ft) => {
+     console.log(`Transfer of ${ft.name} successfully queued.`);
+     
+     // Let user know that data is in queue
+     storageLabel.text = `q ${local_file.length}`
+     // On change of ft, launch file transfer event
+     ft.onchange = onFileTransferEvent;
+   })
+   .catch((error) => {
+     console.log(`Failed to schedule transfer: ${error}`);
+     storageLabel.text = `${local_file.length}`
+   })
+    
+
   }
 }
 
-messaging.peerSocket.onopen = function() {
-  // Have an event listener so that the moment a connection is open, files upload
-  // read files saved during offline and send all on by one
-  console.log("peer socket to companion opened")
-    try {
-      local_file = fs.readFileSync("local.txt", "json");
-      for(let elem of local_file) {
-        messaging.peerSocket.send(elem);
-        console.log("data sent from: " + elem.isoDate + "sent to companion" );
-      }
-      // delete local file
-      fs.unlinkSync("local.txt")
-    } catch(err) {
-      console.log(err)
-    }
-}
+// function to determine changes in the status of the file transfer
+ function onFileTransferEvent(e) {
+   console.log(this.readyState)
+   if (this.readyState === "transferred") {
+     console.log("transferred successfully")
+     // delete local.txt file as data is now trasnferred
+     fs.unlinkSync("local.txt")
+     storageLabel.text = ``
+   }
+   if (this.readyState === "error"){
+     console.log("WARNING: ERROR IN FILE TRANSFER")
+     storageLabel.text = `Error`
+   }
+  //console.log(`onFileTransferEvent(): name=${this.name} readyState=${this.readyState};${Date.now()};`);
+  }

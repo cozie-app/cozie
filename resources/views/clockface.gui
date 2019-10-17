@@ -8,6 +8,7 @@
   <image id= "stepIcon" href="images/stat_steps_solid_48px.png" load="sync" />
   <text id="steps" class='red'>0</text>
   <rect x="0" y="0" width="300" height="2" fill="#505050" id='chargeLabel'/>
+  <text id="storageLabel" >  </text>
 
   
   <use href="#left-button" id="not-comfy" pointer-events="visible">

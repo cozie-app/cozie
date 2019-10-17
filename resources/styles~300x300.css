@@ -72,3 +72,13 @@
   text-anchor: middle;
   fill: #a0a0a0;
 }
+
+#storageLabel {
+  font-size: 20;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 25;
+  y: 95%;
+  fill: #a0a0a0;
+}

@@ -7,25 +7,50 @@
   <link rel="import" href="views/loud-quite.gui" />
   <link rel="import" href="views/happy-sad.gui" />
   <link rel="import" href="views/in-office.gui" />
+  <link rel="import" href="views/clothing.gui" />
   <link rel="import" href="views/thankyou.gui" />
   <link rel="import" href="views/clockblock.gui" />
 
-    <circle id="small-thermal" cx="100" cy="280" r="6" fill="orange" opacity="0.2" />
+ <g id="emptyForSymetry" opacity="0.2">  
+    <circle cx="80" cy="280" r="6" fill="orange" />
+    <image id="image" x="75" y="275" width="10" height="10" href="images/icons/prefer_cold.png" load="sync" />
+  </g>
+
+  <g id="small-thermal" opacity="0.2">  
+    <circle cx="100" cy="280" r="6" fill="orange" />
     <image id="image" x="95" y="275" width="10" height="10" href="images/icons/prefer_warmer.png" load="sync" />
+  </g>
 
-    <circle id="small-light" cx="120" cy="280" r="6" fill="yellow" opacity="0.2" />
+  <g id="small-light" opacity="0.2">
+    <circle cx="120" cy="280" r="6" fill="yellow" />
     <image id="image" x="115" y="275" width="10" height="10" href="images/icons/prefer_brighter.png" load="sync" />
+  </g>
 
-    <circle id="small-noise" cx="140" cy="280" r="6" fill="#FF6347" opacity="0.2" />
+  <g id="small-noise" opacity="0.2">
+    <circle cx="140" cy="280" r="6" fill="#FF6347" />
     <image id="image" x="135" y="275" width="10" height="10" href="images/icons/prefer_louder.png" load="sync" />
+  </g>
 
-    <circle id="small-indoor" cx="160" cy="280" r="6" fill="#FFCC33" opacity="0.2" />
+  <g id="small-indoor" opacity="0.2">
+    <circle cx="160" cy="280" r="6" fill="#FFCC33" />
     <image id="image" x="155" y="275" width="10" height="10" href="images/icons/outdoor.png" load="sync" />
+  </g>
 
-    <circle id="small-office" cx="180" cy="280" r="6" fill="#7090B5" opacity="0.2" />
+  <g id="small-office" opacity="0.2">
+    <circle cx="180" cy="280" r="6" fill="#7090B5" />
     <image id="image" x="175" y="275" width="10" height="10" href="images/icons/indoor.png" load="sync" />
+  </g>
 
-    <circle id="small-mood" cx="200" cy="280" r="6" fill="#20B2AA" opacity="0.2" />
+  <g id="small-mood" opacity="0.2">
+    <circle cx="200" cy="280" r="6" fill="#20B2AA" />
     <image id="image" x="195" y="275" width="10" height="10" href="images/icons/happy.png" load="sync" />
+  </g>
+
+  <g id="small-clothing" opacity="0.2">
+    <circle cx="220" cy="280" r="6" fill="#61C3FF" />
+    <image id="image" x="215" y="275" width="10" height="10" href="images/icons/light_clothes.png" load="sync" />
+  </g>
+
+  
 </svg>
 
