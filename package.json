@@ -1,7 +1,7 @@
 {
   "fitbit": {
     "appType": "clockface",
-    "appDisplayName": "coolbit",
+    "appDisplayName": "cozie",
     "iconFile": "resources/icon.png",
     "wipeColor": "",
     "requestedPermissions": [
@@ -15,21 +15,24 @@
     "buildTargets": [
       "higgs",
       "meson",
-      "gemini"
+      "gemini",
+      "mira"
     ],
     "i18n": {
       "en": {
-        "name": "coolbit"
+        "name": "cozie"
       }
     },
     "defaultLanguage": "en-US",
-    "appUUID": "d787c911-ce11-432e-8b68-69da0f3446c8"
+    "appUUID": "512ce6c5-f633-4f7b-853c-891869f5e3d8"
   },
   "devDependencies": {
-    "@fitbit/sdk": "~3.1.0"
+    "@fitbit/sdk": "~4.0.0",
+    "@fitbit/sdk-cli": "^1.7.0"
   },
   "dependencies": {
-    "@fitbit/sdk-cli": "~1.6.0"
+    "@fitbit/sdk": "~4.0.0",
+    "@fitbit/sdk-cli": "^1.7.0"
   },
   "scripts": {
     "build": "fitbit-build"
