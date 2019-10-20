@@ -55,7 +55,7 @@ function sendSettingData(data) {
   // If we have a MessageSocket, send the data to the device
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     console.log(data)
-    messaging.peerSocket.send({data: data.value.selected, time: data.time});
+    messaging.peerSocket.send({data: data.value.selected, time: data.time, key: data.key});
     console.log("data sent from companion")
   } else {
     // Note that the index.js is checking the time, and will only update via file transfer if the time made in data.time is greater

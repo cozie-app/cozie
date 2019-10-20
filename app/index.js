@@ -75,13 +75,20 @@ const buzzOptions = {
   '2': [9,11,13,15,17],
   '3': [9,12,15]
 }
-// buzz default option is [9,11,13,15,17]
-let buzzSelection = 2;
+let buzzSelection;
 
 setInterval(function() {
+  try {
+    buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
+  } catch(err) {
+    console.log(err)
+    console.log("buzz default option is [9,11,13,15,17]")
+    buzzSelection = 2;
+  }
+
   let vibrationTime = buzzOptions[buzzSelection];
   const currentDate = new Date();
-  // vibrate and change to response screen at  9, 11, 13, 15, 17
+  // vibrate and change to response screen based on selected buzz option
   const currentHour = currentDate.getHours();
   // make vibration during first minute
   if(!found && vibrationTime.indexOf(currentHour) != -1) {
@@ -167,7 +174,7 @@ const smallIcons = [document.getElementById("small-thermal"),
 var flowFileRead
 var flowFileWrite
 
-try {
+    try {
       var flowFileRead = fs.readFileSync("flow.txt", "json");
       console.log(JSON.stringify(flowFileRead))
       console.log(JSON.stringify(flowFileRead.flowSelector))
@@ -196,10 +203,12 @@ messaging.peerSocket.onmessage = function(evt) {
     flowFileWrite = {flowSelector: flowSelector}
     console.log(JSON.stringify(flowFileWrite))
     fs.writeFileSync("flow.txt", flowFileWrite, "json")
-    console.log("files saved locally")
+    console.log("flowSelector, files saved locally")
   } else if(evt.data.key == 'buzz_time') {
-    buzzSelection = evt.data.data;
-    // TO DO: save selected buzz option locally (writeFileSync)
+    let buzzFileWrite = {buzzSelection: evt.data.data}
+    fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
+    console.log("buzzSelection, files saved locally")
+    buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
   }
 
   console.log("end message socket")
