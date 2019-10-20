@@ -5,6 +5,8 @@ import indoorOutdoor from '../resources/images/icons/indoor.png';
 import inofficeOutoffice from '../resources/images/icons/indoor.png';
 import mood from '../resources/images/icons/not-comfy.png';
 import clothing from '../resources/images/icons/light_clothes.png';
+import noSound from '../resources/images/icons/prefer_quieter.png';
+import sound from '../resources/images/icons/prefer_louder.png';
 
 function mySettings(props) {
   return (
@@ -87,7 +89,45 @@ function mySettings(props) {
           )}
         />
       </Section>
-     
+      <Section>
+        <Select
+          label={`Select Buzz Time`}
+          settingsKey="buzz_time"
+          options={[
+            {
+              name: "Never",
+              value: "0",
+              subLabel: "Never Buzz",
+              img: noSound
+            },
+            {
+              name: "Every Hour",
+              value: "1",
+              subLabel: "Buzz every hour between 9:00 - 17:00",
+              img: sound
+            },
+            {
+              name: "Every 2 hours",
+              value: "2",
+              subLabel: "Buzz every 2 hours between 9:00 - 17:00",
+              img: sound
+            },
+            {
+              name: "Every 3 hours",
+              value: "3",
+              subLabel: "Buzz every 3 hours between 9:00 - 17:00",
+              img: sound
+            }
+          ]}
+          renderItem={option => (
+            <TextImageRow
+              label={option.name}
+              sublabel={option.subLabel}
+              icon={option.img}
+            />
+          )}
+        />
+      </Section>
     </Page>
   );
 }

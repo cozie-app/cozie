@@ -69,10 +69,17 @@ let storageLabel = document.getElementById("storageLabel")
 let local_file;
 // intervals to check vibrations
 let found = false;
-const vibrationTime = [9, 11, 13, 15, 17]
-
+const buzzOptions = {
+  '0': [],
+  '1': [9,10,11,12,13,14,15,16,17],
+  '2': [9,11,13,15,17],
+  '3': [9,12,15]
+}
+// buzz default option is [9,11,13,15,17]
+let buzzSelection = 2;
 
 setInterval(function() {
+  let vibrationTime = buzzOptions[buzzSelection];
   const currentDate = new Date();
   // vibrate and change to response screen at  9, 11, 13, 15, 17
   const currentHour = currentDate.getHours();
@@ -146,7 +153,7 @@ console.log("WARNING!! APP HAS RESET")
 
 var flow=[showThankyou]
 const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood, showClothing ]
-var settingsUpdateTime = 0;
+var flowSelectorUpdateTime = 0;
 
 //read small icons 
 const smallIcons = [document.getElementById("small-thermal"), 
@@ -179,18 +186,21 @@ try {
 messaging.peerSocket.onmessage = function(evt) {
   console.log("settings received on device");
   console.log(JSON.stringify(evt))
-  flowSelector = evt.data.data
-  settingsUpdateTime = evt.data.time
-  console.log("flow selector from peer socket is" , flowSelector)
-  mapFlows(flowSelector)
-
-  //save flows locally in event of app rest
-  flowFileWrite = {flowSelector: flowSelector}
-  console.log(JSON.stringify(flowFileWrite))
-  fs.writeFileSync("flow.txt", flowFileWrite, "json")
-  console.log("files saved locally")
-
-
+  
+  if(evt.data.key == 'flow_index') {
+    flowSelector = evt.data.data
+    flowSelectorUpdateTime = evt.data.time
+    console.log("flow selector from peer socket is" , flowSelector)
+    mapFlows(flowSelector)
+    //save flows locally in event of app rest
+    flowFileWrite = {flowSelector: flowSelector}
+    console.log(JSON.stringify(flowFileWrite))
+    fs.writeFileSync("flow.txt", flowFileWrite, "json")
+    console.log("files saved locally")
+  } else if(evt.data.key == 'buzz_time') {
+    buzzSelection = evt.data.data;
+    // TO DO: save selected buzz option locally (writeFileSync)
+  }
 
   console.log("end message socket")
 }
@@ -202,11 +212,11 @@ function processAllFiles() {
     console.log(`/private/data/${fileName} is now available`);
     let flowSelector_file = fs.readFileSync(`${fileName}`, "cbor");
     console.log(JSON.stringify(flowSelector_file));
-    if(flowSelector_file.time > settingsUpdateTime){
+    if(flowSelector_file.time > flowSelectorUpdateTime){
       flowSelector = flowSelector_file.data
       mapFlows(flowSelector)
       console.log("settings updated via file transfer")
-      settingsUpdateTime = flowSelector_file.time
+      flowSelectorUpdateTime = flowSelector_file.time
 
       //save flows locally in event of app rest
       flowFileWrite = {flowSelector: flowSelector}
