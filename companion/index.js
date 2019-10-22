@@ -62,7 +62,7 @@ function sendSettingData(data) {
     console.log("No peerSocket connection. Attempting to send via file transfer");
 
       //Fire the Guideed Missile via outbox Woosh
-      outbox.enqueue('flow_index.cbor', cbor.encode({data: data.value.selected, time: data.time}))
+      outbox.enqueue('flow_index.cbor', cbor.encode({data: data.value.selected, time: data.time, key: data.key}))
         .then((ft) => {
           console.log(`Transfer of ${ft.name} successfully queued.`);
           })

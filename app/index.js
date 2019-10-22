@@ -151,13 +151,8 @@ clock.ontick = (evt) => {
 //-------- READING EXPERIMENT QUESTIONS FROM PHONE SETTINGS -----------
 
 console.log("WARNING!! APP HAS RESET")
-//let flowSelector = []
 
-
-
-
-
-
+// Default shows only thank you screen in the flow
 var flow=[showThankyou]
 const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood, showClothing ]
 var flowSelectorUpdateTime = 0;
@@ -171,8 +166,10 @@ const smallIcons = [document.getElementById("small-thermal"),
                     document.getElementById("small-mood"),
                     document.getElementById("small-clothing")]
 
+// Flow may have been previously saved locally as flow.txt
 var flowFileRead
 var flowFileWrite
+var buzzFileWrite
 
     try {
       var flowFileRead = fs.readFileSync("flow.txt", "json");
@@ -205,10 +202,12 @@ messaging.peerSocket.onmessage = function(evt) {
     fs.writeFileSync("flow.txt", flowFileWrite, "json")
     console.log("flowSelector, files saved locally")
   } else if(evt.data.key == 'buzz_time') {
-    let buzzFileWrite = {buzzSelection: evt.data.data}
+    buzzFileWrite = {buzzSelection: evt.data.data}
+    console.log(evt.data.data)
     fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
     console.log("buzzSelection, files saved locally")
     buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
+    console.log("Buzz Selection is", buzzSelection)
   }
 
   console.log("end message socket")
@@ -219,19 +218,28 @@ function processAllFiles() {
   let fileName;
   while (fileName = inbox.nextFile()) {
     console.log(`/private/data/${fileName} is now available`);
-    let flowSelector_file = fs.readFileSync(`${fileName}`, "cbor");
-    console.log(JSON.stringify(flowSelector_file));
-    if(flowSelector_file.time > flowSelectorUpdateTime){
-      flowSelector = flowSelector_file.data
-      mapFlows(flowSelector)
-      console.log("settings updated via file transfer")
-      flowSelectorUpdateTime = flowSelector_file.time
+    let fileData = fs.readFileSync(`${fileName}`, "cbor");
+    console.log(JSON.stringify(fileData));
+    console.log("settings received via file transfer")
+    if(fileData.time > flowSelectorUpdateTime){
+      flowSelectorUpdateTime = fileData.time
+      if(fileData.key == 'flow_index'){
+        flowSelector = fileData.data
+        mapFlows(flowSelector)
+        console.log("settings updated via file transfer")
 
-      //save flows locally in event of app rest
-      flowFileWrite = {flowSelector: flowSelector}
-      console.log(JSON.stringify(flowFileWrite))
-      fs.writeFileSync("flow.txt", flowFileWrite, "json")
-      console.log("files saved locally")
+        //save flows locally in event of app rest
+        flowFileWrite = {flowSelector: flowSelector}
+        console.log(JSON.stringify(flowFileWrite))
+        fs.writeFileSync("flow.txt", flowFileWrite, "json")
+        console.log("files saved locally")
+      } else if(fileData.key == 'buzz_time'){
+        buzzSelection = fileData.data
+        console.log("buzz selection is", buzzSelection)
+        buzzFileWrite = {buzzSelection: fileData.data}
+        fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
+
+      }
     } else {
       console.log("settings already updated via peer socket")
     }
