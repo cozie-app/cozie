@@ -69,12 +69,26 @@ let storageLabel = document.getElementById("storageLabel")
 let local_file;
 // intervals to check vibrations
 let found = false;
-const vibrationTime = [9, 11, 13, 15, 17]
-
+const buzzOptions = {
+  '0': [],
+  '1': [9,10,11,12,13,14,15,16,17],
+  '2': [9,11,13,15,17],
+  '3': [9,12,15]
+}
+let buzzSelection;
 
 setInterval(function() {
+  try {
+    buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
+  } catch(err) {
+    console.log(err)
+    console.log("buzz default option is [9,11,13,15,17]")
+    buzzSelection = 2;
+  }
+
+  let vibrationTime = buzzOptions[buzzSelection];
   const currentDate = new Date();
-  // vibrate and change to response screen at  9, 11, 13, 15, 17
+  // vibrate and change to response screen based on selected buzz option
   const currentHour = currentDate.getHours();
   // make vibration during first minute
   if(!found && vibrationTime.indexOf(currentHour) != -1) {
@@ -137,16 +151,11 @@ clock.ontick = (evt) => {
 //-------- READING EXPERIMENT QUESTIONS FROM PHONE SETTINGS -----------
 
 console.log("WARNING!! APP HAS RESET")
-//let flowSelector = []
 
-
-
-
-
-
+// Default shows only thank you screen in the flow
 var flow=[showThankyou]
 const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood, showClothing ]
-var settingsUpdateTime = 0;
+var flowSelectorUpdateTime = 0;
 
 //read small icons 
 const smallIcons = [document.getElementById("small-thermal"), 
@@ -157,10 +166,12 @@ const smallIcons = [document.getElementById("small-thermal"),
                     document.getElementById("small-mood"),
                     document.getElementById("small-clothing")]
 
+// Flow may have been previously saved locally as flow.txt
 var flowFileRead
 var flowFileWrite
+var buzzFileWrite
 
-try {
+    try {
       var flowFileRead = fs.readFileSync("flow.txt", "json");
       console.log(JSON.stringify(flowFileRead))
       console.log(JSON.stringify(flowFileRead.flowSelector))
@@ -179,18 +190,25 @@ try {
 messaging.peerSocket.onmessage = function(evt) {
   console.log("settings received on device");
   console.log(JSON.stringify(evt))
-  flowSelector = evt.data.data
-  settingsUpdateTime = evt.data.time
-  console.log("flow selector from peer socket is" , flowSelector)
-  mapFlows(flowSelector)
-
-  //save flows locally in event of app rest
-  flowFileWrite = {flowSelector: flowSelector}
-  console.log(JSON.stringify(flowFileWrite))
-  fs.writeFileSync("flow.txt", flowFileWrite, "json")
-  console.log("files saved locally")
-
-
+  
+  if(evt.data.key == 'flow_index') {
+    flowSelector = evt.data.data
+    flowSelectorUpdateTime = evt.data.time
+    console.log("flow selector from peer socket is" , flowSelector)
+    mapFlows(flowSelector)
+    //save flows locally in event of app rest
+    flowFileWrite = {flowSelector: flowSelector}
+    console.log(JSON.stringify(flowFileWrite))
+    fs.writeFileSync("flow.txt", flowFileWrite, "json")
+    console.log("flowSelector, files saved locally")
+  } else if(evt.data.key == 'buzz_time') {
+    buzzFileWrite = {buzzSelection: evt.data.data}
+    console.log(evt.data.data)
+    fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
+    console.log("buzzSelection, files saved locally")
+    buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
+    console.log("Buzz Selection is", buzzSelection)
+  }
 
   console.log("end message socket")
 }
@@ -200,19 +218,28 @@ function processAllFiles() {
   let fileName;
   while (fileName = inbox.nextFile()) {
     console.log(`/private/data/${fileName} is now available`);
-    let flowSelector_file = fs.readFileSync(`${fileName}`, "cbor");
-    console.log(JSON.stringify(flowSelector_file));
-    if(flowSelector_file.time > settingsUpdateTime){
-      flowSelector = flowSelector_file.data
-      mapFlows(flowSelector)
-      console.log("settings updated via file transfer")
-      settingsUpdateTime = flowSelector_file.time
+    let fileData = fs.readFileSync(`${fileName}`, "cbor");
+    console.log(JSON.stringify(fileData));
+    console.log("settings received via file transfer")
+    if(fileData.time > flowSelectorUpdateTime){
+      flowSelectorUpdateTime = fileData.time
+      if(fileData.key == 'flow_index'){
+        flowSelector = fileData.data
+        mapFlows(flowSelector)
+        console.log("settings updated via file transfer")
 
-      //save flows locally in event of app rest
-      flowFileWrite = {flowSelector: flowSelector}
-      console.log(JSON.stringify(flowFileWrite))
-      fs.writeFileSync("flow.txt", flowFileWrite, "json")
-      console.log("files saved locally")
+        //save flows locally in event of app rest
+        flowFileWrite = {flowSelector: flowSelector}
+        console.log(JSON.stringify(flowFileWrite))
+        fs.writeFileSync("flow.txt", flowFileWrite, "json")
+        console.log("files saved locally")
+      } else if(fileData.key == 'buzz_time'){
+        buzzSelection = fileData.data
+        console.log("buzz selection is", buzzSelection)
+        buzzFileWrite = {buzzSelection: fileData.data}
+        fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
+
+      }
     } else {
       console.log("settings already updated via peer socket")
     }
@@ -503,6 +530,9 @@ function vibrate() {
   } else {
     smallIcons.map(icon => icon.style.opacity = 0);
     initiateFeedbackData();
+    // Reset currentView to prevent an unattended fitbit from moving through the flow
+    currentView=0
+    // go to first item in the flow
     flow[currentView]()
   }
   //Stop vibration after 5 seconds

@@ -37,8 +37,7 @@ if (me.launchReasons.settingsChanged) {
 function sendValue(key, val) {
   if (val) {
     // check that the change was a change in the flow
-    if(key=="flow_index"){
-
+    if(key=="flow_index" || key=="buzz_time"){
       var sendTime = new Date().getTime();
       sendSettingData({
         key: key,
@@ -56,14 +55,14 @@ function sendSettingData(data) {
   // If we have a MessageSocket, send the data to the device
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     console.log(data)
-    messaging.peerSocket.send({data: data.value.selected, time: data.time});
+    messaging.peerSocket.send({data: data.value.selected, time: data.time, key: data.key});
     console.log("data sent from companion")
   } else {
     // Note that the index.js is checking the time, and will only update via file transfer if the time made in data.time is greater
     console.log("No peerSocket connection. Attempting to send via file transfer");
 
       //Fire the Guideed Missile via outbox Woosh
-      outbox.enqueue('flow_index.cbor', cbor.encode({data: data.value.selected, time: data.time}))
+      outbox.enqueue('flow_index.cbor', cbor.encode({data: data.value.selected, time: data.time, key: data.key}))
         .then((ft) => {
           console.log(`Transfer of ${ft.name} successfully queued.`);
           })
