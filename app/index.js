@@ -530,6 +530,9 @@ function vibrate() {
   } else {
     smallIcons.map(icon => icon.style.opacity = 0);
     initiateFeedbackData();
+    // Reset currentView to prevent an unattended fitbit from moving through the flow
+    currentView=0
+    // go to first item in the flow
     flow[currentView]()
   }
   //Stop vibration after 5 seconds
