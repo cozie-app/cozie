@@ -378,14 +378,14 @@ function showThankyou(){
 
   //Find out how many seconds has passed to give response
   const endFeedback = new Date();
-  const startFeedback = new Date(feedback_data['startFeedback'])
-  feedback_data['responseSpeed'] = (endFeedback - startFeedback)/1000.0
-  feedback_data['endFeedback'] = endFeedback.toISOString();
-  console.log(feedback_data['responseSpeed'])
+  const startFeedback = new Date(feedbackData['startFeedback'])
+  feedbackData['responseSpeed'] = (endFeedback - startFeedback)/1000.0
+  feedbackData['endFeedback'] = endFeedback.toISOString();
+  console.log(feedbackData['responseSpeed'])
 
   //send feedback to companion
-  sendEventIfReady(feedback_data)
-  feedback_data = {}
+  sendEventIfReady(feedbackData)
+  feedbackData = {}
   setTimeout(()=>{showClock()}, 2000)
   currentView=0
 }
@@ -397,15 +397,34 @@ function showClock(){
   currentView=0
 }
 
-//Global variable for handling feedback_data 
-var feedback_data
+
+var feedbackData // Global variable for handling feedbackData 
+var votelog       // Global variable for handling votelogs
 
 function initiateFeedbackData() {
+  // Initiating feedback data
   const startFeedback = new Date().toISOString();
-  feedback_data = {
+  // Initiate feedbackData object
+  feedbackData = {
     startFeedback,
     heartRate: hrm.heartRate,
   }
+
+  // reading log file for debuging purposes
+    try {
+      console.log("checking if local file exists")
+      votelog = fs.readFileSync("votelog.txt", "json");
+  } catch(err) {
+      // if can't read set local file to empty
+      console.log("creating empty votelog.txt file")
+      votelog = [0]
+  } 
+  // Incremement the vote log by one
+  votelog[0]++
+  // add the votelog to the feedback data json
+  feedbackData['voteLog'] = votelog[0]
+  // store the votelog on the device as votelog.txt
+  fs.writeFileSync("votelog.txt", votelog, "json");
 }
 
 let buttons = [{
@@ -504,7 +523,7 @@ for(const button of buttons) {
     }
 
     // console.log(`${button.value} clicked`)
-    feedback_data[button.attribute] = button.value;
+    feedbackData[button.attribute] = button.value;
     
     //Go straight to end if comfortable
     flow[currentView]() // temporarily doing this for the experiment
@@ -546,9 +565,9 @@ function vibrate() {
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------
 
 
-function sendEventIfReady(feedback_data) {
-  console.log("sending feedback_data")
-  console.log(JSON.stringify(feedback_data))
+function sendEventIfReady(feedbackData) {
+  console.log("sending feedbackData")
+  console.log(JSON.stringify(feedbackData))
 
   console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
   // set timeout of gps aquisition to 5 seconds and allow cached geo locations up to 1min to be allowed
@@ -556,16 +575,16 @@ function sendEventIfReady(feedback_data) {
   
   function locationSuccess(position) {
     console.log("location success")
-    feedback_data.lat = position.coords.latitude
-    feedback_data.lon = position.coords.longitude
-    sendDataToCompanion(feedback_data);
+    feedbackData.lat = position.coords.latitude
+    feedbackData.lon = position.coords.longitude
+    sendDataToCompanion(feedbackData);
   }
 
   function locationError(error) {
     console.log("location fail")
-    feedback_data.lat = null
-    feedback_data.lon = null
-    sendDataToCompanion(feedback_data);
+    feedbackData.lat = null
+    feedbackData.lon = null
+    sendDataToCompanion(feedbackData);
   }
 }
 
