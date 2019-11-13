@@ -153,8 +153,21 @@ function sendDataToInflux(data) {
           console.log(JSON.stringify(res))
           console.log(JSON.stringify(res.body))
           console.log(res.status);
+          if (res.status != 200) {
+            sendSettingData({
+              key: 'error',
+              value: {selected: {type: "fetchErr", message: res.status}},
+              time: new Date().getTime()
+            });
+
+          }
       })
       .catch(function(error) {
           console.log('There has been a problem with your fetch operation: ', error.message);
+        sendSettingData({
+          key: 'error',
+          value: {selected: {type: "fetchErr", message: error.message}},
+          time: new Date().getTime()
+        });
       });
     }
