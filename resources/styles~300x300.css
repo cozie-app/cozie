@@ -39,6 +39,49 @@
    /*  fill: #38f8df; */
 }
 
+#devMemoryLabel {
+  font-size: 30;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 90;
+  y: 10%;
+  fill: #a0a0a0;
+  /*x: 260;
+  y: 15%; */
+   /*  fill: #38f8df; */
+}
+
+#devHeartStorageLabel {
+  font-size: 20;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 255;
+  y: 95%;
+  fill: #a0a0a0;
+}
+
+#devErrorLabel {
+  font-size: 20;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 5;
+  y: 48%;
+  fill: #f83478;
+}
+
+#devErrorMessageLabel {
+  font-size: 20;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 5;
+  y: 53%;
+  fill: #f83478;
+}
+
 #hrmIcon {
   x: 220;
   y: 3%;

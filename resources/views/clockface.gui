@@ -10,6 +10,11 @@
   <rect x="0" y="0" width="300" height="2" fill="#505050" id='chargeLabel'/>
   <text id="storageLabel" >  </text>
 
+
+  <text id="devMemoryLabel" > </text>
+  <text id="devHeartStorageLabel" > </text>
+  <text id="devErrorLabel" > </text>
+  <text id="devErrorMessageLabel" > </text>
   
   <use href="#left-button" id="not-comfy" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#F08080"/>

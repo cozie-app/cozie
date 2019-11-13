@@ -16,9 +16,9 @@ import { inbox } from "file-transfer"
 import { outbox } from "file-transfer";
 import * as cbor from "cbor";
 import { listDirSync } from "fs";
-
 import { memory } from "system";
 
+const production = false // false for dev / debug releases
 
 //-------- CLOCK FACE DESIGN -----------
 
@@ -62,10 +62,18 @@ let steps = document.getElementById("steps");
 let dateLabel = document.getElementById("dateLabel");
 let secLabel = document.getElementById("secLabel");
 let storageLabel = document.getElementById("storageLabel")
+// Note that dev elements are hidden in production mode
+let devMemoryLabel = document.getElementById("devMemoryLabel")
+let devHeartStorageLabel = document.getElementById("devHeartStorageLabel")
+let devErrorLabel = document.getElementById("devErrorLabel")
+let devErrorMessageLabel = document.getElementById("devErrorMessageLabel")
+
 // console.log((today.local.steps || 0) + " steps");
 
-// Update the <text> element every tick with the current time
+// set the local_file which will be used to store data
 let local_file;
+
+
 // intervals to check vibrations
 let found = false;
 const buzzOptions = {
@@ -75,7 +83,6 @@ const buzzOptions = {
   '3': [9,12,15]
 }
 let buzzSelection;
-
 setInterval(function() {
   try {
     buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
@@ -99,18 +106,35 @@ setInterval(function() {
 }, 1200000); // timeout for 20 minutes
 
 // Collect 90 minutes of heart rate data
-var heartRateArray = []
-
+var dataHistoryArray = []
+// To run every minute and populate the data history array with 90min of data
 setInterval(function() {
-  if (heartRateArray.length >=90){
-    heartRateArray.shift() // remove the first element of the array
+  if (dataHistoryArray.length >=90){
+    dataHistoryArray.shift() // remove the first element of the array
   }
 
   let currentTime = new Date().toISOString()
-  heartRateArray.push({time: currentTime, heartRate: hrm.heartRate})
+  dataHistoryArray.push({time: currentTime, heartRate: hrm.heartRate, stepCount: today.adjusted.steps})
 
-  console.log(JSON.stringify(heartRateArray))
-  console.log("number of heart rate data points", heartRateArray.length)
+  console.log(JSON.stringify(dataHistoryArray))
+  console.log("number of heart rate data points", dataHistoryArray.length)
+
+  // store the data on the watch for debugging
+  if (!production){
+    devMemoryLabel.text = `${Math.floor(memory.js.used/1000)}/${Math.floor(memory.js.total/1000)}kb`
+    devHeartStorageLabel.text = dataHistoryArray.length + '/90'
+    // Colour based on memory allocation
+    if (memory.js.used > 50000) {
+      devMemoryLabel.style.fill = '#f83478' //pink
+    }
+    else if (memory.js.used < 40000) {
+      devMemoryLabel.style.fill = '#b8fc68'; //green
+    }
+    else
+    {
+      devMemoryLabel.style.fill = '#ffd733'; //yelow
+    }
+  }
 
   console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
  
@@ -219,13 +243,21 @@ messaging.peerSocket.onmessage = function(evt) {
     console.log(JSON.stringify(flowFileWrite))
     fs.writeFileSync("flow.txt", flowFileWrite, "json")
     console.log("flowSelector, files saved locally")
-  } else if(evt.data.key == 'buzz_time') {
+  } 
+  else if(evt.data.key == 'buzz_time') {
     buzzFileWrite = {buzzSelection: evt.data.data}
     console.log(evt.data.data)
     fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
     console.log("buzzSelection, files saved locally")
     buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
     console.log("Buzz Selection is", buzzSelection)
+  }
+  else if (evt.data.key =='error') {
+    console.log("error message called and displaying on watch")
+    if (!production){
+      devErrorLabel.text = evt.data.data.type
+      devErrorMessageLabel.text = evt.data.data.message
+    }
   }
 
   console.log("end message socket")
@@ -251,12 +283,20 @@ function processAllFiles() {
         console.log(JSON.stringify(flowFileWrite))
         fs.writeFileSync("flow.txt", flowFileWrite, "json")
         console.log("files saved locally")
-      } else if(fileData.key == 'buzz_time'){
+      } 
+      else if(fileData.key == 'buzz_time'){
         buzzSelection = fileData.data
         console.log("buzz selection is", buzzSelection)
         buzzFileWrite = {buzzSelection: fileData.data}
         fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
 
+      }
+      else if (fileData.key =='error') {
+        console.log("error message called and displaying on watch")
+        if (!production){
+          devErrorLabel.text = fileData.data.type + ' ' + Date(fileData.time)
+          devErrorMessageLabel.text = fileData.data.message
+        }
       }
     } else {
       console.log("settings already updated via peer socket")
@@ -429,7 +469,7 @@ function initiateFeedbackData() {
   }
 
   // access heart rate array data
-  feedbackData['heartRateArray'] = heartRateArray
+  feedbackData['dataHistoryArray'] = dataHistoryArray
 
   // reading log file for debuging purposes
     try {
