@@ -94,6 +94,7 @@ messaging.peerSocket.addEventListener("message", (evt) => {
 
 // receive message via inbox
 async function processAllFiles() {
+  console.log("recieving file from fitbit")
   
    let file;
 
@@ -101,6 +102,7 @@ async function processAllFiles() {
      const input_data_file = JSON.parse(await file.text());
      //console.log(`file contents: ${input_data_file}`);
      input_data_file.map(data => {
+        console.log("preparing to send data to influx")
 
        sendDataToInflux(data);
      });

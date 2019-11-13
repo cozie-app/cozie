@@ -421,6 +421,7 @@ function initiateFeedbackData() {
   } 
   // Incremement the vote log by one
   votelog[0]++
+  console.log(votelog[0])
   // add the votelog to the feedback data json
   feedbackData['voteLog'] = votelog[0]
   // store the votelog on the device as votelog.txt
