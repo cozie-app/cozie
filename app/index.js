@@ -20,7 +20,6 @@ import { listDirSync } from "fs";
 import { memory } from "system";
 
 
-
 //-------- CLOCK FACE DESIGN -----------
 
 var months = {0: "Jan", 1: "Feb", 2: "Mar", 3: 'Apr', 4: "May", 5: 'Jun',
@@ -98,6 +97,25 @@ setInterval(function() {
       found = false;
   }  
 }, 1200000); // timeout for 20 minutes
+
+// Collect 90 minutes of heart rate data
+var heartRateArray = []
+
+setInterval(function() {
+  if (heartRateArray.length >=90){
+    heartRateArray.shift() // remove the first element of the array
+  }
+
+  let currentTime = new Date().toISOString()
+  heartRateArray.push({time: currentTime, heartRate: hrm.heartRate})
+
+  console.log(JSON.stringify(heartRateArray))
+  console.log("number of heart rate data points", heartRateArray.length)
+
+  console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
+ 
+}, 60000); // timeout for 1 minute
+
 
 clock.ontick = (evt) => {
   let today_dt = evt.date;
@@ -409,6 +427,9 @@ function initiateFeedbackData() {
     startFeedback,
     heartRate: hrm.heartRate,
   }
+
+  // access heart rate array data
+  feedbackData['heartRateArray'] = heartRateArray
 
   // reading log file for debuging purposes
     try {
