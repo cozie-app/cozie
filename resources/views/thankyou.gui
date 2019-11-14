@@ -1,4 +1,5 @@
 <svg id="thankyou" display="none">
   <rect x="0" y="50%" width="100%" height="50%" fill="black" />
-  <textarea fill="white" x="5%" y="50%"> Your feedback has been recieved </textarea>
+  <text fill="white" x="50%" y="65%" text-anchor="middle">Your feedback has</text>
+  <text fill="white" x="50%" y="75%" text-anchor="middle">been received</text>
 </svg>

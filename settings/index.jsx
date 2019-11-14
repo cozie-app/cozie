@@ -5,6 +5,7 @@ import indoorOutdoor from '../resources/images/icons/indoor.png';
 import inofficeOutoffice from '../resources/images/icons/indoor.png';
 import mood from '../resources/images/icons/not-comfy.png';
 import clothing from '../resources/images/icons/light_clothes.png';
+import clothing from '../resources/images/icons/high.png';
 import noSound from '../resources/images/icons/prefer_quieter.png';
 import sound from '../resources/images/icons/prefer_louder.png';
 
@@ -77,6 +78,12 @@ function mySettings(props) {
               name: "Clothing",
               value: "showClothing",
               subLabel: "Light, Medium, Heavy",
+              img: clothing
+            },
+            { 
+              name: "Air Velocity",
+              value: "showVelocity",
+              subLabel: "Low, Medium, High",
               img: clothing
             }
           ]}

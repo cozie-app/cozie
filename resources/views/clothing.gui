@@ -1,13 +1,11 @@
 <svg id="clothing" display="none">
 
-
   <use href="#button" id="medium_clothes" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#FFCC33"/>
     <set href="image" attributeName="href" to="images/icons/medium_clothes.png"/>
     <set href="text"  attributeName="text-buffer" to="What best describes" />
     <set href="second-text"  attributeName="text-buffer" to="what you are wearing" />
   </use>
-
 
   <use href="#left-button" id="light_clothes" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#61C3FF"/>

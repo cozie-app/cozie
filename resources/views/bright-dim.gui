@@ -6,8 +6,6 @@
     <set href="circle" attributeName="fill" to="#9ACD32"/>
   </use>
 
-
-
   <use href="#left-button" id="prefer_dim" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#708090"/>
     <set href="image" attributeName="href" to="images/icons/prefer_dimmer.png"/>

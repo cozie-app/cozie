@@ -1,11 +1,22 @@
+/*#timeLabel {*/
+/*  font-size: 68;*/
+/*  font-family: Seville-Book;*/
+/*  text-length: 32;*/
+/*  text-anchor: middle;*/
+/*  x: 50%-10;*/
+/*  y: 40%;*/
+/*  fill: #ffffff;*/
+/*}*/
+
 #timeLabel {
-  font-size: 68;
-  font-family: Seville-Book;
-  text-length: 32;
-  text-anchor: middle;
-  x: 50%-10;
-  y: 30%;
-  fill: #ffffff;
+    font-size: 68;
+    font-family: Seville-Book;
+    display-align: center;
+    text-length: 32;
+    text-anchor: middle;
+    x: 50%-10;
+    y: 35%;
+    fill: #ffffff;
 }
 
 #secLabel {
@@ -14,7 +25,17 @@
   text-length: 32;
   text-anchor: start;
   x: 70%+10;
-  y: 30%;
+  y: 35%;
+  fill: #a0a0a0;
+}
+
+#dateLabel {
+  font-size: 25;
+  font-family: Colfax;
+  text-length: 32;
+  text-anchor: middle;
+  x: 50%;
+  y: 45%;
   fill: #a0a0a0;
 }
 
@@ -98,16 +119,6 @@
   fill: #a0a0a0;
 }
 
-#dateLabel {
-  font-size: 25;
-  font-family: Colfax;
-  text-length: 32;
-  text-anchor: middle;
-  x: 50%;
-  y: 40%;
-  fill: #a0a0a0;
-}
-
 .comfyLabel {
   font-size: 25;
   font-family: Colfax;
@@ -124,4 +135,9 @@
   x: 25;
   y: 95%;
   fill: #a0a0a0;
+}
+
+.circle_comfy {
+    r: "35";
+    fill: #10A30B;
 }
