@@ -1,14 +1,13 @@
 <svg id="inoffice" display="none">
 
-
   <use href="#left-button" id="out-office" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#FFCC33"/>
+    <set href="circle" attributeName="fill" to="fb-blue"/>
     <set href="image" attributeName="href" to="images/icons/outdoor.png"/>
     <set href="text"  attributeName="text-buffer" to="Not Working" />
   </use>
 
   <use href="#right-button" id="in-office" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#7090B5"/>
+    <set href="circle" attributeName="fill" to="fb-orange"/>
     <set href="image" attributeName="href" to="images/icons/indoor.png"/>
     <set href="text"  attributeName="text-buffer" to="Working" />
   </use>

@@ -42,13 +42,13 @@ hrm.onreading = function () {
     // console.log("Current heart rate: " + hrm.heartRate);
     hrLabel.text = `${hrm.heartRate}`;
     if (user.heartRateZone(hrm.heartRate) === 'fat-burn') {
-        hrLabel.style.fill = '#E8D90C'; //yelow
+        hrLabel.style.fill = 'fb-peach'; //yelow
     } else if (user.heartRateZone(hrm.heartRate) === 'cardio') {
-        hrLabel.style.fill = '#FF9500'; //light red
+        hrLabel.style.fill = 'fb-orange'; //light red
     } else if (user.heartRateZone(hrm.heartRate) === 'peak') {
-        hrLabel.style.fill = '#E81D0C'; //pink
+        hrLabel.style.fill = 'fb-red'; //pink
     } else if (user.heartRateZone(hrm.heartRate) === 'out-of-range') {
-        hrLabel.style.fill = '#10A30B'; //blue
+        hrLabel.style.fill = 'fb-green'; //blue
     }
 };
 
@@ -123,11 +123,11 @@ setInterval(function () {
         devHeartStorageLabel.text = dataHistoryArray.length + '/90';
         // Colour based on memory allocation
         if (memory.js.used > 50000) {
-            devMemoryLabel.style.fill = '#C30DFF' //pink
+            devMemoryLabel.style.fill = 'fb-violet' //pink
         } else if (memory.js.used < 40000) {
-            devMemoryLabel.style.fill = '#10A30B'; //green
+            devMemoryLabel.style.fill = 'fb-green'; //green
         } else {
-            devMemoryLabel.style.fill = '#E8D90C'; //yelow
+            devMemoryLabel.style.fill = 'fb-peach'; //yelow
         }
     }
 
@@ -161,23 +161,21 @@ clock.ontick = (evt) => {
     // Steps
     steps.text = `${(Math.floor(today.adjusted.steps / 1000) || 0)}k`;
     if (steps.text >= (goals.steps || 0)) {
-        steps.style.fill = '#10A30B'; //green
+        steps.style.fill = 'fb-green'; //green
     } else if (steps.text >= (goals.steps || 0) / 2) {
-        steps.style.fill = '#E8D90C'; //yelow
+        steps.style.fill = 'fb-peach'; //yelow
     } else {
-        steps.style.fill = '#C30DFF'; //pink
+        steps.style.fill = 'fb-red'; //pink
     }
 
-
     // Charge
-
     //get screen width
     let charge = battery.chargeLevel / 100;
     chargeLabel.width = 300 * charge;
     if (charge < 0.2) {
-        chargeLabel.style.fill = '#E81D0C'
+        chargeLabel.style.fill = 'fb-red'
     } else {
-        chargeLabel.style.fill = '#505050'
+        chargeLabel.style.fill = 'fb-light-gray'
     }
 
 };

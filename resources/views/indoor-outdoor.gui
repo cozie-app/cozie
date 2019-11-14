@@ -2,13 +2,13 @@
 
 
   <use href="#left-button" id="outdoor" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#FFCC33"/>
+    <set href="circle" attributeName="fill" to="fb-orange"/>
     <set href="image" attributeName="href" to="images/icons/outdoor.png"/>
     <set href="text"  attributeName="text-buffer" to="Outdoor" />
   </use>
 
   <use href="#right-button" id="indoor" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#7090B5"/>
+    <set href="circle" attributeName="fill" to="fb-blue"/>
     <set href="image" attributeName="href" to="images/icons/indoor.png"/>
     <set href="text"  attributeName="text-buffer" to="Indoor" />
   </use>

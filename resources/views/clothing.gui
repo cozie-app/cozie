@@ -1,14 +1,14 @@
 <svg id="clothing" display="none">
 
   <use href="#button" id="medium_clothes" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#FFCC33"/>
+    <set href="circle" attributeName="fill" to="fb-peach"/>
     <set href="image" attributeName="href" to="images/icons/medium_clothes.png"/>
     <set href="text"  attributeName="text-buffer" to="What best describes" />
     <set href="second-text"  attributeName="text-buffer" to="what you are wearing" />
   </use>
 
   <use href="#left-button" id="light_clothes" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#61C3FF"/>
+    <set href="circle" attributeName="fill" to="fb-cyan"/>
     <set href="circle" attributeName="cy" to="210"/>
     <set href="image" attributeName="href" to="images/icons/light_clothes.png"/>
     <set href="image" attributeName="y" to="175"/>
@@ -17,7 +17,7 @@
   </use>
 
   <use href="#right-button" id="heavy_clothes" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#FF8F42"/>
+    <set href="circle" attributeName="fill" to="fb-orange"/>
     <set href="circle" attributeName="cy" to="210"/>
     <set href="image" attributeName="href" to="images/icons/heavy_clothes.png"/>
     <set href="image" attributeName="y" to="175"/>

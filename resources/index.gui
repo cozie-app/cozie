@@ -23,7 +23,7 @@
   </g>
 
   <g id="small-light" opacity="0.2">
-    <circle  cx="145" cy="240" r="6" fill="yellow"  />
+    <circle  cx="145" cy="240" r="6" fill="fb-peach"  />
     <image id="image" x="140" y="235" width="10" height="10" href="images/icons/prefer_brighter.png" load="sync" />
   </g>
 
