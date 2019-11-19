@@ -2,12 +2,14 @@
   <!-- import buttons component -->
   <link rel="import" href="../components/buttons.gui" />
 
+  <use href="#main-question">
+    <set href="text" attributeName="text-buffer" to="Air speed around you" />
+  </use>
+
   <use href="#button" id="air_vel_low" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#68BFFF"/>
     <set href="image" attributeName="href" to="images/icons/air_vel_low.png"/>
     <set href="text"  attributeName="text-buffer" to="Still" />
-    <set href="second-text" attributeName="text-buffer" to="Air speed" />
-    <set href="second-text" attributeName="y" to="50%" />
   </use>
 
   <use href="#left-button" id="air_vel_medium" pointer-events="visible">

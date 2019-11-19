@@ -1,10 +1,13 @@
 <svg id="clothing" display="none">
 
+  <use href="#main-question">
+    <set href="text" attributeName="text-buffer" to="What are you wearing?" />
+  </use>
+
   <use href="#button" id="medium_clothes" pointer-events="visible">
     <set href="circle" attributeName="fill" to="fb-peach"/>
     <set href="image" attributeName="href" to="images/icons/medium_clothes.png"/>
-    <set href="text"  attributeName="text-buffer" to="What best describes" />
-    <set href="second-text"  attributeName="text-buffer" to="what you are wearing" />
+    <set href="text"  attributeName="text-buffer" to="" />
   </use>
 
   <use href="#left-button" id="light_clothes" pointer-events="visible">
