@@ -201,7 +201,7 @@ const clockblock = document.getElementById("clockblock");
 
 // Default shows only thank you screen in the flow
 let flow = [showThankyou];
-let flowViews;
+let flowViews = [thankyou];
 // const allFlows = [showFace, showFace, showFace, showFace, showFace, showFace, showFace, showFace];
 // const face_to_show = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel];
 //Useed to set all views to none when switching between screens
@@ -234,7 +234,7 @@ try {
 } catch (err) {
     console.log(err);
     console.log("resetting flows");
-    let flowSelector = []
+    flowSelector = []
 }
 
 //recieve message via peer socket
@@ -383,6 +383,7 @@ function showFace(viewToDisplay) {
 function showThankyou() {
     allViews.map(v => v.style.display = "none");
     smallIcons.map(icon => icon.style.opacity = 0.2);
+    console.log(flowSelector)
     flowSelector.map(index => {
         smallIcons[index].style.opacity = 1.0;
     });
