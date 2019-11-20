@@ -201,7 +201,7 @@ const clockblock = document.getElementById("clockblock");
 
 // Default shows only thank you screen in the flow
 let flow = [showThankyou];
-let flow_views;
+let flowViews;
 // const allFlows = [showFace, showFace, showFace, showFace, showFace, showFace, showFace, showFace];
 // const face_to_show = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel];
 //Useed to set all views to none when switching between screens
@@ -313,21 +313,21 @@ function processAllFiles() {
 
 function mapFlows(flowSelector) {
     flow = [];
-    flow_views = [];
+    flowViews = [];
     //set opacity of all small icons to 0.2
     smallIcons.map(icon => icon.style.opacity = 0.2);
     if (flowSelector) {
         flowSelector.map(index => {
             // flow.push(allFlows[index]);
-            flow_views.push(allViews[index]);
+            flowViews.push(allViews[index]);
             smallIcons[index].style.opacity = 1.0;
         })
     }
     // flow.push(showThankyou);
-    flow_views.push(thankyou);
+    flowViews.push(thankyou);
 
     console.log(flow);
-    console.log(flow_views);
+    console.log(flowViews);
 }
 
 inbox.addEventListener("newfile", processAllFiles);
@@ -373,10 +373,10 @@ const air_vel_low = document.getElementById('air_vel_low');
 const air_vel_medium = document.getElementById("air_vel_medium");
 const air_vel_high = document.getElementById("air_vel_high");
 
-function showFace(view_to_display) {
+function showFace(viewToDisplay) {
     console.log("Test");
     allViews.map(v => v.style.display = "none");
-    view_to_display.style.display = "inline";
+    viewToDisplay.style.display = "inline";
     currentView++
 }
 
@@ -555,10 +555,10 @@ for (const button of buttons) {
         feedbackData[button.attribute] = button.value;
 
         //Go straight to end if comfortable
-        if (flow_views[currentView] === thankyou) {
+        if (flowViews[currentView] === thankyou) {
             showThankyou();
         } else {
-            showFace(flow_views[currentView]) // temporarily doing this for the experiment)
+            showFace(flowViews[currentView]) // temporarily doing this for the experiment)
         }
 
         // if (button.attribute === 'comfort' & button.value === "comfy") {
