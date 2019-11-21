@@ -1,10 +1,11 @@
 import thermal from '../resources/images/icons/prefer_warmer.png';
 import light from '../resources/images/icons/prefer_brighter.png';
 import noise from '../resources/images/icons/prefer_louder.png';
-import indoorOutdoor from '../resources/images/icons/indoor.png';
+import indoorOutdoor from '../resources/images/icons/out_in.png';
 import inofficeOutoffice from '../resources/images/icons/indoor.png';
 import mood from '../resources/images/icons/not-comfy.png';
 import clothing from '../resources/images/icons/light_clothes.png';
+import icon_velocity from '../resources/images/icons/air_vel_high.png';
 import noSound from '../resources/images/icons/prefer_quieter.png';
 import sound from '../resources/images/icons/prefer_louder.png';
 
@@ -38,39 +39,39 @@ function mySettings(props) {
           settingsKey="flow_index"
           options={[
             {
-              name: "Thermal",
+              name: "Thermal preference",
               value: "showThermal",
-              subLabel: "Prefer Warmer, Prefer Cooler, Comfy",
+              subLabel: "Cooler, No change, Warmer",
               img: thermal
             },
             {
-              name: "Light",
+              name: "Illuminance preference",
               value: "showLight",
-              subLabel: "Prefer Brighter, Prefer Dimmer, Comfy",
+              subLabel: "Dimmer, No change, Brighter",
               img: light
             },
             {
-              name: "Noise",
+              name: "Noise preference",
               value: "showNoise",
-              subLabel: "Prefer Louder, Prefer Quieter, Comfy",
+              subLabel: "Quieter, No change, Louder",
               img: noise
             },
             {
-              name: "Indoor / Outdoor",
+              name: "Location",
               value: "showIndoor",
               subLabel: "Indoor, Outdoor",
               img: indoorOutdoor
             },
             {
-              name: "In Office",
+              name: "Are you working?",
               value: "showInOffice",
-              subLabel: "In Office, Out of Office",
+              subLabel: "Yes, No",
               img: inofficeOutoffice
             },
             { 
               name: "Mood",
               value: "showMood",
-              subLabel: "Good,Not So Good",
+              subLabel: "Not so good, Neutral, Good",
               img: mood
             },
             { 
@@ -78,6 +79,12 @@ function mySettings(props) {
               value: "showClothing",
               subLabel: "Light, Medium, Heavy",
               img: clothing
+            },
+            {
+              name: "Air Velocity",
+              value: "showVelocity",
+              subLabel: "Low, Medium, High",
+              img: icon_velocity
             }
           ]}
           renderItem={option => (

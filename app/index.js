@@ -43,13 +43,13 @@ hrm.onreading = function() {
   // console.log("Current heart rate: " + hrm.heartRate);
   hrLabel.text = `${hrm.heartRate}`;
   if (user.heartRateZone(hrm.heartRate) == 'fat-burn') {
-    hrLabel.style.fill = '#ffd733'; //yelow
+    hrLabel.style.fill = 'fb-peach'; //yelow
   } else if (user.heartRateZone(hrm.heartRate) == 'cardio') {
-    hrLabel.style.fill = '#f83c40'; //light red
+    hrLabel.style.fill = 'fb-orange'; //light red
   } else if (user.heartRateZone(hrm.heartRate) == 'peak') {
-    hrLabel.style.fill = '#f80070'; //pink
+    hrLabel.style.fill = 'fb-red'; //pink
   } else if (user.heartRateZone(hrm.heartRate) == 'out-of-range') { 
-    hrLabel.style.fill = '#38f8df'; //blue
+    hrLabel.style.fill = 'fb-green'; //blue
   };
 }
 
@@ -106,7 +106,7 @@ setInterval(function() {
 }, 1200000); // timeout for 20 minutes
 
 // Collect 90 minutes of heart rate data
-var dataHistoryArray = []
+let dataHistoryArray = [];
 // To run every minute and populate the data history array with 90min of data
 setInterval(function() {
   if (dataHistoryArray.length >=90){
@@ -125,14 +125,14 @@ setInterval(function() {
     devHeartStorageLabel.text = dataHistoryArray.length + '/90'
     // Colour based on memory allocation
     if (memory.js.used > 50000) {
-      devMemoryLabel.style.fill = '#f83478' //pink
+      devMemoryLabel.style.fill = 'fb-violet' //pink
     }
     else if (memory.js.used < 40000) {
-      devMemoryLabel.style.fill = '#b8fc68'; //green
+      devMemoryLabel.style.fill = 'fb-green'; //green
     }
     else
     {
-      devMemoryLabel.style.fill = '#ffd733'; //yelow
+      devMemoryLabel.style.fill = 'fb-peach'; //yelow
     }
   }
 
@@ -167,11 +167,11 @@ clock.ontick = (evt) => {
   // Steps
   steps.text = `${(Math.floor(today.adjusted.steps/1000) || 0)}k`;
   if (steps.text >= (goals.steps || 0)) {
-    steps.style.fill = '#b8fc68'; //green
+    steps.style.fill = 'fb-green'; //green
   } else if (steps.text >= (goals.steps || 0)/2) {
-    steps.style.fill = '#ffd733'; //yelow
+    steps.style.fill = 'fb-peach'; //yelow
   } else {
-    steps.style.fill = '#f83478'; //pink
+    steps.style.fill = 'fb-red'; //pink
   };
   
   
@@ -181,9 +181,9 @@ clock.ontick = (evt) => {
   let charge = battery.chargeLevel/100;
   chargeLabel.width = 300*charge;
   if (charge < 0.2) {
-    chargeLabel.style.fill = '#f83c40'
+    chargeLabel.style.fill = 'fb-red'
   } else { 
-    chargeLabel.style.fill = '#505050'
+    chargeLabel.style.fill = 'fb-light-gray'
   }
   
 }
@@ -194,9 +194,25 @@ clock.ontick = (evt) => {
 
 console.log("WARNING!! APP HAS RESET")
 
+//Flow GUIs
+const clockface = document.getElementById("clockface");
+const indoorOutdoor = document.getElementById("indoor-outdoor");
+const inOffice = document.getElementById("inoffice");
+const warmCold = document.getElementById("warm-cold");
+const brightDim = document.getElementById("bright-dim");
+const loudQuiet = document.getElementById("loud-quiet");
+const happySad = document.getElementById("happy-sad");
+const clothing = document.getElementById("clothing");
+const svg_air_vel = document.getElementById("svg_air_vel");
+//Clock manipulation guis
+const thankyou = document.getElementById("thankyou");
+const svg_stop_survey = document.getElementById("stopSurvey");
+const clockblock = document.getElementById("clockblock");
+
 // Default shows only thank you screen in the flow
-var flow=[showThankyou]
-const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood, showClothing ]
+let flow_views = [thankyou];
+// Used to set all views to none when switching between screens
+const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, clockface, thankyou, clockblock, svg_stop_survey];
 var flowSelectorUpdateTime = 0;
 
 //read small icons 
@@ -206,15 +222,17 @@ const smallIcons = [document.getElementById("small-thermal"),
                     document.getElementById("small-indoor"),
                     document.getElementById("small-office"),
                     document.getElementById("small-mood"),
-                    document.getElementById("small-clothing")]
+                    document.getElementById("small-clothing"),
+                    document.getElementById("small-velocity")];
 
 // Flow may have been previously saved locally as flow.txt
-var flowFileRead
+let flowFileRead
 var flowFileWrite
 var buzzFileWrite
+let flowSelector;
 
     try {
-      var flowFileRead = fs.readFileSync("flow.txt", "json");
+      flowFileRead = fs.readFileSync("flow.txt", "json");
       console.log(JSON.stringify(flowFileRead))
       console.log(JSON.stringify(flowFileRead.flowSelector))
       flowSelector = flowFileRead.flowSelector
@@ -223,7 +241,7 @@ var buzzFileWrite
     } catch(err) {
       console.log(err)
       console.log("resetting flows")
-      let flowSelector = []
+      flowSelector = []
     }
 
 
@@ -308,19 +326,16 @@ function processAllFiles() {
 
 
 function mapFlows(flowSelector){
-  flow=[]
+  flow_views=[];
   //set opacity of all small icons to 0.2
   smallIcons.map(icon => icon.style.opacity = 0.2)
   if (flowSelector) {
   flowSelector.map(index => {
-    flow.push(allFlows[index]);
+    flow_views.push(allViews[index]);
     smallIcons[index].style.opacity = 1.0;
     })
   }
-    flow.push(showThankyou)
-
-
-  console.log(flow)
+    flow_views.push(thankyou);
 }
 
 
@@ -331,25 +346,7 @@ processAllFiles();
 
 //-------- DEFINE VIEWS AND DATA COLLECTION BASED ON FLOW SELECTOR -----------
 
-var currentView = 0 //current view of flow
-
-//Flow GUIs
-const clockface = document.getElementById("clockface");
-const indoorOutdoor = document.getElementById("indoor-outdoor");
-const inOffice = document.getElementById("inoffice");
-const warmCold = document.getElementById("warm-cold");
-const brightDim = document.getElementById("bright-dim");
-const loudQuiet = document.getElementById("loud-quiet");
-const happySad = document.getElementById("happy-sad");
-const clothing = document.getElementById("clothing");
-//Clock manipulation guis
-const thankyou = document.getElementById("thankyou");
-const clockblock = document.getElementById("clockblock");
-
-//Useed to set all views to none when switching between screens
-const allViews = [clockface, indoorOutdoor, inOffice, warmCold, brightDim, loudQuiet, happySad, clothing, thankyou, clockblock]
-
-
+let currentView = 0; //current view of flow
 
 // buttons
 const comfy = document.getElementById("comfy");
@@ -364,6 +361,9 @@ const out_office = document.getElementById("out-office");
 const thermal_comfy = document.getElementById('thermal_comfy')
 const prefer_warm = document.getElementById("prefer_warm");
 const prefer_cold = document.getElementById("prefer_cold");
+// back and stop buttons
+const flow_back = document.getElementById("flow_back");
+const flow_stop = document.getElementById("flow_stop");
 // buttons
 const noise_comfy = document.getElementById('noise_comfy')
 const prefer_bright = document.getElementById("prefer_bright");
@@ -380,57 +380,25 @@ const sad = document.getElementById("sad");
 const light_clothes = document.getElementById('light_clothes')
 const medium_clothes = document.getElementById("medium_clothes");
 const heavy_clothes = document.getElementById("heavy_clothes");
+// buttons air velocity
+const air_vel_low = document.getElementById('air_vel_low');
+const air_vel_medium = document.getElementById("air_vel_medium");
+const air_vel_high = document.getElementById("air_vel_high");
 
-function showThermal(){
-  console.log("Showing Thermal Feedback");
-  allViews.map(v => v.style.display = "none")
-  warmCold.style.display = "inline"
-  currentView++
-}
-
-function showLight(){
-  allViews.map(v => v.style.display = "none")
-  brightDim.style.display = "inline"
-  currentView++
-}
-
-function showNoise(){
-  allViews.map(v => v.style.display = "none")
-  loudQuiet.style.display = "inline"
-  currentView++
-}
-
-function showMood(){
-  console.log("Showing mood Feedback");
-  allViews.map(v => v.style.display = "none")
-  happySad.style.display = "inline"
-  currentView++
-}
-
-function showIndoor(){
-  allViews.map(v => v.style.display = "none")
-  indoorOutdoor.style.display = "inline"
-  currentView++
-}
-
-function showInOffice(){
-  allViews.map(v => v.style.display = "none")
-  inOffice.style.display = "inline"
-  currentView++
-}
-
-function showClothing(){
-  allViews.map(v => v.style.display = "none")
-  clothing.style.display = "inline"
-  currentView++
+function showFace(view_to_display) {
+    allViews.map(v => v.style.display = "none");
+    view_to_display.style.display = "inline";
+    currentView++
 }
 
 function showThankyou(){
   allViews.map(v => v.style.display = "none")
   smallIcons.map(icon => icon.style.opacity = 0.2)
-  flowSelector.map(index => {
-    smallIcons[index].style.opacity = 1.0;
-    })
+    if (flow_views.length >= 1) {
+        flowSelector.map(index => {
+            smallIcons[index].style.opacity = 1.0;
+        })
+    }
   clockface.style.display = "inline"
   thankyou.style.display = "inline"
 
@@ -448,6 +416,23 @@ function showThankyou(){
   currentView=0
 }
 
+function showMessageStopSurvey() {
+    allViews.map(v => v.style.display = "none");
+    smallIcons.map(icon => icon.style.opacity = 0.2);
+
+    // highlight all the icons corresponding to the questions selected in the fitbit app
+    flowSelector.map(index => {
+        smallIcons[index].style.opacity = 1.0;
+    });
+    clockface.style.display = "inline";
+    svg_stop_survey.style.display = "inline";
+
+    //clear feedback data recorded
+    feedbackData = {};
+    setTimeout(() => {
+        showClock()
+    }, 2000);
+}
 
 function showClock(){
   allViews.map(v => v.style.display = "none")
@@ -517,7 +502,15 @@ let buttons = [{
     value: 'thermal_comfy',
     obj: thermal_comfy,
     attribute: 'thermal',
-  }, {
+}, {
+    value: 'flow_back',
+    obj: flow_back,
+    attribute: 'flow_control',
+}, {
+    value: 'flow_stop',
+    obj: flow_stop,
+    attribute: 'flow_control',
+}, {
     value: 'prefer_warm',
     obj: prefer_warm,
     attribute: 'thermal',
@@ -573,29 +566,60 @@ let buttons = [{
     value: 'heavy_clothes',
     obj: heavy_clothes,
     attribute: 'clothing',
-  }]
+}, {
+    value: 'low',
+    obj: air_vel_low,
+    attribute: 'air-vel',
+}, {
+    value: 'medium',
+    obj: air_vel_medium,
+    attribute: 'air-vel',
+}, {
+    value: 'high',
+    obj: air_vel_high,
+    attribute: 'air-vel',
+}];
 
+for (const button of buttons) {
+    button.obj.addEventListener("click", () => {
+        /** Constantly monitors if any buttons have been pressed */
+        // init data object on first view click
+        if (button.attribute === 'comfort') {
+            // if any of the two buttons in the main view have been pressed initiate the loop through the selected
+            smallIcons.map(icon => icon.style.opacity = 0);
+            initiateFeedbackData();
+        } else if (button.attribute === 'flow_control') {
+            // if any of the two buttons (back arrow or cross) have been selected
+            if (button.value === "flow_back") {
+                // decrease the value of currentView by 2 to go to previous view
+                currentView--;
+                currentView--;
+                if (currentView < 0) {
+                    // if user pressed back button in first question survey
+                    showMessageStopSurvey();
+                } else {
+                    // show previous view
+                    showFace(flow_views[currentView])
+                }
+            } else if (button.value === "flow_stop") {
+                // stop_flow button was pressed
+                showMessageStopSurvey();
+            }
+        }
 
-for(const button of buttons) {
-  button.obj.addEventListener("click", () => {
-    // init data object on first view click
-    if (button.attribute === 'comfort') {
-      smallIcons.map(icon => icon.style.opacity = 0);
-      initiateFeedbackData();
-    }
+        console.log(`${button.value} clicked`);
+        if (button.attribute !== 'flow_control') {
 
-    // console.log(`${button.value} clicked`)
-    feedbackData[button.attribute] = button.value;
-    
-    //Go straight to end if comfortable
-    flow[currentView]() // temporarily doing this for the experiment
-    // if (button.attribute === 'comfort' & button.value === "comfy") {
-    //       showThankyou();
-    // } else {
-    //   // continue the flow
-    //   flow[currentView]()
-    // }
-  });
+            feedbackData[button.attribute] = button.value;
+
+            if (flow_views[currentView] === thankyou) {
+                // if all the views have already been shown
+                showThankyou();
+            } else {
+                showFace(flow_views[currentView])
+            }
+        }
+    });
 }
 
 //-------- END (DEFINE VIEWS BASED ON FLOW SELECTOR) -----------
@@ -603,10 +627,17 @@ for(const button of buttons) {
 
 // vibrate for 3 sec and change screen to reponse
 function vibrate() {
-  vibration.start("ring");
+    /**
+     * It causes the watch to vibrate, and forces the start of the feedback.
+     *
+     * If there are no questions selected then it blocks the time until a response is given.
+     * If there are questions in the flow, then it starts the flow
+     */
+
+    vibration.start("ring");
 
   //Change main clock face to response screen
-  if (flow.length === 1) {
+  if (flow_views.length === 1) {
     clockblock.style.display = "inline";
   } else {
     smallIcons.map(icon => icon.style.opacity = 0);
@@ -614,7 +645,7 @@ function vibrate() {
     // Reset currentView to prevent an unattended fitbit from moving through the flow
     currentView=0
     // go to first item in the flow
-    flow[currentView]()
+    showFace(flow_views[currentView])
   }
   //Stop vibration after 5 seconds
   setTimeout(function(){

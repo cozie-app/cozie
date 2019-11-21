@@ -125,3 +125,8 @@
   y: 95%;
   fill: #a0a0a0;
 }
+
+.circle_comfy {
+    r: "35";
+    fill: #10A30B;
+}
