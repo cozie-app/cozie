@@ -167,11 +167,11 @@ clock.ontick = (evt) => {
   // Steps
   steps.text = `${(Math.floor(today.adjusted.steps/1000) || 0)}k`;
   if (steps.text >= (goals.steps || 0)) {
-    steps.style.fill = '#b8fc68'; //green
+    steps.style.fill = 'fb-green'; //green
   } else if (steps.text >= (goals.steps || 0)/2) {
-    steps.style.fill = '#ffd733'; //yelow
+    steps.style.fill = 'fb-peach'; //yelow
   } else {
-    steps.style.fill = '#f83478'; //pink
+    steps.style.fill = 'fb-red'; //pink
   };
   
   
@@ -181,9 +181,9 @@ clock.ontick = (evt) => {
   let charge = battery.chargeLevel/100;
   chargeLabel.width = 300*charge;
   if (charge < 0.2) {
-    chargeLabel.style.fill = '#f83c40'
+    chargeLabel.style.fill = 'fb-red'
   } else { 
-    chargeLabel.style.fill = '#505050'
+    chargeLabel.style.fill = 'fb-light-gray'
   }
   
 }
