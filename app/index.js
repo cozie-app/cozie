@@ -43,13 +43,13 @@ hrm.onreading = function() {
   // console.log("Current heart rate: " + hrm.heartRate);
   hrLabel.text = `${hrm.heartRate}`;
   if (user.heartRateZone(hrm.heartRate) == 'fat-burn') {
-    hrLabel.style.fill = '#ffd733'; //yelow
+    hrLabel.style.fill = 'fb-peach'; //yelow
   } else if (user.heartRateZone(hrm.heartRate) == 'cardio') {
-    hrLabel.style.fill = '#f83c40'; //light red
+    hrLabel.style.fill = 'fb-orange'; //light red
   } else if (user.heartRateZone(hrm.heartRate) == 'peak') {
-    hrLabel.style.fill = '#f80070'; //pink
+    hrLabel.style.fill = 'fb-red'; //pink
   } else if (user.heartRateZone(hrm.heartRate) == 'out-of-range') { 
-    hrLabel.style.fill = '#38f8df'; //blue
+    hrLabel.style.fill = 'fb-green'; //blue
   };
 }
 
@@ -125,14 +125,14 @@ setInterval(function() {
     devHeartStorageLabel.text = dataHistoryArray.length + '/90'
     // Colour based on memory allocation
     if (memory.js.used > 50000) {
-      devMemoryLabel.style.fill = '#f83478' //pink
+      devMemoryLabel.style.fill = 'fb-violet' //pink
     }
     else if (memory.js.used < 40000) {
-      devMemoryLabel.style.fill = '#b8fc68'; //green
+      devMemoryLabel.style.fill = 'fb-green'; //green
     }
     else
     {
-      devMemoryLabel.style.fill = '#ffd733'; //yelow
+      devMemoryLabel.style.fill = 'fb-peach'; //yelow
     }
   }
 
@@ -212,6 +212,7 @@ const smallIcons = [document.getElementById("small-thermal"),
 var flowFileRead
 var flowFileWrite
 var buzzFileWrite
+var flowSelector;
 
     try {
       var flowFileRead = fs.readFileSync("flow.txt", "json");
