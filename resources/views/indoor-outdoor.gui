@@ -1,15 +1,30 @@
 <svg id="indoor-outdoor" display="none">
 
+  <use href="#main-question">
+    <set href="text" attributeName="text-buffer" to="Are you?" />
+  </use>
 
   <use href="#left-button" id="outdoor" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#FFCC33"/>
+    <set href="circle" attributeName="fill" to="fb-orange"/>
+    <set href="circle" attributeName="cx" to="25%"/>
+    <set href="circle" attributeName="cy" to="50%"/>
     <set href="image" attributeName="href" to="images/icons/outdoor.png"/>
+    <set href="image" attributeName="x" to="25%-35"/>
+    <set href="image" attributeName="y" to="50%-35"/>
     <set href="text"  attributeName="text-buffer" to="Outdoor" />
+    <set href="text"  attributeName="x" to="25%" />
+    <set href="text"  attributeName="y" to="50%+60" />
   </use>
 
   <use href="#right-button" id="indoor" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#7090B5"/>
+    <set href="circle" attributeName="fill" to="fb-blue"/>
+    <set href="circle" attributeName="cx" to="75%"/>
+    <set href="circle" attributeName="cy" to="50%"/>
     <set href="image" attributeName="href" to="images/icons/indoor.png"/>
+    <set href="image" attributeName="x" to="75%-35"/>
+    <set href="image" attributeName="y" to="50%-35"/>
     <set href="text"  attributeName="text-buffer" to="Indoor" />
+    <set href="text"  attributeName="x" to="75%" />
+    <set href="text"  attributeName="y" to="50%+60" />
   </use>
 </svg>
