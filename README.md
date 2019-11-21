@@ -24,68 +24,67 @@ The app is available by the link. To install ClockFace follow the link https://g
 # How Data is Mapped to Integers for storage on InfluxDB
 
 ```python
-        if bodyData['comfort'] == 'comfy':
-            fields.update({'comfort': 10})
-            #response = 10
-        elif bodyData['comfort'] == 'notComfy':
-            fields.update({'comfort': 9})
-            #response = 9
-        else:
-            return {'statusCode': 404, 'body': json.dumps('Response name not found')}
+if bodyData['comfort'] == 'comfy':
+    fields.update({'comfort': 10})
+    #response = 10
+elif bodyData['comfort'] == 'notComfy':
+    fields.update({'comfort': 9})
+    #response = 9
+else:
+    return {'statusCode': 404, 'body': json.dumps('Response name not found')}
 
-        if 'thermal' in bodyData:
-            if bodyData['thermal'] == 'thermal_comfy':
-                fields.update({'thermal': 10})
-            elif bodyData['thermal'] == 'prefer_warm':
-                fields.update({'thermal': 9})
-            elif bodyData['thermal'] == 'prefer_cold':
-                fields.update({'thermal': 11})
+if 'thermal' in bodyData:
+    if bodyData['thermal'] == 'thermal_comfy':
+        fields.update({'thermal': 10})
+    elif bodyData['thermal'] == 'prefer_warm':
+        fields.update({'thermal': 9})
+    elif bodyData['thermal'] == 'prefer_cold':
+        fields.update({'thermal': 11})
 
-        if 'light' in bodyData:
-            if bodyData['light'] == 'light_comfy':
-                fields.update({'light': 10})
-            elif bodyData['light'] == 'prefer_bright':
-                fields.update({'light': 9})
-            elif bodyData['light'] == 'prefer_dim':
-                fields.update({'light': 11})
+if 'light' in bodyData:
+    if bodyData['light'] == 'light_comfy':
+        fields.update({'light': 10})
+    elif bodyData['light'] == 'prefer_bright':
+        fields.update({'light': 9})
+    elif bodyData['light'] == 'prefer_dim':
+        fields.update({'light': 11})
 
-        if 'noise' in bodyData:
-            if bodyData['noise'] == 'noise_comfy':
-                fields.update({'noise': 10})
-            elif bodyData['noise'] == 'prefer_louder':
-                fields.update({'noise': 9})
-            elif bodyData['noise'] == 'prefer_quiet':
-                fields.update({'noise': 11})
+if 'noise' in bodyData:
+    if bodyData['noise'] == 'noise_comfy':
+        fields.update({'noise': 10})
+    elif bodyData['noise'] == 'prefer_louder':
+        fields.update({'noise': 9})
+    elif bodyData['noise'] == 'prefer_quiet':
+        fields.update({'noise': 11})
 
-        if 'indoorOutdoor' in bodyData:
-            if bodyData['indoorOutdoor'] == 'indoor':
-                fields.update({'indoorOutdoor': 11})
-            elif bodyData['indoorOutdoor'] == 'outdoor':
-                fields.update({'indoorOutdoor': 9})
+if 'indoorOutdoor' in bodyData:
+    if bodyData['indoorOutdoor'] == 'indoor':
+        fields.update({'indoorOutdoor': 11})
+    elif bodyData['indoorOutdoor'] == 'outdoor':
+        fields.update({'indoorOutdoor': 9})
 
-        if 'inOffice' in bodyData:
-            if bodyData['inOffice'] == 'in_office':
-                fields.update({'inOffice': 11})
-            elif bodyData['inOffice'] == 'out_office':
-                fields.update({'inOffice': 9})
+if 'inOffice' in bodyData:
+    if bodyData['inOffice'] == 'in_office':
+        fields.update({'inOffice': 11})
+    elif bodyData['inOffice'] == 'out_office':
+        fields.update({'inOffice': 9})
 
-        if 'mood' in bodyData:
-            if bodyData['mood'] == 'neutral':
-                fields.update({'mood': 10})
-            elif bodyData['mood'] == 'sad':
-                fields.update({'mood': 9})
-            elif bodyData['mood'] == 'happy':
-                fields.update({'mood': 11})
+if 'mood' in bodyData:
+    if bodyData['mood'] == 'neutral':
+        fields.update({'mood': 10})
+    elif bodyData['mood'] == 'sad':
+        fields.update({'mood': 9})
+    elif bodyData['mood'] == 'happy':
+        fields.update({'mood': 11})
 
-        if 'clothing' in bodyData:
-            if bodyData['clothing'] == 'light_clothes':
-                fields.update({'clothing': 9})
-            elif bodyData['clothing'] == 'medium_clothes':
-                fields.update({'clothing': 10})
-            elif bodyData['clothing'] == 'heavy_clothes':
-                fields.update({'clothing': 11})
+if 'clothing' in bodyData:
+    if bodyData['clothing'] == 'light_clothes':
+        fields.update({'clothing': 9})
+    elif bodyData['clothing'] == 'medium_clothes':
+        fields.update({'clothing': 10})
+    elif bodyData['clothing'] == 'heavy_clothes':
+        fields.update({'clothing': 11})
 ```
-
 
 # Install  ClockFace to your own Fitbit Versa
 
