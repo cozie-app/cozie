@@ -1,6 +1,4 @@
 <svg id="svg_air_vel" display="none">
-  <!-- import buttons component -->
-  <link rel="import" href="../components/buttons.gui" />
 
   <use href="#main-question">
     <set href="text" attributeName="text-buffer" to="Air speed around you" />

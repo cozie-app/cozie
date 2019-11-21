@@ -336,9 +336,6 @@ function mapFlows(flowSelector){
     })
   }
     flow_views.push(thankyou);
-
-
-  console.log(flow)
 }
 
 
