@@ -1,6 +1,9 @@
 <symbol id="main-question">
-    <text id="Question" x="50%" y="11%" class="comfyLabel"></text>
+    <text id="text" x="50%" y="11%" class="comfyLabel"></text>
 </symbol>
+
+<image id="flow_back" x="10%-15" y="30%-15" width="30" height="30" href="images/icons/back.png" load="sync" pointer-events="visible"/>
+<image id="flow_stop" x="90%-15" y="30%-15" width="30" height="30" href="images/icons/stop.png" load="sync" pointer-events="visible"/>
 
 <symbol id="button">
    	<circle id="circle" cx="50%" cy="60" class= "circle_comfy"/>
