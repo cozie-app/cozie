@@ -1,21 +1,24 @@
-<symbol id="button">
-   	<circle id="circle" cx="175" cy="60" r="35" fill="red" />
-   	<image id="image" x="140" y="25" width="70" height="70" href="images/icons/comfy.png" load="sync" />
-   	<text id= "text" x="175" y="125" class= "comfyLabel"> Comfy </text>
-      <text id= "second-text" x="175" y="150" class= "comfyLabel"> </text>
+<symbol id="main-question">
+    <text id="Question" x="50%" y="11%" class="comfyLabel"></text>
+</symbol>
 
+<symbol id="button">
+   	<circle id="circle" cx="50%" cy="60" class= "circle_comfy"/>
+   	<image id="image" x="140" y="25" width="70" height="70" href="images/icons/comfy.png" load="sync" />
+   	<text id= "text" x="175" y="125" class= "comfyLabel">No change</text>
+    <text id= "second-text" x="175" y="150" class= "comfyLabel"> </text>
 </symbol>
 
 <symbol id="left-button">
    	<circle id="circle" cx="100" cy="160" r="35" fill="red" />
    	<image id="image" x="65" y="125" width="70" height="70" href="images/icons/nuetral.png" load="sync" />
-   	<text id= "text" x="100" y="220" class= "comfyLabel"> Not Comfy </text>
+   	<text id= "text" x="100" y="220" class= "comfyLabel">Lower</text>
    	<text id= "second-text" x="100" y="245" class= "comfyLabel"> </text>
 </symbol>
 
 <symbol id="right-button">
    	<circle id="circle" cx="250" cy="160" r="35" fill="red" />
    	<image id="image" x="215" y="125" width="70" height="70" href="images/icons/nuetral.png" load="sync" />
-   	<text id= "text" x="250" y="220" class= "comfyLabel"> Comfy </text>
+   	<text id= "text" x="250" y="220" class= "comfyLabel">Higher</text>
    	<text id= "second-text" x="250" y="245" class= "comfyLabel"> </text>
 </symbol>
