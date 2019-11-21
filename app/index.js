@@ -194,9 +194,23 @@ clock.ontick = (evt) => {
 
 console.log("WARNING!! APP HAS RESET")
 
+//Flow GUIs
+const clockface = document.getElementById("clockface");
+const indoorOutdoor = document.getElementById("indoor-outdoor");
+const inOffice = document.getElementById("inoffice");
+const warmCold = document.getElementById("warm-cold");
+const brightDim = document.getElementById("bright-dim");
+const loudQuiet = document.getElementById("loud-quiet");
+const happySad = document.getElementById("happy-sad");
+const clothing = document.getElementById("clothing");
+//Clock manipulation guis
+const thankyou = document.getElementById("thankyou");
+const clockblock = document.getElementById("clockblock");
+
 // Default shows only thank you screen in the flow
-var flow=[showThankyou]
-const allFlows = [showThermal, showLight, showNoise, showIndoor, showInOffice, showMood, showClothing ]
+let flow_views = [thankyou];
+// Used to set all views to none when switching between screens
+const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, clockface, thankyou, clockblock, svg_stop_survey];
 var flowSelectorUpdateTime = 0;
 
 //read small icons 
@@ -212,7 +226,7 @@ const smallIcons = [document.getElementById("small-thermal"),
 var flowFileRead
 var flowFileWrite
 var buzzFileWrite
-var flowSelector;
+let flowSelector;
 
     try {
       var flowFileRead = fs.readFileSync("flow.txt", "json");
@@ -309,16 +323,16 @@ function processAllFiles() {
 
 
 function mapFlows(flowSelector){
-  flow=[]
+  flow_views=[];
   //set opacity of all small icons to 0.2
   smallIcons.map(icon => icon.style.opacity = 0.2)
   if (flowSelector) {
   flowSelector.map(index => {
-    flow.push(allFlows[index]);
+    flow_views.push(allViews[index]);
     smallIcons[index].style.opacity = 1.0;
     })
   }
-    flow.push(showThankyou)
+    flow_views.push(thankyou);
 
 
   console.log(flow)
@@ -333,19 +347,6 @@ processAllFiles();
 //-------- DEFINE VIEWS AND DATA COLLECTION BASED ON FLOW SELECTOR -----------
 
 var currentView = 0 //current view of flow
-
-//Flow GUIs
-const clockface = document.getElementById("clockface");
-const indoorOutdoor = document.getElementById("indoor-outdoor");
-const inOffice = document.getElementById("inoffice");
-const warmCold = document.getElementById("warm-cold");
-const brightDim = document.getElementById("bright-dim");
-const loudQuiet = document.getElementById("loud-quiet");
-const happySad = document.getElementById("happy-sad");
-const clothing = document.getElementById("clothing");
-//Clock manipulation guis
-const thankyou = document.getElementById("thankyou");
-const clockblock = document.getElementById("clockblock");
 
 //Useed to set all views to none when switching between screens
 const allViews = [clockface, indoorOutdoor, inOffice, warmCold, brightDim, loudQuiet, happySad, clothing, thankyou, clockblock]
@@ -382,48 +383,10 @@ const light_clothes = document.getElementById('light_clothes')
 const medium_clothes = document.getElementById("medium_clothes");
 const heavy_clothes = document.getElementById("heavy_clothes");
 
-function showThermal(){
-  console.log("Showing Thermal Feedback");
-  allViews.map(v => v.style.display = "none")
-  warmCold.style.display = "inline"
-  currentView++
-}
-
-function showLight(){
-  allViews.map(v => v.style.display = "none")
-  brightDim.style.display = "inline"
-  currentView++
-}
-
-function showNoise(){
-  allViews.map(v => v.style.display = "none")
-  loudQuiet.style.display = "inline"
-  currentView++
-}
-
-function showMood(){
-  console.log("Showing mood Feedback");
-  allViews.map(v => v.style.display = "none")
-  happySad.style.display = "inline"
-  currentView++
-}
-
-function showIndoor(){
-  allViews.map(v => v.style.display = "none")
-  indoorOutdoor.style.display = "inline"
-  currentView++
-}
-
-function showInOffice(){
-  allViews.map(v => v.style.display = "none")
-  inOffice.style.display = "inline"
-  currentView++
-}
-
-function showClothing(){
-  allViews.map(v => v.style.display = "none")
-  clothing.style.display = "inline"
-  currentView++
+function showFace(view_to_display) {
+    allViews.map(v => v.style.display = "none");
+    view_to_display.style.display = "inline";
+    currentView++
 }
 
 function showThankyou(){
@@ -607,7 +570,7 @@ function vibrate() {
   vibration.start("ring");
 
   //Change main clock face to response screen
-  if (flow.length === 1) {
+  if (flow_views.length === 1) {
     clockblock.style.display = "inline";
   } else {
     smallIcons.map(icon => icon.style.opacity = 0);
@@ -615,7 +578,7 @@ function vibrate() {
     // Reset currentView to prevent an unattended fitbit from moving through the flow
     currentView=0
     // go to first item in the flow
-    flow[currentView]()
+    showFace(flow_views[currentView])
   }
   //Stop vibration after 5 seconds
   setTimeout(function(){
