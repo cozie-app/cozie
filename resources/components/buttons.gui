@@ -2,10 +2,15 @@
     <text id="text" x="50%" y="11%" class="comfyLabel"></text>
 </symbol>
 
-<circle id="flow_back" cx="10%" cy="30%" r="40" pointer-events="visible"/>
-<image x="10%-15" y="30%-15" width="30" height="30" href="images/icons/back.png" load="sync"/>
-<circle id="flow_stop" cx="90%" cy="30%" r="40" pointer-events="visible"/>
-<image x="90%-15" y="30%-15" width="30" height="30" href="images/icons/stop.png" load="sync"/>
+<g id="flow_back" pointer-events="visible">
+  <circle cx="10%" cy="30%" r="40"/>
+  <image x="10%-15" y="30%-15" width="30" height="30" href="images/icons/back.png" load="sync"/>
+</g>
+
+<g id="flow_stop" pointer-events="visible">
+  <circle cx="90%" cy="30%" r="40"/>
+  <image x="90%-15" y="30%-15" width="30" height="30" href="images/icons/stop.png" load="sync"/>
+</g>
 
 <symbol id="button">
    	<circle id="circle" cx="50%" cy="30%" class= "circle_comfy" />
