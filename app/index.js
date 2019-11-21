@@ -106,7 +106,7 @@ setInterval(function() {
 }, 1200000); // timeout for 20 minutes
 
 // Collect 90 minutes of heart rate data
-var dataHistoryArray = []
+let dataHistoryArray = [];
 // To run every minute and populate the data history array with 90min of data
 setInterval(function() {
   if (dataHistoryArray.length >=90){
@@ -206,6 +206,7 @@ const clothing = document.getElementById("clothing");
 const svg_air_vel = document.getElementById("svg_air_vel");
 //Clock manipulation guis
 const thankyou = document.getElementById("thankyou");
+const svg_stop_survey = document.getElementById("stopSurvey");
 const clockblock = document.getElementById("clockblock");
 
 // Default shows only thank you screen in the flow
@@ -363,6 +364,9 @@ const out_office = document.getElementById("out-office");
 const thermal_comfy = document.getElementById('thermal_comfy')
 const prefer_warm = document.getElementById("prefer_warm");
 const prefer_cold = document.getElementById("prefer_cold");
+// back and stop buttons
+const flow_back = document.getElementById("flow_back");
+const flow_stop = document.getElementById("flow_stop");
 // buttons
 const noise_comfy = document.getElementById('noise_comfy')
 const prefer_bright = document.getElementById("prefer_bright");
@@ -413,6 +417,23 @@ function showThankyou(){
   currentView=0
 }
 
+function showMessageStopSurvey() {
+    allViews.map(v => v.style.display = "none");
+    smallIcons.map(icon => icon.style.opacity = 0.2);
+
+    // highlight all the icons corresponding to the questions selected in the fitbit app
+    flowSelector.map(index => {
+        smallIcons[index].style.opacity = 1.0;
+    });
+    clockface.style.display = "inline";
+    svg_stop_survey.style.display = "inline";
+
+    //clear feedback data recorded
+    feedbackData = {};
+    setTimeout(() => {
+        showClock()
+    }, 2000);
+}
 
 function showClock(){
   allViews.map(v => v.style.display = "none")
@@ -482,7 +503,15 @@ let buttons = [{
     value: 'thermal_comfy',
     obj: thermal_comfy,
     attribute: 'thermal',
-  }, {
+}, {
+    value: 'flow_back',
+    obj: flow_back,
+    attribute: 'flow_control',
+}, {
+    value: 'flow_stop',
+    obj: flow_stop,
+    attribute: 'flow_control',
+}, {
     value: 'prefer_warm',
     obj: prefer_warm,
     attribute: 'thermal',
@@ -552,13 +581,32 @@ let buttons = [{
     attribute: 'air-vel',
 }];
 
-for(const button of buttons) {
-  button.obj.addEventListener("click", () => {
-    // init data object on first view click
-    if (button.attribute === 'comfort') {
-      smallIcons.map(icon => icon.style.opacity = 0);
-      initiateFeedbackData();
-    }
+for (const button of buttons) {
+    button.obj.addEventListener("click", () => {
+        /** Constantly monitors if any buttons have been pressed */
+        // init data object on first view click
+        if (button.attribute === 'comfort') {
+            // if any of the two buttons in the main view have been pressed initiate the loop through the selected
+            smallIcons.map(icon => icon.style.opacity = 0);
+            initiateFeedbackData();
+        } else if (button.attribute === 'flow_control') {
+            // if any of the two buttons (back arrow or cross) have been selected
+            if (button.value === "flow_back") {
+                // decrease the value of currentView by 2 to go to previous view
+                currentView--;
+                currentView--;
+                if (currentView < 0) {
+                    // if user pressed back button in first question survey
+                    showMessageStopSurvey();
+                } else {
+                    // show previous view
+                    showFace(flow_views[currentView])
+                }
+            } else {
+                // stop_flow button was pressed
+                showMessageStopSurvey();
+            }
+        }
 
         console.log(`${button.value} clicked`);
         if (button.attribute !== 'flow_control') {
@@ -580,7 +628,14 @@ for(const button of buttons) {
 
 // vibrate for 3 sec and change screen to reponse
 function vibrate() {
-  vibration.start("ring");
+    /**
+     * It causes the watch to vibrate, and forces the start of the feedback.
+     *
+     * If there are no questions selected then it blocks the time until a response is given.
+     * If there are questions in the flow, then it starts the flow
+     */
+
+    vibration.start("ring");
 
   //Change main clock face to response screen
   if (flow_views.length === 1) {
