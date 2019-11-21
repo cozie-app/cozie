@@ -1,3 +1,13 @@
+/*#timeLabel {*/
+/*  font-size: 68;*/
+/*  font-family: Seville-Book;*/
+/*  text-length: 32;*/
+/*  text-anchor: middle;*/
+/*  x: 50%-10;*/
+/*  y: 40%;*/
+/*  fill: #ffffff;*/
+/*}*/
+
 #timeLabel {
   font-size: 68;
   font-family: Seville-Book;
@@ -124,4 +134,9 @@
   x: 25;
   y: 95%;
   fill: #a0a0a0;
+}
+
+.circle_comfy {
+    r: "35";
+    fill: #10A30B;
 }

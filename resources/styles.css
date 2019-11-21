@@ -74,6 +74,7 @@
   y: 50%;
   fill: #f83478;
 }
+
 #devErrorMessageLabel {
   font-size: 20;
   font-family: Seville-Book;
@@ -118,6 +119,11 @@
   fill: #a0a0a0;
 }
 
+.circle_comfy {
+    r: 35;
+    fill: #10A30B;
+}
+
 #storageLabel {
   font-size: 20;
   font-family: Seville-Book;
@@ -127,4 +133,5 @@
   y: 98%;
   fill: #a0a0a0;
 }
+
 /* 348x250 */

@@ -9,7 +9,9 @@
   <link rel="import" href="views/in-office.gui" />
   <link rel="import" href="views/clothing.gui" />
   <link rel="import" href="views/thankyou.gui" />
+  <link rel="import" href="views/gui_stop_survey.gui" />
   <link rel="import" href="views/clockblock.gui" />
+  <link rel="import" href="views/gui_air_vel.gui" />
 
   <g id="emptyForSymetry" opacity="0.2">
     <circle cx="105" cy="240" r="6" fill="orange"  />
@@ -22,7 +24,7 @@
   </g>
 
   <g id="small-light" opacity="0.2">
-    <circle  cx="145" cy="240" r="6" fill="yellow"  />
+    <circle  cx="145" cy="240" r="6" fill="fb-peach"  />
     <image id="image" x="140" y="235" width="10" height="10" href="images/icons/prefer_brighter.png" load="sync" />
   </g>
 
@@ -49,6 +51,11 @@
   <g id="small-clothing" opacity="0.2">
     <circle cx="245" cy="240" r="6" fill="#61C3FF"  />
     <image id="image" x="240" y="235" width="10" height="10" href="images/icons/light_clothes.png" load="sync" />
+  </g>
+
+  <g id="small-velocity" opacity="0.2">
+    <circle cx="265" cy="240" r="6" fill="#61C3FF"  />
+    <image id="image" x="240" y="235" width="10" height="10" href="images/icons/air_vel_low.png" load="sync" />
   </g>
 </svg>
 
