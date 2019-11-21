@@ -203,6 +203,7 @@ const brightDim = document.getElementById("bright-dim");
 const loudQuiet = document.getElementById("loud-quiet");
 const happySad = document.getElementById("happy-sad");
 const clothing = document.getElementById("clothing");
+const svg_air_vel = document.getElementById("svg_air_vel");
 //Clock manipulation guis
 const thankyou = document.getElementById("thankyou");
 const clockblock = document.getElementById("clockblock");
@@ -220,16 +221,17 @@ const smallIcons = [document.getElementById("small-thermal"),
                     document.getElementById("small-indoor"),
                     document.getElementById("small-office"),
                     document.getElementById("small-mood"),
-                    document.getElementById("small-clothing")]
+                    document.getElementById("small-clothing"),
+                    document.getElementById("small-velocity")];
 
 // Flow may have been previously saved locally as flow.txt
-var flowFileRead
+let flowFileRead
 var flowFileWrite
 var buzzFileWrite
 let flowSelector;
 
     try {
-      var flowFileRead = fs.readFileSync("flow.txt", "json");
+      flowFileRead = fs.readFileSync("flow.txt", "json");
       console.log(JSON.stringify(flowFileRead))
       console.log(JSON.stringify(flowFileRead.flowSelector))
       flowSelector = flowFileRead.flowSelector
@@ -346,12 +348,7 @@ processAllFiles();
 
 //-------- DEFINE VIEWS AND DATA COLLECTION BASED ON FLOW SELECTOR -----------
 
-var currentView = 0 //current view of flow
-
-//Useed to set all views to none when switching between screens
-const allViews = [clockface, indoorOutdoor, inOffice, warmCold, brightDim, loudQuiet, happySad, clothing, thankyou, clockblock]
-
-
+let currentView = 0; //current view of flow
 
 // buttons
 const comfy = document.getElementById("comfy");
@@ -382,6 +379,10 @@ const sad = document.getElementById("sad");
 const light_clothes = document.getElementById('light_clothes')
 const medium_clothes = document.getElementById("medium_clothes");
 const heavy_clothes = document.getElementById("heavy_clothes");
+// buttons air velocity
+const air_vel_low = document.getElementById('air_vel_low');
+const air_vel_medium = document.getElementById("air_vel_medium");
+const air_vel_high = document.getElementById("air_vel_high");
 
 function showFace(view_to_display) {
     allViews.map(v => v.style.display = "none");
@@ -537,8 +538,19 @@ let buttons = [{
     value: 'heavy_clothes',
     obj: heavy_clothes,
     attribute: 'clothing',
-  }]
-
+}, {
+    value: 'low',
+    obj: air_vel_low,
+    attribute: 'air-vel',
+}, {
+    value: 'medium',
+    obj: air_vel_medium,
+    attribute: 'air-vel',
+}, {
+    value: 'high',
+    obj: air_vel_high,
+    attribute: 'air-vel',
+}];
 
 for(const button of buttons) {
   button.obj.addEventListener("click", () => {
@@ -548,18 +560,19 @@ for(const button of buttons) {
       initiateFeedbackData();
     }
 
-    // console.log(`${button.value} clicked`)
-    feedbackData[button.attribute] = button.value;
-    
-    //Go straight to end if comfortable
-    flow[currentView]() // temporarily doing this for the experiment
-    // if (button.attribute === 'comfort' & button.value === "comfy") {
-    //       showThankyou();
-    // } else {
-    //   // continue the flow
-    //   flow[currentView]()
-    // }
-  });
+        console.log(`${button.value} clicked`);
+        if (button.attribute !== 'flow_control') {
+
+            feedbackData[button.attribute] = button.value;
+
+            if (flow_views[currentView] === thankyou) {
+                // if all the views have already been shown
+                showThankyou();
+            } else {
+                showFace(flow_views[currentView])
+            }
+        }
+    });
 }
 
 //-------- END (DEFINE VIEWS BASED ON FLOW SELECTOR) -----------
