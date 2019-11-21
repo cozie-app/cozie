@@ -241,7 +241,7 @@ let flowSelector;
     } catch(err) {
       console.log(err)
       console.log("resetting flows")
-      let flowSelector = []
+      flowSelector = []
     }
 
 
@@ -394,9 +394,11 @@ function showFace(view_to_display) {
 function showThankyou(){
   allViews.map(v => v.style.display = "none")
   smallIcons.map(icon => icon.style.opacity = 0.2)
-  flowSelector.map(index => {
-    smallIcons[index].style.opacity = 1.0;
-    })
+    if (flow_views.length >= 1) {
+        flowSelector.map(index => {
+            smallIcons[index].style.opacity = 1.0;
+        })
+    }
   clockface.style.display = "inline"
   thankyou.style.display = "inline"
 
