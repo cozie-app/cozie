@@ -1,122 +1,122 @@
 #timeLabel {
-    font-size: 68;
-    font-family: Seville-Book;
-    text-length: 32;
-    text-anchor: middle;
-    x: 50% -10;
-    y: 30%;
-    fill: #ffffff;
+  font-size: 68;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: middle;
+  x: 50%-10;
+  y: 30%;
+  fill: #ffffff;
 }
 
 #secLabel {
-    font-size: 30;
-    font-family: Seville-Book;
-    text-length: 32;
-    text-anchor: start;
-    x: 70%;
-    y: 30%;
-    fill: #a0a0a0;
+  font-size: 30;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 70%;
+  y: 30%;
+  fill: #a0a0a0;
 }
 
 #hrm {
-    font-size: 30;
-    font-family: Seville-Book;
-    text-length: 32;
-    text-anchor: start;
-    x: 300;
-    y: 12%;
-    fill: #a0a0a0;
-    /*fill: #38f8df;*/
+  font-size: 30;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 300;
+  y: 12%;
+  fill: #a0a0a0;
+  /*fill: #38f8df;*/
 }
 
 #steps {
-    font-size: 30;
-    font-family: Seville-Book;
-    text-length: 32;
-    text-anchor: start;
-    x: 35;
-    y: 12%;
-    fill: #a0a0a0;
-    /*x: 260;
-    y: 15%; */
-    /*  fill: #38f8df; */
+  font-size: 30;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 35;
+  y: 12%;
+  fill: #a0a0a0;
+  /*x: 260;
+  y: 15%; */
+   /*  fill: #38f8df; */
 }
 
 #devMemoryLabel {
-    font-size: 25;
-    font-family: Seville-Book;
-    text-length: 32;
-    text-anchor: middle;
-    x: 50%;
-    y: 10%;
-    fill: #a0a0a0;
-    /*x: 260;
-    y: 15%; */
-    /*  fill: #38f8df; */
+  font-size: 25;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: middle;
+  x: 50%;
+  y: 10%;
+  fill: #a0a0a0;
+  /*x: 260;
+  y: 15%; */
+   /*  fill: #38f8df; */
 }
 
 #devHeartStorageLabel {
-    font-size: 20;
-    font-family: Seville-Book;
-    text-length: 32;
-    text-anchor: start;
-    x: 300;
-    y: 98%;
-    fill: #a0a0a0;
+  font-size: 20;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 300;
+  y: 98%;
+  fill: #a0a0a0;
 }
 
 #devErrorLabel {
-    font-size: 20;
-    font-family: Seville-Book;
-    text-anchor: start;
-    text-length: 32;
-    x: 5;
-    y: 50%;
-    fill: #f83478;
+  font-size: 20;
+  font-family: Seville-Book;
+  text-anchor: start;
+  text-length: 32;
+  x: 5;
+  y: 50%;
+  fill: #f83478;
 }
 
 #devErrorMessageLabel {
-    font-size: 20;
-    font-family: Seville-Book;
-    text-anchor: start;
-    text-length: 100;
-    x: 5;
-    y: 55%;
-    fill: #f83478;
+  font-size: 20;
+  font-family: Seville-Book;
+  text-anchor: start;
+  text-length: 100;
+  x: 5;
+  y: 55%;
+  fill: #f83478;
 }
 
 #hrmIcon {
-    x: 270;
-    y: 4%;
-    width: 22;
-    height: 22;
-    fill: #a0a0a0;
+  x: 270;
+  y: 4%;
+  width: 22;
+  height: 22;
+  fill: #a0a0a0;
 }
 
 #stepIcon {
-    x: 7;
-    y: 4%;
-    width: 22;
-    height: 22;
-    fill: #a0a0a0;
+  x: 7;
+  y: 4%;
+  width: 22;
+  height: 22;
+  fill: #a0a0a0;
 }
 
 #dateLabel {
-    font-size: 25;
-    font-family: Colfax;
-    text-length: 32;
-    text-anchor: middle;
-    x: 50%;
-    y: 40%;
-    fill: #a0a0a0;
+  font-size: 25;
+  font-family: Colfax;
+  text-length: 32;
+  text-anchor: middle;
+  x: 50%;
+  y: 40%;
+  fill: #a0a0a0;
 }
 
 .comfyLabel {
-    font-size: 25;
-    font-family: Colfax;
-    text-length: 32;
-    text-anchor: middle;
-    fill: #a0a0a0;
+  font-size: 25;
+  font-family: Colfax;
+  text-length: 32;
+  text-anchor: middle;
+  fill: #a0a0a0;
 }
 
 .circle_comfy {
@@ -125,13 +125,13 @@
 }
 
 #storageLabel {
-    font-size: 20;
-    font-family: Seville-Book;
-    text-length: 32;
-    text-anchor: start;
-    x: 25;
-    y: 98%;
-    fill: #a0a0a0;
+  font-size: 20;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 25;
+  y: 98%;
+  fill: #a0a0a0;
 }
 
 /* 348x250 */
