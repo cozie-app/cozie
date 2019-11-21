@@ -601,7 +601,7 @@ for (const button of buttons) {
                     // show previous view
                     showFace(flow_views[currentView])
                 }
-            } else {
+            } else if (button.value === "flow_stop") {
                 // stop_flow button was pressed
                 showMessageStopSurvey();
             }
