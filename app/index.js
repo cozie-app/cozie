@@ -133,7 +133,7 @@ setInterval(function () {
 
     console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 
-}, 60000); // timeout for 1 minute
+}, 10000); // timeout for 1 minute // debugging, dont forget to change back
 
 clock.ontick = (evt) => {
     let today_dt = evt.date;
@@ -659,16 +659,17 @@ function sendEventIfReady(feedbackData) {
 }
 
 function sendDataToCompanion(data) {
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-        // if setLocation value is true then companion will set location
-        data.setLocation = true;
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN 
+        && JSON.stringify(data).length < messaging.peerSocket.MAX_MESSAGE_SIZE) {
+        console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE)
+        console.log("data size", JSON.stringify(data).length)
         messaging.peerSocket.send(data);
         console.log("data sent directly to companion");
 
         //remove data to prevent it beint sent twice
         data = null
     } else {
-        console.log("No peerSocket connection. Attempting to send via file transfer");
+        console.log("No peerSocket connection OR data too large. Attempting to send via file transfer");
 
         // try to read file with local data
         try {
