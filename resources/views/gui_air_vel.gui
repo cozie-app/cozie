@@ -7,7 +7,7 @@
   <use href="#button" id="air_vel_low" pointer-events="visible">
     <set href="circle" attributeName="fill" to="#68BFFF"/>
     <set href="image" attributeName="href" to="images/icons/air_vel_low.png"/>
-    <set href="text"  attributeName="text-buffer" to="Still" />
+    <set href="text"  attributeName="text-buffer" to="Low" />
   </use>
 
   <use href="#left-button" id="air_vel_medium" pointer-events="visible">
