@@ -16,7 +16,7 @@
   <text id="devErrorMessageLabel" > </text>
   
   <use href="#left-button" id="not-comfy" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="fb-red"/>
+    <set href="circle" attributeName="fill" to="fb-orange"/>
     <set href="text" attributeName="text-buffer" to="Not Comfy"/>
     <set href="image" attributeName="href" to="images/icons/not-comfy.png"/>
   </use>

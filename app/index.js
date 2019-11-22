@@ -356,9 +356,10 @@ const neutral = document.getElementById('neutral');
 const happy = document.getElementById("happy");
 const sad = document.getElementById("sad");
 // buttons
-const light_clothes = document.getElementById('light_clothes');
-const medium_clothes = document.getElementById("medium_clothes");
-const heavy_clothes = document.getElementById("heavy_clothes");
+const clothes_very_light = document.getElementById('clothes_very_light');
+const clothes_light = document.getElementById('clothes_light');
+const clothes_medium = document.getElementById("clothes_medium");
+const clothes_high = document.getElementById("clothes_high");
 // buttons air velocity
 const air_vel_low = document.getElementById('air_vel_low');
 const air_vel_medium = document.getElementById("air_vel_medium");
@@ -535,16 +536,20 @@ let buttons = [{
     obj: sad,
     attribute: 'mood',
 }, {
+    value: 8,
+    obj: clothes_very_light,
+    attribute: 'clothing',
+}, {
     value: 9,
-    obj: light_clothes,
+    obj: clothes_light,
     attribute: 'clothing',
 }, {
     value: 10,
-    obj: medium_clothes,
+    obj: clothes_medium,
     attribute: 'clothing',
 }, {
     value: 11,
-    obj: heavy_clothes,
+    obj: clothes_high,
     attribute: 'clothing',
 }, {
     value: 9,

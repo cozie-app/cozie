@@ -45,7 +45,7 @@ function mySettings(props) {
                             img: thermal
                         },
                         {
-                            name: "Illuminance preference",
+                            name: "Light preference",
                             value: "showLight",
                             subLabel: "Dimmer, No change, Brighter",
                             img: light
