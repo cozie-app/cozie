@@ -105,9 +105,9 @@ setInterval(function () {
 
 // Collect 90 minutes of heart rate data
 let dataHistoryArray = [];
-// To run every minute and populate the data history array with 90min of data
+// To run every  2 minute and populate the data history array with 60min of data
 setInterval(function () {
-    if (dataHistoryArray.length >= 90) {
+    if (dataHistoryArray.length >= 30) {
         dataHistoryArray.shift() // remove the first element of the array
     }
 
@@ -120,7 +120,7 @@ setInterval(function () {
     // store the data on the watch for debugging
     if (!production) {
         devMemoryLabel.text = `${Math.floor(memory.js.used / 1000)}/${Math.floor(memory.js.total / 1000)}kb`;
-        devHeartStorageLabel.text = dataHistoryArray.length + '/90';
+        devHeartStorageLabel.text = dataHistoryArray.length + '/30';
         // Colour based on memory allocation
         if (memory.js.used > 50000) {
             devMemoryLabel.style.fill = 'fb-violet' //pink
@@ -133,7 +133,7 @@ setInterval(function () {
 
     console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 
-}, 60000); // timeout for 1 minute
+}, 120000); // timeout for 2 min
 
 clock.ontick = (evt) => {
     let today_dt = evt.date;
@@ -455,32 +455,40 @@ function initiateFeedbackData() {
 }
 
 let buttons = [{
-    value: 'comfy',
+    value: 10,
     obj: comfy,
-    attribute: 'comfort',
+    attribute: 'comfort'
 }, {
-    value: 'notComfy',
+    value: 9,
     obj: notComfy,
     attribute: 'comfort',
 }, {
-    value: 'indoor',
+    value: 11,
     obj: indoor,
     attribute: 'indoorOutdoor',
 }, {
-    value: 'outdoor',
+    value: 9,
     obj: outdoor,
     attribute: 'indoorOutdoor',
 }, {
-    value: 'in_office',
+    value: 11,
     obj: in_office,
     attribute: 'inOffice',
 }, {
-    value: 'out_office',
+    value: 9,
     obj: out_office,
     attribute: 'inOffice',
 }, {
-    value: 'thermal_comfy',
+    value: 10,
     obj: thermal_comfy,
+    attribute: 'thermal',
+}, {
+    value: 9,
+    obj: prefer_warm,
+    attribute: 'thermal',
+}, {
+    value: 11,
+    obj: prefer_cold,
     attribute: 'thermal',
 }, {
     value: 'flow_back',
@@ -491,71 +499,63 @@ let buttons = [{
     obj: flow_stop,
     attribute: 'flow_control',
 }, {
-    value: 'prefer_warm',
-    obj: prefer_warm,
-    attribute: 'thermal',
-}, {
-    value: 'prefer_cold',
-    obj: prefer_cold,
-    attribute: 'thermal',
-}, {
-    value: 'light_comfy',
+    value: 10,
     obj: light_comfy,
     attribute: 'light',
 }, {
-    value: 'prefer_bright',
+    value: 9,
     obj: prefer_bright,
     attribute: 'light',
 }, {
-    value: 'prefer_dim',
+    value: 11,
     obj: prefer_dim,
     attribute: 'light',
 }, {
-    value: 'noise_comfy',
+    value: 10,
     obj: noise_comfy,
     attribute: 'noise',
 }, {
-    value: 'prefer_loud',
+    value: 9,
     obj: prefer_loud,
     attribute: 'noise',
 }, {
-    value: 'prefer_quiet',
+    value: 11,
     obj: prefer_quiet,
     attribute: 'noise',
 }, {
-    value: 'neutral',
+    value: 10,
     obj: neutral,
     attribute: 'mood',
 }, {
-    value: 'happy',
+    value: 11,
     obj: happy,
     attribute: 'mood',
 }, {
-    value: 'sad',
+    value: 9,
     obj: sad,
     attribute: 'mood',
 }, {
-    value: 'light_clothes',
+    value: 9,
     obj: light_clothes,
     attribute: 'clothing',
 }, {
-    value: 'medium_clothes',
+    value: 10,
     obj: medium_clothes,
     attribute: 'clothing',
 }, {
-    value: 'heavy_clothes',
+    value: 11,
     obj: heavy_clothes,
     attribute: 'clothing',
 }, {
-    value: 'low',
+    value: 9,
     obj: air_vel_low,
     attribute: 'air-vel',
 }, {
-    value: 'medium',
+    value: 10,
     obj: air_vel_medium,
     attribute: 'air-vel',
 }, {
-    value: 'high',
+    value: 11,
     obj: air_vel_high,
     attribute: 'air-vel',
 }];
@@ -588,6 +588,7 @@ for (const button of buttons) {
         }
 
         console.log(`${button.value} clicked`);
+
         if (button.attribute !== 'flow_control') {
 
             feedbackData[button.attribute] = button.value;
@@ -658,16 +659,17 @@ function sendEventIfReady(feedbackData) {
 }
 
 function sendDataToCompanion(data) {
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-        // if setLocation value is true then companion will set location
-        data.setLocation = true;
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN 
+        && JSON.stringify(data).length < messaging.peerSocket.MAX_MESSAGE_SIZE) {
+        console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE)
+        console.log("data size", JSON.stringify(data).length)
         messaging.peerSocket.send(data);
         console.log("data sent directly to companion");
 
         //remove data to prevent it beint sent twice
         data = null
     } else {
-        console.log("No peerSocket connection. Attempting to send via file transfer");
+        console.log("No peerSocket connection OR data too large. Attempting to send via file transfer");
 
         // try to read file with local data
         try {

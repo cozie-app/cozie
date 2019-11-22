@@ -81,7 +81,7 @@ function mySettings(props) {
                             img: clothing
                         },
                         {
-                            name: "Air Velocity",
+                            name: "Air Speed",
                             value: "showVelocity",
                             subLabel: "Low, Medium, High",
                             img: icon_velocity
