@@ -21,69 +21,35 @@
 Supported Devices: Ionic, Versa, Versa-Lite
 The app is available by the link. To install ClockFace follow the link https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048 on your phone, it will redirect to FitBit app gallery.
 
-# How Data is Mapped to Integers for storage on InfluxDB
+# Document structure saved in InfluxDB
 
 ```python
-if bodyData['comfort'] == 'comfy':
-    fields.update({'comfort': 10})
-    #response = 10
-elif bodyData['comfort'] == 'notComfy':
-    fields.update({'comfort': 9})
-    #response = 9
-else:
-    return {'statusCode': 404, 'body': json.dumps('Response name not found')}
-
-if 'thermal' in bodyData:
-    if bodyData['thermal'] == 'thermal_comfy':
-        fields.update({'thermal': 10})
-    elif bodyData['thermal'] == 'prefer_warm':
-        fields.update({'thermal': 9})
-    elif bodyData['thermal'] == 'prefer_cold':
-        fields.update({'thermal': 11})
-
-if 'light' in bodyData:
-    if bodyData['light'] == 'light_comfy':
-        fields.update({'light': 10})
-    elif bodyData['light'] == 'prefer_bright':
-        fields.update({'light': 9})
-    elif bodyData['light'] == 'prefer_dim':
-        fields.update({'light': 11})
-
-if 'noise' in bodyData:
-    if bodyData['noise'] == 'noise_comfy':
-        fields.update({'noise': 10})
-    elif bodyData['noise'] == 'prefer_louder':
-        fields.update({'noise': 9})
-    elif bodyData['noise'] == 'prefer_quiet':
-        fields.update({'noise': 11})
-
-if 'indoorOutdoor' in bodyData:
-    if bodyData['indoorOutdoor'] == 'indoor':
-        fields.update({'indoorOutdoor': 11})
-    elif bodyData['indoorOutdoor'] == 'outdoor':
-        fields.update({'indoorOutdoor': 9})
-
-if 'inOffice' in bodyData:
-    if bodyData['inOffice'] == 'in_office':
-        fields.update({'inOffice': 11})
-    elif bodyData['inOffice'] == 'out_office':
-        fields.update({'inOffice': 9})
-
-if 'mood' in bodyData:
-    if bodyData['mood'] == 'neutral':
-        fields.update({'mood': 10})
-    elif bodyData['mood'] == 'sad':
-        fields.update({'mood': 9})
-    elif bodyData['mood'] == 'happy':
-        fields.update({'mood': 11})
-
-if 'clothing' in bodyData:
-    if bodyData['clothing'] == 'light_clothes':
-        fields.update({'clothing': 9})
-    elif bodyData['clothing'] == 'medium_clothes':
-        fields.update({'clothing': 10})
-    elif bodyData['clothing'] == 'heavy_clothes':
-        fields.update({'clothing': 11})
+{
+"startFeedback":"2019-11-22T01:57:14.342Z",  # Timestamp when the user started the survey (i.e. pressed one of the two buttons in the clock face)
+"heartRate":60,  # heart rate measured when the user completed the survey
+"dataHistoryArray":  # historical data measure at 1-minute interval before the user started the survey
+    [{
+    "time":"2019-11-22T01:58:10.879Z","heartRate":60,"stepCount":4860
+    },{
+    "time":"2019-11-22T01:59:10.879Z","heartRate":60,"stepCount":4919
+    }],  
+"voteLog":40,  # counter which stores information on how many times the user completed the survey, used for debugging to check that no responses where lost
+"comfort":10,  # Clock face question, 10 = "Comfy", 9 = "Not Comfy" 
+"thermal":9,  # Thermal preference, 9 = "Warm", 10 = "No Change", 11 = "Cooler"
+"light":9,  # Light preference, 9 = "Brighter", 10 = "No Change", 11 = "Dimmer"
+"noise":9,  # Noise preference, 9 = "Louder", 10 = "No Change", 11 = "Quiter"
+"indoorOutdoor":11,  # Location, 9 = "Outdoor", 11 = "Indoor",
+"inOffice":11,  # Are you working, 9 = "Not working", 11 = "working"
+"mood":11,  # Mood, 9 = "Sad", 10 = "Neutral", 11 = "Happy"
+"clothing":11,  # Clothing, 9 = "Light", 10 = "Medium", 11 = "Heavy"
+"air-vel":11,  # Air speed, 9 = "Low", 10 = "Medium", 11 = "High"
+"responseSpeed":2.577,  # Time in seconds it took to complete the survey
+"endFeedback":"2019-11-22T01:57:16.919Z",  # Timestamp when the user completed the survey
+"lat":48.13194,"lon":11.54944,  # Latitude and longitude provided by the GPS of the phone
+"setLocation":True,
+"user_id":"debug",  # User ID as per selection in settings
+"experiment_id":"debug",  # Experiment ID as per selection in settings
+}
 ```
 
 # Install  ClockFace to your own Fitbit Versa
