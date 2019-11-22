@@ -105,9 +105,9 @@ setInterval(function () {
 
 // Collect 90 minutes of heart rate data
 let dataHistoryArray = [];
-// To run every minute and populate the data history array with 90min of data
+// To run every  2 minute and populate the data history array with 60min of data
 setInterval(function () {
-    if (dataHistoryArray.length >= 90) {
+    if (dataHistoryArray.length >= 30) {
         dataHistoryArray.shift() // remove the first element of the array
     }
 
@@ -120,7 +120,7 @@ setInterval(function () {
     // store the data on the watch for debugging
     if (!production) {
         devMemoryLabel.text = `${Math.floor(memory.js.used / 1000)}/${Math.floor(memory.js.total / 1000)}kb`;
-        devHeartStorageLabel.text = dataHistoryArray.length + '/90';
+        devHeartStorageLabel.text = dataHistoryArray.length + '/30';
         // Colour based on memory allocation
         if (memory.js.used > 50000) {
             devMemoryLabel.style.fill = 'fb-violet' //pink
@@ -133,7 +133,7 @@ setInterval(function () {
 
     console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 
-}, 10000); // timeout for 1 minute // debugging, dont forget to change back
+}, 120000); // timeout for 2 min
 
 clock.ontick = (evt) => {
     let today_dt = evt.date;
