@@ -193,6 +193,7 @@ const loudQuiet = document.getElementById("loud-quiet");
 const happySad = document.getElementById("happy-sad");
 const clothing = document.getElementById("clothing");
 const svg_air_vel = document.getElementById("svg_air_vel");
+const svg_met = document.getElementById("metabolic_rate");
 //Clock manipulation guis
 const thankyou = document.getElementById("thankyou");
 const svg_stop_survey = document.getElementById("stopSurvey");
@@ -201,7 +202,7 @@ const clockblock = document.getElementById("clockblock");
 // Default shows only thank you screen in the flow
 let flow_views = [thankyou];
 // Used to set all views to none when switching between screens
-const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, clockface, thankyou, clockblock, svg_stop_survey];
+const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, svg_met, clockface, thankyou, clockblock, svg_stop_survey];
 let flowSelectorUpdateTime = 0;
 
 //read small icons 
@@ -212,7 +213,8 @@ const smallIcons = [document.getElementById("small-thermal"),
     document.getElementById("small-office"),
     document.getElementById("small-mood"),
     document.getElementById("small-clothing"),
-    document.getElementById("small-velocity")];
+    document.getElementById("small-velocity"),
+    document.getElementById("small-met"),];
 
 // Flow may have been previously saved locally as flow.txt
 let flowFileRead;
@@ -360,6 +362,11 @@ const clothes_very_light = document.getElementById('clothes_very_light');
 const clothes_light = document.getElementById('clothes_light');
 const clothes_medium = document.getElementById("clothes_medium");
 const clothes_high = document.getElementById("clothes_high");
+// buttons
+const met_resting = document.getElementById('met_resting');
+const met_sitting = document.getElementById('met_sitting');
+const met_standing = document.getElementById("met_standing");
+const met_exercising = document.getElementById("met_exercising");
 // buttons air velocity
 const air_vel_low = document.getElementById('air_vel_low');
 const air_vel_medium = document.getElementById("air_vel_medium");
@@ -551,6 +558,22 @@ let buttons = [{
     value: 11,
     obj: clothes_high,
     attribute: 'clothing',
+}, {
+    value: 8,
+    obj: met_resting,
+    attribute: 'met',
+}, {
+    value: 9,
+    obj: met_sitting,
+    attribute: 'met',
+}, {
+    value: 10,
+    obj: met_standing,
+    attribute: 'met',
+}, {
+    value: 11,
+    obj: met_exercising,
+    attribute: 'met',
 }, {
     value: 9,
     obj: air_vel_low,

@@ -12,6 +12,7 @@
   <link rel="import" href="views/gui_stop_survey.gui" />
   <link rel="import" href="views/clockblock.gui" />
   <link rel="import" href="views/gui_air_vel.gui" />
+  <link rel="import" href="views/metabolic_rate.gui" />
 
  <g id="emptyForSymetry" opacity="0.2">  
     <circle cx="80" cy="280" r="6" fill="orange" />
@@ -58,5 +59,9 @@
     <image id="image" x="215" y="275" width="10" height="10" href="images/icons/light_clothes.png" load="sync" />
   </g>
 
+  <g id="small-met" opacity="0.2">
+    <circle cx="265" cy="240" r="6" fill="#7090B5"  />
+    <image id="image" x="260" y="235" width="10" height="10" href="images/icons/met_exercising.png" load="sync" />
+  </g>
 </svg>
 
