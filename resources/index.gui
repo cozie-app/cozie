@@ -13,6 +13,11 @@
   <link rel="import" href="views/clockblock.gui" />
   <link rel="import" href="views/gui_air_vel.gui" />
   <link rel="import" href="views/metabolic_rate.gui" />
+  <link rel="import" href="views/any_change.gui" />
+
+  <g id="small-any-change" opacity="0.2">
+    <circle cx="85" cy="240" r="6" fill="fb-red"  />
+  </g>
 
   <g id="small-velocity" opacity="0.2">
     <circle cx="105" cy="240" r="6" fill="#61C3FF"  />

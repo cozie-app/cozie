@@ -7,6 +7,7 @@ import mood from '../resources/images/icons/not-comfy.png';
 import clothing from '../resources/images/icons/light_clothes.png';
 import icon_velocity from '../resources/images/icons/air_vel_high.png';
 import icon_met from '../resources/images/icons/met_exercising.png';
+import icon_change from '../resources/images/icons/outdoor.png';
 import noSound from '../resources/images/icons/prefer_quieter.png';
 import sound from '../resources/images/icons/prefer_louder.png';
 
@@ -92,6 +93,12 @@ function mySettings(props) {
                             value: "showMet",
                             subLabel: "Resting, Sitting, Standing, Exercising",
                             img: icon_met
+                        },
+                        {
+                            name: "Any changes location/activity",
+                            value: "showMet",
+                            subLabel: "No, Yes",
+                            img: icon_change
                         }
                     ]}
                     renderItem={option => (

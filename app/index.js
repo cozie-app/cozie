@@ -194,6 +194,7 @@ const happySad = document.getElementById("happy-sad");
 const clothing = document.getElementById("clothing");
 const svg_air_vel = document.getElementById("svg_air_vel");
 const svg_met = document.getElementById("metabolic_rate");
+const svg_change = document.getElementById("any_change");
 //Clock manipulation guis
 const thankyou = document.getElementById("thankyou");
 const svg_stop_survey = document.getElementById("stopSurvey");
@@ -202,7 +203,7 @@ const clockblock = document.getElementById("clockblock");
 // Default shows only thank you screen in the flow
 let flow_views = [thankyou];
 // Used to set all views to none when switching between screens
-const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, svg_met, clockface, thankyou, clockblock, svg_stop_survey];
+const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, svg_met, svg_change, clockface, thankyou, clockblock, svg_stop_survey];
 let flowSelectorUpdateTime = 0;
 
 //read small icons 
@@ -214,7 +215,8 @@ const smallIcons = [document.getElementById("small-thermal"),
     document.getElementById("small-mood"),
     document.getElementById("small-clothing"),
     document.getElementById("small-velocity"),
-    document.getElementById("small-met"),];
+    document.getElementById("small-met"),
+    document.getElementById("small-any-change"),];
 
 // Flow may have been previously saved locally as flow.txt
 let flowFileRead;
@@ -338,6 +340,9 @@ const outdoor = document.getElementById("outdoor");
 // buttons
 const in_office = document.getElementById("in-office");
 const out_office = document.getElementById("out-office");
+// buttons
+const change_no = document.getElementById("change_no");
+const change_yes = document.getElementById("change_yes");
 // buttons
 const thermal_comfy = document.getElementById('thermal_comfy');
 const prefer_warm = document.getElementById("prefer_warm");
@@ -478,6 +483,14 @@ let buttons = [{
     value: 9,
     obj: outdoor,
     attribute: 'indoorOutdoor',
+}, {
+    value: 10,
+    obj: change_no,
+    attribute: 'change',
+}, {
+    value: 11,
+    obj: change_yes,
+    attribute: 'change',
 }, {
     value: 11,
     obj: in_office,
