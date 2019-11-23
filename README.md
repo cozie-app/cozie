@@ -1,4 +1,13 @@
-[![](http://www.budslab.org/buds-lab.github.io/budslab_banner.png)](http://www.budslab.org/)
+# Website with links to download
+
+https://cozie.app/
+
+# Tutorials
+
+Video Tutorials: 
+https://www.youtube.com/playlist?list=PLkQs5WJXVHbiBDjmv-1tBYNUQOkmNCctA
+
+Wiki: https://github.com/buds-lab/cozie/wiki/Cozie-Development-Guide
 
 # Colaborating using git and fitbit
 
@@ -18,7 +27,7 @@
 — To get started with ClockFace development or to launch project read more at [Fitbit Developer Website](https://dev.fitbit.com/getting-started/). 
 
 
-Supported Devices: Ionic, Versa, Versa-Lite
+Supported Devices: Ionic, Versa, Versa-Lite, Versa 2
 The app is available by the link. To install ClockFace follow the link https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048 on your phone, it will redirect to FitBit app gallery.
 
 # Document structure saved in InfluxDB
@@ -52,37 +61,6 @@ The app is available by the link. To install ClockFace follow the link https://g
 }
 ```
 
-# Install  ClockFace to your own Fitbit Versa
 
-— The app is available only by the link for now. To install ClockFace follow the link [https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048](https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048) on your phone, it will redirect to FitBit app gallery.
-
-— In order to send data to the server from the FitBit device:
-- the watch should be connected to the phone via Bluetooth and the phone should have the internet
-- If Responses made without connection to the mobile phone, data will be saved locally on Fitbit device memory and will be sent to the server when the user respond next time with phone and internet connection.
-- To track user id user should log in first in settings of the clock face. As shown below.
-
-![screen-example](./screen/image3.jpg)
-![screen-example](./screen/image4.jpg)
-
-— If you want to get records from the server:
-- Time stored in UTC, it should be converted
-- To get CSV go to [http://54.169.153.174:7070](http://54.169.153.174:7070)
-- It is possible to get JSON, but the data format might be different. In order to get JSON, go to [http://54.169.153.174:7070/test](http://54.169.153.174:7070/test) and right mouse click and chose "Save as".
-
-# Screenshot
-![screen-example](./screen/image1.png)
-![screen-example](./screen/image2.png)
-# To run the project on your computer (windows)
-  - Create a Fitbit account. [Sign up here](https://www.fitbit.com/signup).
-  - Install Fitbit OS Simulator for [Windows](https://simulator-updates.fitbit.com/download/latest/win)
-  - Create an empty project in [Fitbit Studio](https://studio.fitbit.com/projects).
-  - Download current repository files and add all files to the newly created project in Fitbit Studio
-  - Launch **OS Simulator**, connect to simulator from **Fitbit Studio**, and launch the project from **Fitbit Studio**
-  - Also you need to update FitBit app clientId and clientSecret in "settings/indexjsx" file
-# Good to know about fibit device/companion API
---- How to make device listen for http request from the server.  [here](https://community.fitbit.com/t5/SDK-Development/How-to-make-device-listen-for-http-request-from-the-server/td-p/2963102)
---- clock.ontick doesn't happen when the display is off. Use setTimeout.
---- To send request to the server use HTTPS endpoint.
-
-https://github.com/gedankenstuecke/Minimal-Clock was used as a starter template.
+Credits to https://github.com/gedankenstuecke/Minimal-Clock was used as a starter template.
 
