@@ -1,13 +1,22 @@
+
 # Website with links to download
 
 https://cozie.app/
 
 # Tutorials
 
-Video Tutorials: 
-https://www.youtube.com/playlist?list=PLkQs5WJXVHbiBDjmv-1tBYNUQOkmNCctA
+Video Tutorials: https://www.youtube.com/playlist?list=PLkQs5WJXVHbiBDjmv-1tBYNUQOkmNCctA
 
 Wiki: https://github.com/buds-lab/cozie/wiki/Cozie-Development-Guide
+
+# Download
+
+Latest Stable Release: https://gallery.fitbit.com/details/512ce6c5-f633-4f7b-853c-891869f5e3d8
+
+Beta Development Version: https://gallery.fitbit.com/details/d787c911-ce11-432e-8b68-69da0f3446c8
+
+Website: https://cozie.app/
+
 
 # Colaborating using git and fitbit
 
@@ -64,3 +73,4 @@ The app is available by the link. To install ClockFace follow the link https://g
 
 Credits to https://github.com/gedankenstuecke/Minimal-Clock was used as a starter template.
 
+[![](http://www.budslab.org/buds-lab.github.io/budslab_banner.png)](http://www.budslab.org/)
