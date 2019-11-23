@@ -17,7 +17,7 @@ import {outbox} from "file-transfer";
 import * as cbor from "cbor";
 import {memory} from "system";
 
-const production = false; // false for dev / debug releases
+const production = true; // false for dev / debug releases
 
 //-------- CLOCK FACE DESIGN -----------
 
