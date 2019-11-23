@@ -1,3 +1,14 @@
+
+# Website with links to download
+
+https://cozie.app/
+
+# Tutorials
+
+Video Tutorials: https://www.youtube.com/playlist?list=PLkQs5WJXVHbiBDjmv-1tBYNUQOkmNCctA
+
+Wiki: https://github.com/buds-lab/cozie/wiki/Cozie-Development-Guide
+
 # Download
 
 Latest Stable Release: https://gallery.fitbit.com/details/512ce6c5-f633-4f7b-853c-891869f5e3d8
@@ -5,6 +16,7 @@ Latest Stable Release: https://gallery.fitbit.com/details/512ce6c5-f633-4f7b-853
 Beta Development Version: https://gallery.fitbit.com/details/d787c911-ce11-432e-8b68-69da0f3446c8
 
 Website: https://cozie.app/
+
 
 # Colaborating using git and fitbit
 
@@ -24,107 +36,41 @@ Website: https://cozie.app/
 — To get started with ClockFace development or to launch project read more at [Fitbit Developer Website](https://dev.fitbit.com/getting-started/). 
 
 
-Supported Devices: Ionic, Versa, Versa-Lite
+Supported Devices: Ionic, Versa, Versa-Lite, Versa 2
 The app is available by the link. To install ClockFace follow the link https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048 on your phone, it will redirect to FitBit app gallery.
 
-# How Data is Mapped to Integers for storage on InfluxDB
+# Document structure saved in InfluxDB
 
 ```python
-        if bodyData['comfort'] == 'comfy':
-            fields.update({'comfort': 10})
-            #response = 10
-        elif bodyData['comfort'] == 'notComfy':
-            fields.update({'comfort': 9})
-            #response = 9
-        else:
-            return {'statusCode': 404, 'body': json.dumps('Response name not found')}
-
-        if 'thermal' in bodyData:
-            if bodyData['thermal'] == 'thermal_comfy':
-                fields.update({'thermal': 10})
-            elif bodyData['thermal'] == 'prefer_warm':
-                fields.update({'thermal': 9})
-            elif bodyData['thermal'] == 'prefer_cold':
-                fields.update({'thermal': 11})
-
-        if 'light' in bodyData:
-            if bodyData['light'] == 'light_comfy':
-                fields.update({'light': 10})
-            elif bodyData['light'] == 'prefer_bright':
-                fields.update({'light': 9})
-            elif bodyData['light'] == 'prefer_dim':
-                fields.update({'light': 11})
-
-        if 'noise' in bodyData:
-            if bodyData['noise'] == 'noise_comfy':
-                fields.update({'noise': 10})
-            elif bodyData['noise'] == 'prefer_louder':
-                fields.update({'noise': 9})
-            elif bodyData['noise'] == 'prefer_quiet':
-                fields.update({'noise': 11})
-
-        if 'indoorOutdoor' in bodyData:
-            if bodyData['indoorOutdoor'] == 'indoor':
-                fields.update({'indoorOutdoor': 11})
-            elif bodyData['indoorOutdoor'] == 'outdoor':
-                fields.update({'indoorOutdoor': 9})
-
-        if 'inOffice' in bodyData:
-            if bodyData['inOffice'] == 'in_office':
-                fields.update({'inOffice': 11})
-            elif bodyData['inOffice'] == 'out_office':
-                fields.update({'inOffice': 9})
-
-        if 'mood' in bodyData:
-            if bodyData['mood'] == 'neutral':
-                fields.update({'mood': 10})
-            elif bodyData['mood'] == 'sad':
-                fields.update({'mood': 9})
-            elif bodyData['mood'] == 'happy':
-                fields.update({'mood': 11})
-
-        if 'clothing' in bodyData:
-            if bodyData['clothing'] == 'light_clothes':
-                fields.update({'clothing': 9})
-            elif bodyData['clothing'] == 'medium_clothes':
-                fields.update({'clothing': 10})
-            elif bodyData['clothing'] == 'heavy_clothes':
-                fields.update({'clothing': 11})
+{
+"startFeedback":"2019-11-22T01:57:14.342Z",  # Timestamp when the user started the survey (i.e. pressed one of the two buttons in the clock face)
+"heartRate":60,  # heart rate measured when the user completed the survey
+"dataHistoryArray":  # historical data measure at 1-minute interval before the user started the survey
+    [{
+    "time":"2019-11-22T01:58:10.879Z","heartRate":60,"stepCount":4860
+    },{
+    "time":"2019-11-22T01:59:10.879Z","heartRate":60,"stepCount":4919
+    }],  
+"voteLog":40,  # counter which stores information on how many times the user completed the survey, used for debugging to check that no responses where lost
+"comfort":10,  # Clock face question, 10 = "Comfy", 9 = "Not Comfy" 
+"thermal":9,  # Thermal preference, 9 = "Warm", 10 = "No Change", 11 = "Cooler"
+"light":9,  # Light preference, 9 = "Brighter", 10 = "No Change", 11 = "Dimmer"
+"noise":9,  # Noise preference, 9 = "Louder", 10 = "No Change", 11 = "Quiter"
+"indoorOutdoor":11,  # Location, 9 = "Outdoor", 11 = "Indoor",
+"inOffice":11,  # Are you working, 9 = "Not working", 11 = "working"
+"mood":11,  # Mood, 9 = "Sad", 10 = "Neutral", 11 = "Happy"
+"clothing":11,  # Clothing, 9 = "Light", 10 = "Medium", 11 = "Heavy"
+"air-vel":11,  # Air speed, 9 = "Low", 10 = "Medium", 11 = "High"
+"responseSpeed":2.577,  # Time in seconds it took to complete the survey
+"endFeedback":"2019-11-22T01:57:16.919Z",  # Timestamp when the user completed the survey
+"lat":48.13194,"lon":11.54944,  # Latitude and longitude provided by the GPS of the phone
+"setLocation":True,
+"user_id":"debug",  # User ID as per selection in settings
+"experiment_id":"debug",  # Experiment ID as per selection in settings
+}
 ```
 
 
-# Install  ClockFace to your own Fitbit Versa
-
-— The app is available only by the link for now. To install ClockFace follow the link [https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048](https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048) on your phone, it will redirect to FitBit app gallery.
-
-— In order to send data to the server from the FitBit device:
-- the watch should be connected to the phone via Bluetooth and the phone should have the internet
-- If Responses made without connection to the mobile phone, data will be saved locally on Fitbit device memory and will be sent to the server when the user respond next time with phone and internet connection.
-- To track user id user should log in first in settings of the clock face. As shown below.
-
-![screen-example](./screen/image3.jpg)
-![screen-example](./screen/image4.jpg)
-
-— If you want to get records from the server:
-- Time stored in UTC, it should be converted
-- To get CSV go to [http://54.169.153.174:7070](http://54.169.153.174:7070)
-- It is possible to get JSON, but the data format might be different. In order to get JSON, go to [http://54.169.153.174:7070/test](http://54.169.153.174:7070/test) and right mouse click and chose "Save as".
-
-# Screenshot
-![screen-example](./screen/image1.png)
-![screen-example](./screen/image2.png)
-# To run the project on your computer (windows)
-  - Create a Fitbit account. [Sign up here](https://www.fitbit.com/signup).
-  - Install Fitbit OS Simulator for [Windows](https://simulator-updates.fitbit.com/download/latest/win)
-  - Create an empty project in [Fitbit Studio](https://studio.fitbit.com/projects).
-  - Download current repository files and add all files to the newly created project in Fitbit Studio
-  - Launch **OS Simulator**, connect to simulator from **Fitbit Studio**, and launch the project from **Fitbit Studio**
-  - Also you need to update FitBit app clientId and clientSecret in "settings/indexjsx" file
-# Good to know about fibit device/companion API
---- How to make device listen for http request from the server.  [here](https://community.fitbit.com/t5/SDK-Development/How-to-make-device-listen-for-http-request-from-the-server/td-p/2963102)
---- clock.ontick doesn't happen when the display is off. Use setTimeout.
---- To send request to the server use HTTPS endpoint.
-
-https://github.com/gedankenstuecke/Minimal-Clock was used as a starter template.
+Credits to https://github.com/gedankenstuecke/Minimal-Clock was used as a starter template.
 
 [![](http://www.budslab.org/buds-lab.github.io/budslab_banner.png)](http://www.budslab.org/)

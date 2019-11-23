@@ -1,23 +1,24 @@
 <svg id="happy-sad" display="none">
 
+  <use href="#main-question">
+    <set href="text" attributeName="text-buffer" to="What mood are you in?" />
+  </use>
 
   <use href="#button" id="neutral" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#FFCC33"/>
+    <set href="circle" attributeName="fill" to="fb-green"/>
     <set href="image" attributeName="href" to="images/icons/nuetral.png"/>
     <set href="text"  attributeName="text-buffer" to="Neutral" />
   </use>
 
-
   <use href="#left-button" id="sad" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#FC6B3A"/>
-    <set href="image" attributeName="href" to="images/icons/sad.png"/>
-    <set href="text"  attributeName="text-buffer" to="Not So" />
-    <set href="second-text"  attributeName="text-buffer" to="Good" />
+    <set href="circle" attributeName="fill" to="fb-orange"/>
+    <set href="image" attributeName="href" to="images/icons/not-comfy.png"/>
+    <set href="text"  attributeName="text-buffer" to="Bad" />
   </use>
 
   <use href="#right-button" id="happy" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#20B2AA"/>
-    <set href="image" attributeName="href" to="images/icons/happy.png"/>
-    <set href="text"  attributeName="text-buffer" to="Good Mood" />
+    <set href="circle" attributeName="fill" to="fb-cyan"/>
+    <set href="image" attributeName="href" to="images/icons/comfy.png"/>
+    <set href="text"  attributeName="text-buffer" to="Good" />
   </use>
 </svg>
