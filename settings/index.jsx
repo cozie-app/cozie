@@ -59,33 +59,33 @@ function mySettings(props) {
                             img: noise
                         },
                         {
-                            name: "Location",
+                            name: "Indoor or outdoor",
                             value: "showIndoor",
                             subLabel: "Indoor, Outdoor",
                             img: indoorOutdoor
                         },
                         {
-                            name: "Are you working?",
+                            name: "Where are you?",
                             value: "showInOffice",
-                            subLabel: "Yes, No",
+                            subLabel: "Home, Office, Other",
                             img: inofficeOutoffice
                         },
                         {
                             name: "Mood",
                             value: "showMood",
-                            subLabel: "Not so good, Neutral, Good",
+                            subLabel: "Good, Bad or Neither",
                             img: mood
                         },
                         {
                             name: "Clothing",
                             value: "showClothing",
-                            subLabel: "Light, Medium, Heavy",
+                            subLabel: "Very light, Light, Medium, Heavy",
                             img: clothing
                         },
                         {
-                            name: "Air Speed",
+                            name: "Perceived air movement",
                             value: "showVelocity",
-                            subLabel: "Low, Medium, High",
+                            subLabel: "Perceived, Not perceived",
                             img: icon_velocity
                         },
                         {

@@ -338,8 +338,9 @@ const notComfy = document.getElementById("not-comfy");
 const indoor = document.getElementById("indoor");
 const outdoor = document.getElementById("outdoor");
 // buttons
-const in_office = document.getElementById("in-office");
-const out_office = document.getElementById("out-office");
+const location_work = document.getElementById("location_work");
+const location_home = document.getElementById("location_home");
+const location_other = document.getElementById("location_other");
 // buttons
 const change_no = document.getElementById("change_no");
 const change_yes = document.getElementById("change_yes");
@@ -493,12 +494,16 @@ let buttons = [{
     attribute: 'change',
 }, {
     value: 11,
-    obj: in_office,
-    attribute: 'inOffice',
+    obj: location_home,
+    attribute: 'location',
+}, {
+    value: 10,
+    obj: location_other,
+    attribute: 'location',
 }, {
     value: 9,
-    obj: out_office,
-    attribute: 'inOffice',
+    obj: location_work,
+    attribute: 'location',
 }, {
     value: 10,
     obj: thermal_comfy,
