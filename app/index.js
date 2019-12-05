@@ -660,7 +660,7 @@ function vibrate() {
      * If there are questions in the flow, then it starts the flow
      */
 
-    vibration.start("ring");
+    vibration.start("alert");
 
     //Change main clock face to response screen
     if (flow_views.length === 1) {
@@ -676,7 +676,7 @@ function vibrate() {
     //Stop vibration after 5 seconds
     setTimeout(function () {
         vibration.stop()
-    }, 5000);
+    }, 3000);
 }
 
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------
@@ -708,7 +708,7 @@ function sendDataToCompanion(data) {
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN 
         && JSON.stringify(data).length < messaging.peerSocket.MAX_MESSAGE_SIZE) {
         console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE)
-        console.log("data size", JSON.stringify(data).length)
+        console.log("data sizealert", JSON.stringify(data).length)
         messaging.peerSocket.send(data);
         console.log("data sent directly to companion");
 
