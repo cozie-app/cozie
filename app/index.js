@@ -164,7 +164,7 @@ clock.ontick = (evt) => {
     } else if (steps.text >= (goals.steps || 0) / 2) {
         steps.style.fill = 'fb-peach'; //yellow
     } else {
-        steps.style.fill = 'fb-red'; //pink
+        steps.style.fill = 'fb-orange'; //pink
     }
 
     //get screen width

@@ -2,7 +2,7 @@ import thermal from '../resources/images/icons/prefer_warmer.png';
 import light from '../resources/images/icons/prefer_brighter.png';
 import noise from '../resources/images/icons/prefer_louder.png';
 import indoorOutdoor from '../resources/images/icons/out_in.png';
-import inofficeOutoffice from '../resources/images/icons/indoor.png';
+import location from '../resources/images/icons/home.png';
 import mood from '../resources/images/icons/not-comfy.png';
 import clothing from '../resources/images/icons/light_clothes.png';
 import icon_velocity from '../resources/images/icons/air_vel_high.png';
@@ -68,7 +68,7 @@ function mySettings(props) {
                             name: "Where are you?",
                             value: "showInOffice",
                             subLabel: "Home, Office, Other",
-                            img: inofficeOutoffice
+                            img: location
                         },
                         {
                             name: "Mood",

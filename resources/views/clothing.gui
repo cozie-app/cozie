@@ -5,7 +5,7 @@
   </use>
 
     <use href="#button" id="clothes_very_light" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#F7F052"/>
+    <set href="circle" attributeName="fill" to="#A7F3D5"/>
     <set href="image" attributeName="href" to="images/icons/clothes_very_light.png"/>
     <set href="text"  attributeName="text-buffer" to="" />
     <set href="circle" attributeName="cy" to="44%" />
@@ -14,7 +14,7 @@
   </use>
 
   <use href="#right-button" id="clothes_light" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#F0A202"/>
+    <set href="circle" attributeName="fill" to="#6decb9"/>
     <set href="image" attributeName="href" to="images/icons/light_clothes.png"/>
     <set href="text"  attributeName="text-buffer" to="" />
     <set href="circle" attributeName="cy" to="62%" />
@@ -26,13 +26,13 @@
   </use>
 
   <g id="bottom-button" id="clothes_medium" pointer-events="visible">
-   	<circle id="circle" cx="50%" cy="80%" r="35" fill="#F18805"/>
+   	<circle id="circle" cx="50%" cy="80%" r="35" fill="#42dee1"/>
     <circle id="circle_push" cx="50%" cy="80%" r="50" opacity="0" fill="red"/>
    	<image id="image" x="50%-35" y="80%-35" width="70" height="70" href="images/icons/medium_clothes.png" load="sync" />
   </g>
 
   <use href="#left-button" id="clothes_high" pointer-events="visible">
-    <set href="circle" attributeName="fill" to="#F35B04"/>
+    <set href="circle" attributeName="fill" to="#3fc5f0"/>
     <set href="image" attributeName="href" to="images/icons/heavy_clothes.png"/>
     <set href="text"  attributeName="text-buffer" to="" />
     <set href="second-text"  attributeName="text-buffer" to="" />

@@ -46,7 +46,7 @@
 
   <g id="small-office" opacity="0.2">
     <circle cx="205" cy="240" r="6" fill="#7090B5"  />
-    <image id="image" x="200" y="235" width="10" height="10" href="images/icons/indoor.png" load="sync" />
+    <image id="image" x="200" y="235" width="10" height="10" href="images/icons/home.png" load="sync" />
   </g>
 
   <g id="small-mood" opacity="0.2">
