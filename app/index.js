@@ -381,7 +381,9 @@ const air_vel_high = document.getElementById("air_vel_high");
 function showFace(view_to_display) {
     allViews.map(v => v.style.display = "none");
     view_to_display.style.display = "inline";
-    currentView++
+    currentView++;
+
+    vibration.start("bump");
 }
 
 function showThankYou() {
@@ -707,8 +709,8 @@ function sendEventIfReady(feedbackData) {
 function sendDataToCompanion(data) {
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN 
         && JSON.stringify(data).length < messaging.peerSocket.MAX_MESSAGE_SIZE) {
-        console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE)
-        console.log("data sizealert", JSON.stringify(data).length)
+        console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE);
+        console.log("data sizealert", JSON.stringify(data).length);
         messaging.peerSocket.send(data);
         console.log("data sent directly to companion");
 
