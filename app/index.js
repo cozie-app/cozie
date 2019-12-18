@@ -164,7 +164,7 @@ clock.ontick = (evt) => {
     } else if (steps.text >= (goals.steps || 0) / 2) {
         steps.style.fill = 'fb-peach'; //yellow
     } else {
-        steps.style.fill = 'fb-red'; //pink
+        steps.style.fill = 'fb-orange'; //pink
     }
 
     //get screen width
@@ -338,8 +338,9 @@ const notComfy = document.getElementById("not-comfy");
 const indoor = document.getElementById("indoor");
 const outdoor = document.getElementById("outdoor");
 // buttons
-const in_office = document.getElementById("in-office");
-const out_office = document.getElementById("out-office");
+const location_work = document.getElementById("location_work");
+const location_home = document.getElementById("location_home");
+const location_other = document.getElementById("location_other");
 // buttons
 const change_no = document.getElementById("change_no");
 const change_yes = document.getElementById("change_yes");
@@ -380,7 +381,9 @@ const air_vel_high = document.getElementById("air_vel_high");
 function showFace(view_to_display) {
     allViews.map(v => v.style.display = "none");
     view_to_display.style.display = "inline";
-    currentView++
+    currentView++;
+
+    vibration.start("bump");
 }
 
 function showThankYou() {
@@ -493,12 +496,16 @@ let buttons = [{
     attribute: 'change',
 }, {
     value: 11,
-    obj: in_office,
-    attribute: 'inOffice',
+    obj: location_home,
+    attribute: 'location',
+}, {
+    value: 10,
+    obj: location_other,
+    attribute: 'location',
 }, {
     value: 9,
-    obj: out_office,
-    attribute: 'inOffice',
+    obj: location_work,
+    attribute: 'location',
 }, {
     value: 10,
     obj: thermal_comfy,
@@ -655,7 +662,7 @@ function vibrate() {
      * If there are questions in the flow, then it starts the flow
      */
 
-    vibration.start("ring");
+    vibration.start("alert");
 
     //Change main clock face to response screen
     if (flow_views.length === 1) {
@@ -671,7 +678,7 @@ function vibrate() {
     //Stop vibration after 5 seconds
     setTimeout(function () {
         vibration.stop()
-    }, 5000);
+    }, 3000);
 }
 
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------
@@ -702,8 +709,8 @@ function sendEventIfReady(feedbackData) {
 function sendDataToCompanion(data) {
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN 
         && JSON.stringify(data).length < messaging.peerSocket.MAX_MESSAGE_SIZE) {
-        console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE)
-        console.log("data size", JSON.stringify(data).length)
+        console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE);
+        console.log("data sizealert", JSON.stringify(data).length);
         messaging.peerSocket.send(data);
         console.log("data sent directly to companion");
 

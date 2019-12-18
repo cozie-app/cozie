@@ -18,11 +18,6 @@
   <g id="small-any-change" opacity="0.2">
     <circle cx="60" cy="280" r="6" fill="fb-red"  />
   </g>
-
- <g id="emptyForSymetry" opacity="0.2">  
-    <circle cx="80" cy="280" r="6" fill="orange" />
-    <image id="image" x="75" y="275" width="10" height="10" href="images/icons/prefer_cold.png" load="sync" />
-  </g>
   
   <g id="small-velocity" opacity="0.2">
     <circle cx="80" cy="280" r="6" fill="#61C3FF" />
@@ -51,7 +46,7 @@
 
   <g id="small-office" opacity="0.2">
     <circle cx="180" cy="280" r="6" fill="#7090B5" />
-    <image id="image" x="175" y="275" width="10" height="10" href="images/icons/indoor.png" load="sync" />
+    <image id="image" x="175" y="275" width="10" height="10" href="images/icons/home.png" load="sync" />
   </g>
 
   <g id="small-mood" opacity="0.2">

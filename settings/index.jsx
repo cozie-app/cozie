@@ -2,7 +2,7 @@ import thermal from '../resources/images/icons/prefer_warmer.png';
 import light from '../resources/images/icons/prefer_brighter.png';
 import noise from '../resources/images/icons/prefer_louder.png';
 import indoorOutdoor from '../resources/images/icons/out_in.png';
-import inofficeOutoffice from '../resources/images/icons/indoor.png';
+import location from '../resources/images/icons/home.png';
 import mood from '../resources/images/icons/not-comfy.png';
 import clothing from '../resources/images/icons/light_clothes.png';
 import icon_velocity from '../resources/images/icons/air_vel_high.png';
@@ -59,33 +59,33 @@ function mySettings(props) {
                             img: noise
                         },
                         {
-                            name: "Location",
+                            name: "Indoor or outdoor",
                             value: "showIndoor",
                             subLabel: "Indoor, Outdoor",
                             img: indoorOutdoor
                         },
                         {
-                            name: "Are you working?",
+                            name: "Where are you?",
                             value: "showInOffice",
-                            subLabel: "Yes, No",
-                            img: inofficeOutoffice
+                            subLabel: "Home, Office, Other",
+                            img: location
                         },
                         {
                             name: "Mood",
                             value: "showMood",
-                            subLabel: "Not so good, Neutral, Good",
+                            subLabel: "Good, Bad or Neither",
                             img: mood
                         },
                         {
                             name: "Clothing",
                             value: "showClothing",
-                            subLabel: "Light, Medium, Heavy",
+                            subLabel: "Very light, Light, Medium, Heavy",
                             img: clothing
                         },
                         {
-                            name: "Air Speed",
+                            name: "Perceived air movement",
                             value: "showVelocity",
-                            subLabel: "Low, Medium, High",
+                            subLabel: "Perceived, Not perceived",
                             img: icon_velocity
                         },
                         {

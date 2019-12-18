@@ -10,13 +10,13 @@
 
   <use href="#left-button" id="change_no" pointer-events="visible">
     <set href="circle" attributeName="fill" to="fb-orange"/>
-    <set href="image" attributeName="width" to="0"/>
-    <set href="text"  attributeName="text-buffer" to="No" />
+    <set href="image" attributeName="href" to="images/icons/no.png"/>
+    <set href="text"  attributeName="text-buffer" to="" />
   </use>
 
   <use href="#right-button" id="change_yes" pointer-events="visible">
     <set href="circle" attributeName="fill" to="fb-green"/>
-    <set href="image" attributeName="width" to="0"/>
-    <set href="text"  attributeName="text-buffer" to="Yes" />
+    <set href="image" attributeName="href" to="images/icons/yes.png"/>
+    <set href="text"  attributeName="text-buffer" to="" />
   </use>
 </svg>
