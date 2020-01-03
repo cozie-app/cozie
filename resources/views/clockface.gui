@@ -7,7 +7,7 @@
   <text id="hrm">42</text>
   <image id= "stepIcon" href="images/stat_steps_solid_48px.png" load="sync" />
   <text id="steps" class='red'>0</text>
-  <rect x="0" y="0" width="300" height="2" fill="#505050" id='chargeLabel'/>
+  <rect x="0" y="0" width="300" height="3" fill="#505050" id='chargeLabel'/>
   <text id="storageLabel" >  </text>
 
   <text id="devMemoryLabel" > </text>

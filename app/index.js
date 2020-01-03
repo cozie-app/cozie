@@ -138,8 +138,10 @@ clock.ontick = (evt) => {
     //get screen width
     let charge = battery.chargeLevel / 100;
     chargeLabel.width = 300 * charge;
-    if (charge < 0.2) {
+    if (charge < 0.15) {
         chargeLabel.style.fill = 'fb-red'
+    } else if (charge < 0.3) {
+        chargeLabel.style.fill = 'fb-peach'
     } else {
         chargeLabel.style.fill = 'fb-light-gray'
     }
