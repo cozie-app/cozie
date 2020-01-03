@@ -35,14 +35,16 @@ The app is available by the link. To install ClockFace follow the link https://g
     }],  
 "voteLog":40,  # counter which stores information on how many times the user completed the survey, used for debugging to check that no responses where lost
 "comfort":10,  # Clock face question, 10 = "Comfy", 9 = "Not Comfy" 
-"thermal":9,  # Thermal preference, 9 = "Warm", 10 = "No Change", 11 = "Cooler"
+"indoorOutdoor":11,  # Location, 9 = "Outdoor", 11 = "Indoor",
+"change": 10, # Change location, activity or clothing, 11 = "Yes Change", 10 = "No Change"
+"location": 10, # Where are you, 9 = "Work", 10 = "Other", 11 = "Home"
+"thermal":9,  # Thermal preference, 9 = "Warmer", 10 = "No Change", 11 = "Cooler"
 "light":9,  # Light preference, 9 = "Brighter", 10 = "No Change", 11 = "Dimmer"
 "noise":9,  # Noise preference, 9 = "Louder", 10 = "No Change", 11 = "Quiter"
-"indoorOutdoor":11,  # Location, 9 = "Outdoor", 11 = "Indoor",
-"inOffice":11,  # Are you working, 9 = "Not working", 11 = "working"
+"clothing":11,  # Clothing, 8="very light", 9 = "Light", 10 = "Medium", 11 = "Heavy"
+"met":11,  # Metabolic rate, 8="resting", 9 = "sitting", 10 = "standing", 11 = "exercising"
+"air-vel":11,  # Perceived air movement, 9 = "Not Perceived", 11 = "Perceived"
 "mood":11,  # Mood, 9 = "Sad", 10 = "Neutral", 11 = "Happy"
-"clothing":11,  # Clothing, 9 = "Light", 10 = "Medium", 11 = "Heavy"
-"air-vel":11,  # Air speed, 9 = "Low", 10 = "Medium", 11 = "High"
 "responseSpeed":2.577,  # Time in seconds it took to complete the survey
 "endFeedback":"2019-11-22T01:57:16.919Z",  # Timestamp when the user completed the survey
 "lat":48.13194,"lon":11.54944,  # Latitude and longitude provided by the GPS of the phone
