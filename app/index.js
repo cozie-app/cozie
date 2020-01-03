@@ -156,6 +156,7 @@ console.log("WARNING!! APP HAS RESET");
 //Flow GUIs
 const clockface = document.getElementById("clockface");
 const indoorOutdoor = document.getElementById("indoor-outdoor");
+const inOffice = document.getElementById("inoffice");
 const warmCold = document.getElementById("warm-cold");
 const brightDim = document.getElementById("bright-dim");
 const loudQuiet = document.getElementById("loud-quiet");
@@ -172,7 +173,7 @@ const clockblock = document.getElementById("clockblock");
 // Default shows only thank you screen in the flow
 let flow_views = [thankyou];
 // Used to set all views to none when switching between screens
-const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, happySad, clothing, svg_air_vel, svg_met, svg_change, clockface, thankyou, clockblock, svg_stop_survey];
+const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, svg_met, svg_change, clockface, thankyou, clockblock, svg_stop_survey];
 let flowSelectorUpdateTime = 0;
 
 //read small icons 
