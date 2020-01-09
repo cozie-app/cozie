@@ -103,38 +103,6 @@ setInterval(function () {
     }
 }, 1200000); // timeout for 20 minutes
 
-// Collect 90 minutes of heart rate data
-let dataHistoryArray = [];
-// To run every  2 minute and populate the data history array with 60min of data
-setInterval(function () {
-    if (dataHistoryArray.length >= 30) {
-        dataHistoryArray.shift() // remove the first element of the array
-    }
-
-    let currentTime = new Date().toISOString();
-    dataHistoryArray.push({time: currentTime, heartRate: hrm.heartRate, stepCount: today.adjusted.steps});
-
-    console.log(JSON.stringify(dataHistoryArray));
-    console.log("number of heart rate data points", dataHistoryArray.length);
-
-    // store the data on the watch for debugging
-    if (!production) {
-        devMemoryLabel.text = `${Math.floor(memory.js.used / 1000)}/${Math.floor(memory.js.total / 1000)}kb`;
-        devHeartStorageLabel.text = dataHistoryArray.length + '/30';
-        // Colour based on memory allocation
-        if (memory.js.used > 50000) {
-            devMemoryLabel.style.fill = 'fb-violet' //pink
-        } else if (memory.js.used < 40000) {
-            devMemoryLabel.style.fill = 'fb-green'; //green
-        } else {
-            devMemoryLabel.style.fill = 'fb-peach'; //yelow
-        }
-    }
-
-    console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
-
-}, 120000); // timeout for 2 min
-
 clock.ontick = (evt) => {
     let today_dt = evt.date;
     let hours = today_dt.getHours();
@@ -170,8 +138,10 @@ clock.ontick = (evt) => {
     //get screen width
     let charge = battery.chargeLevel / 100;
     chargeLabel.width = 300 * charge;
-    if (charge < 0.2) {
+    if (charge < 0.15) {
         chargeLabel.style.fill = 'fb-red'
+    } else if (charge < 0.3) {
+        chargeLabel.style.fill = 'fb-peach'
     } else {
         chargeLabel.style.fill = 'fb-light-gray'
     }
@@ -448,9 +418,6 @@ function initiateFeedbackData() {
         startFeedback,
         heartRate: hrm.heartRate,
     };
-
-    // access heart rate array data
-    feedbackData['dataHistoryArray'] = dataHistoryArray;
 
     // reading log file for debuging purposes
     try {
