@@ -9,7 +9,7 @@
 
 ### Building and installing
 
-1. `npx fitbut-build` will build the project
+1. `npx fitbit-build` will build the project
 2. `npx fitbit` opens the browser, and logs into your fitbit account. From here you can connect to devices and install the app
 
 
