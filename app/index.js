@@ -17,6 +17,19 @@ import {outbox} from "file-transfer";
 import * as cbor from "cbor";
 import {memory} from "system";
 
+import { BodyPresenceSensor } from "body-presence";
+
+const bodyPresence = new BodyPresenceSensor();
+if (BodyPresenceSensor) {
+   console.log("This device has a BodyPresenceSensor!");
+   bodyPresence.addEventListener("reading", () => {
+     console.log(`The device is ${bodyPresence.present ? '' : 'not'} on the user's body.`);
+   });
+   bodyPresence.start();
+} else {
+   console.log("This device does NOT have a BodyPresenceSensor!");
+}
+
 const production = false; // false for dev / debug releases
 
 //-------- CLOCK FACE DESIGN -----------
@@ -381,6 +394,9 @@ function showThankYou() {
     const startFeedback = new Date(feedbackData['startFeedback']);
     feedbackData['responseSpeed'] = (endFeedback - startFeedback) / 1000.0;
     feedbackData['endFeedback'] = endFeedback.toISOString();
+    if (BodyPresenceSensor) {
+        feedbackData['bodyPresence'] = bodyPresence.present;
+    }
     console.log(feedbackData['responseSpeed']);
 
     //send feedback to companion
@@ -658,7 +674,6 @@ function vibrate() {
 }
 
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------
-
 function sendEventIfReady(feedbackData) {
     console.log("sending feedbackData");
     console.log(JSON.stringify(feedbackData));
