@@ -90,7 +90,6 @@ if (BodyPresenceSensor) {
    console.log("This device does NOT have a BodyPresenceSensor!");
 }
 
-
 let buzzSelection = 2; // default value
 let vibrationTime = buzzOptions[buzzSelection];
 

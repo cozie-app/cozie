@@ -49,6 +49,7 @@ The app is available by the link. To install ClockFace follow the link https://g
 "endFeedback":"2019-11-22T01:57:16.919Z",  # Timestamp when the user completed the survey
 "lat":48.13194,"lon":11.54944,  # Latitude and longitude provided by the GPS of the phone
 "setLocation":True,
+"bodyPresence":True, # passes information whether the user is wearing the watch or not
 "user_id":"debug",  # User ID as per selection in settings
 "experiment_id":"debug",  # Experiment ID as per selection in settings
 }
