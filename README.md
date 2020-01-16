@@ -27,12 +27,6 @@ The app is available by the link. To install ClockFace follow the link https://g
 {
 "startFeedback":"2019-11-22T01:57:14.342Z",  # Timestamp when the user started the survey (i.e. pressed one of the two buttons in the clock face)
 "heartRate":60,  # heart rate measured when the user completed the survey
-"dataHistoryArray":  # historical data measure at 1-minute interval before the user started the survey
-    [{
-    "time":"2019-11-22T01:58:10.879Z","heartRate":60,"stepCount":4860
-    },{
-    "time":"2019-11-22T01:59:10.879Z","heartRate":60,"stepCount":4919
-    }],  
 "voteLog":40,  # counter which stores information on how many times the user completed the survey, used for debugging to check that no responses where lost
 "comfort":10,  # Clock face question, 10 = "Comfy", 9 = "Not Comfy" 
 "indoorOutdoor":11,  # Location, 9 = "Outdoor", 11 = "Indoor",
