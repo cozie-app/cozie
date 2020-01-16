@@ -333,6 +333,7 @@ const outdoor = document.getElementById("outdoor");
 const location_work = document.getElementById("location_work");
 const location_home = document.getElementById("location_home");
 const location_other = document.getElementById("location_other");
+const location_portable = document.getElementById("location_portable");
 // buttons
 const change_no = document.getElementById("change_no");
 const change_yes = document.getElementById("change_yes");
@@ -497,6 +498,10 @@ let buttons = [{
 }, {
     value: 9,
     obj: location_work,
+    attribute: 'location',
+}, {
+    value: 8,
+    obj: location_portable,
     attribute: 'location',
 }, {
     value: 10,

@@ -37,7 +37,7 @@ The app is available by the link. To install ClockFace follow the link https://g
 "comfort":10,  # Clock face question, 10 = "Comfy", 9 = "Not Comfy" 
 "indoorOutdoor":11,  # Location, 9 = "Outdoor", 11 = "Indoor",
 "change": 10, # Change location, activity or clothing, 11 = "Yes Change", 10 = "No Change"
-"location": 10, # Where are you, 9 = "Work", 10 = "Other", 11 = "Home"
+"location": 10, # Where are you, 8 = "Portable", 9 = "Work", 10 = "Other", 11 = "Home"
 "thermal":9,  # Thermal preference, 9 = "Warmer", 10 = "No Change", 11 = "Cooler"
 "light":9,  # Light preference, 9 = "Brighter", 10 = "No Change", 11 = "Dimmer"
 "noise":9,  # Noise preference, 9 = "Louder", 10 = "No Change", 11 = "Quiter"
