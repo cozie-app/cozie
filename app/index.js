@@ -100,10 +100,11 @@ setInterval(function () {
     const currentDate = new Date(); // get today's date
     const currentDay = currentDate.getDay(); // get today's day
 
-    if (currentDay != startDay){ // if it is a new day
+    if (currentDay != startDay){ // if it is a new day check user
         startDay = currentDay;
         try {
             buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection; // read user selection
+            vibrationTime = buzzOptions[buzzSelection];
         } catch (err) {
             console.log(err);
         }
@@ -111,14 +112,12 @@ setInterval(function () {
     // vibrate and change to response screen based on selected buzz option
     const currentHour = currentDate.getHours();
 
-    console.log('vibration time = ' + vibrationTime)
-    if (vibrationTime[0] === currentHour) {
-
+    if (vibrationTime[0] === currentHour && today.adjusted.steps > 300) { // vibrate only if the time is right and the user has walked at least 300 steps
+        // this ensures that the watch does not vibrate if the user is still sleeping
         vibrate();
-        console.log('~~~~~~~VIBRATING~~~~~~~~')
         const firstElement = vibrationTime.shift();
         vibrationTime.push(firstElement);
-    } else if (vibrationTime[0] < currentHour) {
+    } else if (vibrationTime[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
         const firstElement = vibrationTime.shift();
         vibrationTime.push(firstElement);
     }
@@ -675,7 +674,7 @@ function vibrate() {
     //Stop vibration after 5 seconds
     setTimeout(function () {
         vibration.stop()
-    }, 3000);
+    }, 2000);
 }
 
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------
