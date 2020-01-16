@@ -70,9 +70,7 @@ let devErrorMessageLabel = document.getElementById("devErrorMessageLabel");
 // set the local_file which will be used to store data
 let local_file;
 
-// intervals to check vibrations
-let found = false;
-
+// function that runs in the background and start vibration to remind the user to complete the survey
 const buzzOptions = {
     '0': [],
     '1': [9, 10, 11, 12, 13, 14, 15, 16, 17],
@@ -80,28 +78,39 @@ const buzzOptions = {
     '3': [9, 12, 15]
 };
 
-let buzzSelection;
-setInterval(function () {
-    try {
-        buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
-    } catch (err) {
-        console.log(err);
-        console.log("buzz default option is [9,11,13,15,17]");
-        buzzSelection = 2;
-    }
+let buzzSelection = 2; // default value
+let vibrationTime = buzzOptions[buzzSelection];
 
-    let vibrationTime = buzzOptions[buzzSelection];
-    const currentDate = new Date();
+let startDay = new Date().getDay(); // get the day when the app started for the first time
+
+setInterval(function () {
+    const currentDate = new Date(); // get today's date
+    const currentDay = currentDate.getDay(); // get today's day
+
+    if (currentDay != startDay){ // if it is a new day
+        startDay = currentDay;
+        try {
+            buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection; // read user selection
+        } catch (err) {
+            console.log(err);
+        }
+    }
     // vibrate and change to response screen based on selected buzz option
     const currentHour = currentDate.getHours();
-    // make vibration during first minute
-    if (!found && vibrationTime.indexOf(currentHour) !== -1) {
+
+    console.log('vibration time = ' + vibrationTime)
+    if (vibrationTime[0] === currentHour) {
+
         vibrate();
-        found = true;
-    } else if (vibrationTime.indexOf(currentHour) === -1) {
-        found = false;
+        console.log('~~~~~~~VIBRATING~~~~~~~~')
+        const firstElement = vibrationTime.shift();
+        vibrationTime.push(firstElement);
+    } else if (vibrationTime[0] < currentHour) {
+        const firstElement = vibrationTime.shift();
+        vibrationTime.push(firstElement);
     }
-}, 1200000); // timeout for 20 minutes
+// }, 1200000); // timeout for 20 minutes
+}, 60000); // timeout for 20 minutes
 
 clock.ontick = (evt) => {
     let today_dt = evt.date;
