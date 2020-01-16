@@ -16,19 +16,7 @@ import {inbox} from "file-transfer"
 import {outbox} from "file-transfer";
 import * as cbor from "cbor";
 import {memory} from "system";
-
 import { BodyPresenceSensor } from "body-presence";
-
-const bodyPresence = new BodyPresenceSensor();
-if (BodyPresenceSensor) {
-   console.log("This device has a BodyPresenceSensor!");
-   bodyPresence.addEventListener("reading", () => {
-     console.log(`The device is ${bodyPresence.present ? '' : 'not'} on the user's body.`);
-   });
-   bodyPresence.start();
-} else {
-   console.log("This device does NOT have a BodyPresenceSensor!");
-}
 
 const production = false; // false for dev / debug releases
 
@@ -91,6 +79,18 @@ const buzzOptions = {
     '3': [9, 12, 15]
 };
 
+const bodyPresence = new BodyPresenceSensor();
+if (BodyPresenceSensor) {
+   console.log("This device has a BodyPresenceSensor!");
+   bodyPresence.addEventListener("reading", () => {
+     console.log(`The device is ${bodyPresence.present ? '' : 'not'} on the user's body.`);
+   });
+   bodyPresence.start();
+} else {
+   console.log("This device does NOT have a BodyPresenceSensor!");
+}
+
+
 let buzzSelection = 2; // default value
 let vibrationTime = buzzOptions[buzzSelection];
 
@@ -112,7 +112,7 @@ setInterval(function () {
     // vibrate and change to response screen based on selected buzz option
     const currentHour = currentDate.getHours();
 
-    if (vibrationTime[0] === currentHour && today.adjusted.steps > 300) { // vibrate only if the time is right and the user has walked at least 300 steps
+    if (vibrationTime[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
         // this ensures that the watch does not vibrate if the user is still sleeping
         vibrate();
         const firstElement = vibrationTime.shift();
