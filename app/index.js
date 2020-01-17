@@ -16,6 +16,7 @@ import {inbox} from "file-transfer"
 import {outbox} from "file-transfer";
 import * as cbor from "cbor";
 import {memory} from "system";
+import { BodyPresenceSensor } from "body-presence";
 
 const production = false; // false for dev / debug releases
 
@@ -70,9 +71,7 @@ let devErrorMessageLabel = document.getElementById("devErrorMessageLabel");
 // set the local_file which will be used to store data
 let local_file;
 
-// intervals to check vibrations
-let found = false;
-
+// function that runs in the background and start vibration to remind the user to complete the survey
 const buzzOptions = {
     '0': [],
     '1': [9, 10, 11, 12, 13, 14, 15, 16, 17],
@@ -80,28 +79,49 @@ const buzzOptions = {
     '3': [9, 12, 15]
 };
 
-let buzzSelection;
-setInterval(function () {
-    try {
-        buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
-    } catch (err) {
-        console.log(err);
-        console.log("buzz default option is [9,11,13,15,17]");
-        buzzSelection = 2;
-    }
+const bodyPresence = new BodyPresenceSensor();
+if (BodyPresenceSensor) {
+   console.log("This device has a BodyPresenceSensor!");
+   bodyPresence.addEventListener("reading", () => {
+     console.log(`The device is ${bodyPresence.present ? '' : 'not'} on the user's body.`);
+   });
+   bodyPresence.start();
+} else {
+   console.log("This device does NOT have a BodyPresenceSensor!");
+}
 
-    let vibrationTime = buzzOptions[buzzSelection];
-    const currentDate = new Date();
+let buzzSelection = 2; // default value
+let vibrationTime = buzzOptions[buzzSelection];
+
+let startDay = new Date().getDay(); // get the day when the app started for the first time
+
+setInterval(function () {
+    const currentDate = new Date(); // get today's date
+    const currentDay = currentDate.getDay(); // get today's day
+
+    if (currentDay != startDay){ // if it is a new day check user
+        startDay = currentDay;
+        try {
+            buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection; // read user selection
+            vibrationTime = buzzOptions[buzzSelection];
+        } catch (err) {
+            console.log(err);
+        }
+    }
     // vibrate and change to response screen based on selected buzz option
     const currentHour = currentDate.getHours();
-    // make vibration during first minute
-    if (!found && vibrationTime.indexOf(currentHour) !== -1) {
+
+    if (vibrationTime[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+        // this ensures that the watch does not vibrate if the user is still sleeping
         vibrate();
-        found = true;
-    } else if (vibrationTime.indexOf(currentHour) === -1) {
-        found = false;
+        const firstElement = vibrationTime.shift();
+        vibrationTime.push(firstElement);
+    } else if (vibrationTime[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
+        const firstElement = vibrationTime.shift();
+        vibrationTime.push(firstElement);
     }
-}, 1200000); // timeout for 20 minutes
+// }, 1200000); // timeout for 20 minutes
+}, 60000); // timeout for 20 minutes
 
 clock.ontick = (evt) => {
     let today_dt = evt.date;
@@ -311,6 +331,7 @@ const outdoor = document.getElementById("outdoor");
 const location_work = document.getElementById("location_work");
 const location_home = document.getElementById("location_home");
 const location_other = document.getElementById("location_other");
+const location_portable = document.getElementById("location_portable");
 // buttons
 const change_no = document.getElementById("change_no");
 const change_yes = document.getElementById("change_yes");
@@ -372,6 +393,9 @@ function showThankYou() {
     const startFeedback = new Date(feedbackData['startFeedback']);
     feedbackData['responseSpeed'] = (endFeedback - startFeedback) / 1000.0;
     feedbackData['endFeedback'] = endFeedback.toISOString();
+    if (BodyPresenceSensor) {
+        feedbackData['bodyPresence'] = bodyPresence.present;
+    }
     console.log(feedbackData['responseSpeed']);
 
     //send feedback to companion
@@ -472,6 +496,10 @@ let buttons = [{
 }, {
     value: 9,
     obj: location_work,
+    attribute: 'location',
+}, {
+    value: 8,
+    obj: location_portable,
     attribute: 'location',
 }, {
     value: 10,
@@ -645,11 +673,10 @@ function vibrate() {
     //Stop vibration after 5 seconds
     setTimeout(function () {
         vibration.stop()
-    }, 3000);
+    }, 2000);
 }
 
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------
-
 function sendEventIfReady(feedbackData) {
     console.log("sending feedbackData");
     console.log(JSON.stringify(feedbackData));

@@ -9,7 +9,7 @@
 
 ### Building and installing
 
-1. `npx fitbut-build` will build the project
+1. `npx fitbit-build` will build the project
 2. `npx fitbit` opens the browser, and logs into your fitbit account. From here you can connect to devices and install the app
 
 
@@ -27,17 +27,11 @@ The app is available by the link. To install ClockFace follow the link https://g
 {
 "startFeedback":"2019-11-22T01:57:14.342Z",  # Timestamp when the user started the survey (i.e. pressed one of the two buttons in the clock face)
 "heartRate":60,  # heart rate measured when the user completed the survey
-"dataHistoryArray":  # historical data measure at 1-minute interval before the user started the survey
-    [{
-    "time":"2019-11-22T01:58:10.879Z","heartRate":60,"stepCount":4860
-    },{
-    "time":"2019-11-22T01:59:10.879Z","heartRate":60,"stepCount":4919
-    }],  
 "voteLog":40,  # counter which stores information on how many times the user completed the survey, used for debugging to check that no responses where lost
 "comfort":10,  # Clock face question, 10 = "Comfy", 9 = "Not Comfy" 
 "indoorOutdoor":11,  # Location, 9 = "Outdoor", 11 = "Indoor",
 "change": 10, # Change location, activity or clothing, 11 = "Yes Change", 10 = "No Change"
-"location": 10, # Where are you, 9 = "Work", 10 = "Other", 11 = "Home"
+"location": 10, # Where are you, 8 = "Portable", 9 = "Work", 10 = "Other", 11 = "Home"
 "thermal":9,  # Thermal preference, 9 = "Warmer", 10 = "No Change", 11 = "Cooler"
 "light":9,  # Light preference, 9 = "Brighter", 10 = "No Change", 11 = "Dimmer"
 "noise":9,  # Noise preference, 9 = "Louder", 10 = "No Change", 11 = "Quiter"
@@ -49,6 +43,7 @@ The app is available by the link. To install ClockFace follow the link https://g
 "endFeedback":"2019-11-22T01:57:16.919Z",  # Timestamp when the user completed the survey
 "lat":48.13194,"lon":11.54944,  # Latitude and longitude provided by the GPS of the phone
 "setLocation":True,
+"bodyPresence":True, # passes information whether the user is wearing the watch or not
 "user_id":"debug",  # User ID as per selection in settings
 "experiment_id":"debug",  # Experiment ID as per selection in settings
 }
