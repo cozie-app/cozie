@@ -16,7 +16,7 @@ import {inbox} from "file-transfer"
 import {outbox} from "file-transfer";
 import * as cbor from "cbor";
 import {memory} from "system";
-import { BodyPresenceSensor } from "body-presence";
+import {BodyPresenceSensor} from "body-presence";
 
 const production = false; // false for dev / debug releases
 
@@ -81,26 +81,28 @@ const buzzOptions = {
 
 const bodyPresence = new BodyPresenceSensor();
 if (BodyPresenceSensor) {
-   console.log("This device has a BodyPresenceSensor!");
-   bodyPresence.addEventListener("reading", () => {
-     console.log(`The device is ${bodyPresence.present ? '' : 'not'} on the user's body.`);
-   });
-   bodyPresence.start();
+    console.log("This device has a BodyPresenceSensor!");
+    bodyPresence.addEventListener("reading", () => {
+        console.log(`The device is ${bodyPresence.present ? '' : 'not'} on the user's body.`);
+    });
+    bodyPresence.start();
 } else {
-   console.log("This device does NOT have a BodyPresenceSensor!");
+    console.log("This device does NOT have a BodyPresenceSensor!");
 }
 
 let buzzSelection = 2; // default value
 let vibrationTime = buzzOptions[buzzSelection];
 
 let startDay = new Date().getDay(); // get the day when the app started for the first time
+let completedVibrationCycleDay = false; // keeps in memory weather the watch has vibrated at all hours
 
 setInterval(function () {
     const currentDate = new Date(); // get today's date
     const currentDay = currentDate.getDay(); // get today's day
 
-    if (currentDay != startDay){ // if it is a new day check user
+    if (currentDay != startDay) { // if it is a new day check user
         startDay = currentDay;
+        completedVibrationCycleDay = false;
         try {
             buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection; // read user selection
             vibrationTime = buzzOptions[buzzSelection];
@@ -108,20 +110,30 @@ setInterval(function () {
             console.log(err);
         }
     }
+
     // vibrate and change to response screen based on selected buzz option
     const currentHour = currentDate.getHours();
 
-    if (vibrationTime[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
-        // this ensures that the watch does not vibrate if the user is still sleeping
-        vibrate();
-        const firstElement = vibrationTime.shift();
-        vibrationTime.push(firstElement);
-    } else if (vibrationTime[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
-        const firstElement = vibrationTime.shift();
-        vibrationTime.push(firstElement);
+    // get the last hour at which the watch should vibrate
+    const maxHour = vibrationTime.reduce(function (a, b) {
+        return Math.max(a, b);
+    });
+
+    if (!completedVibrationCycleDay) {
+        if (vibrationTime[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+            // this ensures that the watch does not vibrate if the user is still sleeping
+            vibrate();
+            const firstElement = vibrationTime.shift();
+            vibrationTime.push(firstElement);
+            if (currentHour == maxHour) {
+                completedVibrationCycleDay = true;
+            }
+        } else if (vibrationTime[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
+            const firstElement = vibrationTime.shift();
+            vibrationTime.push(firstElement);
+        }
     }
-// }, 1200000); // timeout for 20 minutes
-}, 60000); // timeout for 20 minutes
+}, 600000); // timeout for 10 minutes
 
 clock.ontick = (evt) => {
     let today_dt = evt.date;
@@ -196,7 +208,7 @@ let flow_views = [thankyou];
 const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, svg_met, svg_change, clockface, thankyou, clockblock, svg_stop_survey];
 let flowSelectorUpdateTime = 0;
 
-//read small icons 
+//read small icons
 const smallIcons = [document.getElementById("small-thermal"),
     document.getElementById("small-light"),
     document.getElementById("small-noise"),
@@ -701,7 +713,7 @@ function sendEventIfReady(feedbackData) {
 }
 
 function sendDataToCompanion(data) {
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN 
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN
         && JSON.stringify(data).length < messaging.peerSocket.MAX_MESSAGE_SIZE) {
         console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE);
         console.log("data sizealert", JSON.stringify(data).length);
