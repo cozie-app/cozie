@@ -73,10 +73,10 @@ let local_file;
 
 // function that runs in the background and start vibration to remind the user to complete the survey
 const buzzOptions = {
-    '0': [],
-    '1': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-    '2': [9, 11, 13, 15, 17, 19, 21],
-    '3': [9, 12, 15, 18, 21]
+    0: [],
+    1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+    2: [9, 11, 13, 15, 17, 19, 21],
+    3: [9, 12, 15, 18, 21]
 };
 
 const bodyPresence = new BodyPresenceSensor();
@@ -91,46 +91,43 @@ if (BodyPresenceSensor) {
 }
 
 let buzzSelection = 2; // default value
-let vibrationTime = buzzOptions[buzzSelection];
-
-let startDay = new Date().getDay(); // get the day when the app started for the first time
+let vibrationTimeArray = buzzOptions[buzzSelection];
 let completedVibrationCycleDay = false; // keeps in memory weather the watch has vibrated at all hours
+let startDay = new Date().getDay(); // get the day when the app started for the first time
 
 setInterval(function () {
     const currentDate = new Date(); // get today's date
     const currentDay = currentDate.getDay(); // get today's day
-
-    if (currentDay != startDay) { // if it is a new day check user
-        startDay = currentDay;
-        completedVibrationCycleDay = false;
-        try {
-            buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection; // read user selection
-            vibrationTime = buzzOptions[buzzSelection];
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    // vibrate and change to response screen based on selected buzz option
     const currentHour = currentDate.getHours();
 
-    // get the last hour at which the watch should vibrate
-    const maxHour = vibrationTime.reduce(function (a, b) {
+    try {
+        const buzzSelection = parseInt(fs.readFileSync("buzzSelection.txt", "json").buzzSelection); // read user selection
+        vibrationTimeArray = buzzOptions[buzzSelection];
+    } catch (err) {
+        console.log(err);
+    }
+
+    if (currentDay !== startDay) { // if it is a new day check user
+        startDay = currentDay;
+        completedVibrationCycleDay = false;
+    }
+
+    const maxHour = vibrationTimeArray.reduce(function (a, b) {
         return Math.max(a, b);
     });
 
     if (!completedVibrationCycleDay) {
-        if (vibrationTime[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+        if (vibrationTimeArray[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
             // this ensures that the watch does not vibrate if the user is still sleeping
             vibrate();
-            const firstElement = vibrationTime.shift();
-            vibrationTime.push(firstElement);
+            const firstElement = vibrationTimeArray.shift();
+            vibrationTimeArray.push(firstElement);
             if (currentHour == maxHour) {
                 completedVibrationCycleDay = true;
             }
-        } else if (vibrationTime[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
-            const firstElement = vibrationTime.shift();
-            vibrationTime.push(firstElement);
+        } else if (vibrationTimeArray[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
+            const firstElement = vibrationTimeArray.shift();
+            vibrationTimeArray.push(firstElement);
         }
     }
 }, 600000); // timeout for 10 minutes
