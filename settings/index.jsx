@@ -125,19 +125,19 @@ function mySettings(props) {
                         {
                             name: "Every Hour",
                             value: "1",
-                            subLabel: "Buzz every hour between 9:00 - 17:00",
+                            subLabel: "Between 9:00 - 21:00",
                             img: sound
                         },
                         {
                             name: "Every 2 hours",
                             value: "2",
-                            subLabel: "Buzz every 2 hours between 9:00 - 17:00",
+                            subLabel: "Between 9:00 - 21:00",
                             img: sound
                         },
                         {
                             name: "Every 3 hours",
                             value: "3",
-                            subLabel: "Buzz every 3 hours between 9:00 - 17:00",
+                            subLabel: "Between 9:00 - 21:00",
                             img: sound
                         }
                     ]}
