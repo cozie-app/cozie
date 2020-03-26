@@ -32,11 +32,11 @@ const weekdays = {1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: 'Sat', 0:
 clock.granularity = 'seconds';
 
 // read HR data
-let hrLabel = document.getElementById("hrm");
+let hrLabel = document.getElementById("hrm");  // get tag label
 hrLabel.text = "--";
 let chargeLabel = document.getElementById("chargeLabel");
 
-var hrm = new HeartRateSensor();
+const hrm = new HeartRateSensor();
 hrm.onreading = function () {
     // Peek the current sensor values
     // console.log("Current heart rate: " + hrm.heartRate);
@@ -83,6 +83,7 @@ const buzzOptions = {
     3: [9, 12, 15, 18, 21]
 };
 
+// log body presence if sensor is available
 const bodyPresence = new BodyPresenceSensor();
 if (BodyPresenceSensor) {
     console.log("This device has a BodyPresenceSensor!");
@@ -159,33 +160,40 @@ clock.ontick = (evt) => {
     dateLabel.text = `${weekday}, ${month} ${day}`;
 
     // Steps
-    steps.text = `${(Math.floor(today.adjusted.steps / 1000) || 0)}k`;
-    if (steps.text >= (goals.steps || 0)) {
-        steps.style.fill = 'fb-green'; //green
-    } else if (steps.text >= (goals.steps || 0) / 2) {
-        steps.style.fill = 'fb-peach'; //yellow
-    } else {
-        steps.style.fill = 'fb-orange'; //pink
+    if (today.adjusted.steps > 0) {
+        try {
+            steps.text = `${(Math.floor(today.adjusted.steps / 1000) || 0)}k`;
+            if (steps.text >= (goals.steps || 0)) {
+                steps.style.fill = 'fb-green'; //green
+            } else if (steps.text >= (goals.steps || 0) / 2) {
+                steps.style.fill = 'fb-peach'; //yellow
+            } else {
+                steps.style.fill = 'fb-orange'; //pink
+            }
+        } catch (e) {
+            console.log("Change steps label color error: " + e);
+        }
     }
 
     //get screen width
-    let charge = battery.chargeLevel / 100;
-    chargeLabel.width = 300 * charge;
-    if (charge < 0.15) {
-        chargeLabel.style.fill = 'fb-red'
-    } else if (charge < 0.3) {
-        chargeLabel.style.fill = 'fb-peach'
-    } else {
-        chargeLabel.style.fill = 'fb-light-gray'
+    try {
+        let charge = battery.chargeLevel / 100;
+        chargeLabel.width = 300 * charge;
+        if (charge < 0.15) {
+            chargeLabel.style.fill = 'fb-red'
+        } else if (charge < 0.3) {
+            chargeLabel.style.fill = 'fb-peach'
+        } else {
+            chargeLabel.style.fill = 'fb-light-gray'
+        }
+    } catch (e) {
     }
 };
-
 //-------- END (CLOCK FACE DESIGN) -----------
 
 //-------- READING EXPERIMENT QUESTIONS FROM PHONE SETTINGS -----------
 
 console.log("WARNING!! APP HAS RESET");
-
 //Flow GUIs
 const clockface = document.getElementById("clockface");
 const indoorOutdoor = document.getElementById("indoor-outdoor");
@@ -240,7 +248,7 @@ try {
     flowSelector = []
 }
 
-//recieve message via peer socket
+// receive message via peer socket
 messaging.peerSocket.onmessage = function (evt) {
     console.log("settings received on device");
     console.log(JSON.stringify(evt));
@@ -269,7 +277,6 @@ messaging.peerSocket.onmessage = function (evt) {
             devErrorMessageLabel.text = evt.data.data.message
         }
     }
-
     console.log("end message socket")
 };
 
@@ -447,7 +454,7 @@ function showClock() {
     currentView = 0
 }
 
-var feedbackData; // Global variable for handling feedbackData
+let feedbackData; // Global variable for handling feedbackData
 let votelog;       // Global variable for handling votelogs
 
 function initiateFeedbackData() {
@@ -661,10 +668,9 @@ for (const button of buttons) {
         }
     });
 }
-
 //-------- END (DEFINE VIEWS BASED ON FLOW SELECTOR) -----------
 
-// vibrate for 3 sec and change screen to reponse
+// vibrate for 3 sec and change screen to response
 function vibrate() {
     /**
      * It causes the watch to vibrate, and forces the start of the feedback.
