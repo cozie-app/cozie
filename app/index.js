@@ -409,7 +409,10 @@ function showThankYou() {
     if (BodyPresenceSensor) {
         feedbackData['bodyPresence'] = bodyPresence.present;
     }
-    console.log(feedbackData['responseSpeed']);
+
+    feedbackData['restingHR'] = (user.restingHeartRate || 999);
+    feedbackData['BMR'] = (user.bmr || 999);
+    console.log("Resting HR: " + user.restingHeartRate);
 
     //send feedback to companion
     sendEventIfReady(feedbackData);
