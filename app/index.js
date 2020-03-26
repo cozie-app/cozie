@@ -11,14 +11,13 @@ import * as messaging from "messaging";
 import {vibration} from "haptics";
 import * as fs from "fs";
 import {geolocation} from "geolocation";
-
 import {inbox} from "file-transfer"
 import {outbox} from "file-transfer";
 import * as cbor from "cbor";
 import {memory} from "system";
 import {BodyPresenceSensor} from "body-presence";
 
-const production = false; // false for dev / debug releases
+const production = true; // false for dev / debug releases
 
 //-------- CLOCK FACE DESIGN -----------
 
@@ -41,16 +40,21 @@ var hrm = new HeartRateSensor();
 hrm.onreading = function () {
     // Peek the current sensor values
     // console.log("Current heart rate: " + hrm.heartRate);
-    hrLabel.text = `${hrm.heartRate}`;
-    if (user.heartRateZone(hrm.heartRate) === 'fat-burn') {
-        hrLabel.style.fill = 'fb-peach'; //yelow
-    } else if (user.heartRateZone(hrm.heartRate) === 'cardio') {
-        hrLabel.style.fill = 'fb-orange'; //light red
-    } else if (user.heartRateZone(hrm.heartRate) === 'peak') {
-        hrLabel.style.fill = 'fb-red'; //pink
-    } else if (user.heartRateZone(hrm.heartRate) === 'out-of-range') {
-        hrLabel.style.fill = 'fb-green'; //blue
+    try {
+        hrLabel.text = `${hrm.heartRate}`;
+        if (user.heartRateZone(hrm.heartRate) === 'fat-burn') {
+            hrLabel.style.fill = 'fb-peach'; //yelow
+        } else if (user.heartRateZone(hrm.heartRate) === 'cardio') {
+            hrLabel.style.fill = 'fb-orange'; //light red
+        } else if (user.heartRateZone(hrm.heartRate) === 'peak') {
+            hrLabel.style.fill = 'fb-red'; //pink
+        } else if (user.heartRateZone(hrm.heartRate) === 'out-of-range') {
+            hrLabel.style.fill = 'fb-green'; //blue
+        }
+    } catch (e) {
+        console.log("Heart rate reading error: " + e);
     }
+
 };
 
 // Begin monitoring the sensor
