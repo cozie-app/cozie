@@ -2,10 +2,12 @@ import thermal from '../resources/images/icons/prefer_warmer.png';
 import light from '../resources/images/icons/prefer_brighter.png';
 import noise from '../resources/images/icons/prefer_louder.png';
 import indoorOutdoor from '../resources/images/icons/out_in.png';
-import inofficeOutoffice from '../resources/images/icons/indoor.png';
+import location from '../resources/images/icons/home.png';
 import mood from '../resources/images/icons/not-comfy.png';
 import clothing from '../resources/images/icons/light_clothes.png';
 import icon_velocity from '../resources/images/icons/air_vel_high.png';
+import icon_met from '../resources/images/icons/met_exercising.png';
+import icon_change from '../resources/images/icons/outdoor.png';
 import noSound from '../resources/images/icons/prefer_quieter.png';
 import sound from '../resources/images/icons/prefer_louder.png';
 
@@ -45,7 +47,7 @@ function mySettings(props) {
                             img: thermal
                         },
                         {
-                            name: "Illuminance preference",
+                            name: "Light preference",
                             value: "showLight",
                             subLabel: "Dimmer, No change, Brighter",
                             img: light
@@ -57,34 +59,46 @@ function mySettings(props) {
                             img: noise
                         },
                         {
-                            name: "Location",
+                            name: "Indoor or outdoor",
                             value: "showIndoor",
                             subLabel: "Indoor, Outdoor",
                             img: indoorOutdoor
                         },
                         {
-                            name: "Are you working?",
+                            name: "Where are you?",
                             value: "showInOffice",
-                            subLabel: "Yes, No",
-                            img: inofficeOutoffice
+                            subLabel: "Home, Office, Other",
+                            img: location
                         },
                         {
                             name: "Mood",
                             value: "showMood",
-                            subLabel: "Not so good, Neutral, Good",
+                            subLabel: "Good, Bad or Neither",
                             img: mood
                         },
                         {
                             name: "Clothing",
                             value: "showClothing",
-                            subLabel: "Light, Medium, Heavy",
+                            subLabel: "Very light, Light, Medium, Heavy",
                             img: clothing
                         },
                         {
-                            name: "Air Speed",
+                            name: "Perceived air movement",
                             value: "showVelocity",
-                            subLabel: "Low, Medium, High",
+                            subLabel: "Perceived, Not perceived",
                             img: icon_velocity
+                        },
+                        {
+                            name: "Activity previous 10 minutes",
+                            value: "showMet",
+                            subLabel: "Resting, Sitting, Standing, Exercising",
+                            img: icon_met
+                        },
+                        {
+                            name: "Any changes location/activity",
+                            value: "showMet",
+                            subLabel: "No, Yes",
+                            img: icon_change
                         }
                     ]}
                     renderItem={option => (
@@ -111,19 +125,19 @@ function mySettings(props) {
                         {
                             name: "Every Hour",
                             value: "1",
-                            subLabel: "Buzz every hour between 9:00 - 17:00",
+                            subLabel: "Between 9:00 - 21:00",
                             img: sound
                         },
                         {
                             name: "Every 2 hours",
                             value: "2",
-                            subLabel: "Buzz every 2 hours between 9:00 - 17:00",
+                            subLabel: "Between 9:00 - 21:00",
                             img: sound
                         },
                         {
                             name: "Every 3 hours",
                             value: "3",
-                            subLabel: "Buzz every 3 hours between 9:00 - 17:00",
+                            subLabel: "Between 9:00 - 21:00",
                             img: sound
                         }
                     ]}

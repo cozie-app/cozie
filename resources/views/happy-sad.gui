@@ -7,7 +7,7 @@
   <use href="#button" id="neutral" pointer-events="visible">
     <set href="circle" attributeName="fill" to="fb-green"/>
     <set href="image" attributeName="href" to="images/icons/nuetral.png"/>
-    <set href="text"  attributeName="text-buffer" to="Neutral" />
+    <set href="text"  attributeName="text-buffer" to="Neither" />
   </use>
 
   <use href="#left-button" id="sad" pointer-events="visible">

@@ -12,6 +12,12 @@
   <link rel="import" href="views/gui_stop_survey.gui" />
   <link rel="import" href="views/clockblock.gui" />
   <link rel="import" href="views/gui_air_vel.gui" />
+  <link rel="import" href="views/metabolic_rate.gui" />
+  <link rel="import" href="views/any_change.gui" />
+
+  <g id="small-any-change" opacity="0.2">
+    <circle cx="85" cy="240" r="6" fill="fb-red"  />
+  </g>
 
   <g id="small-velocity" opacity="0.2">
     <circle cx="105" cy="240" r="6" fill="#61C3FF"  />
@@ -40,7 +46,7 @@
 
   <g id="small-office" opacity="0.2">
     <circle cx="205" cy="240" r="6" fill="#7090B5"  />
-    <image id="image" x="200" y="235" width="10" height="10" href="images/icons/indoor.png" load="sync" />
+    <image id="image" x="200" y="235" width="10" height="10" href="images/icons/home.png" load="sync" />
   </g>
 
   <g id="small-mood" opacity="0.2">
@@ -53,5 +59,9 @@
     <image id="image" x="240" y="235" width="10" height="10" href="images/icons/light_clothes.png" load="sync" />
   </g>
 
+  <g id="small-met" opacity="0.2">
+    <circle cx="265" cy="240" r="6" fill="#7090B5"  />
+    <image id="image" x="260" y="235" width="10" height="10" href="images/icons/met_exercising.png" load="sync" />
+  </g>
 </svg>
 

@@ -16,6 +16,7 @@ import {inbox} from "file-transfer"
 import {outbox} from "file-transfer";
 import * as cbor from "cbor";
 import {memory} from "system";
+import {BodyPresenceSensor} from "body-presence";
 
 const production = true; // false for dev / debug releases
 
@@ -70,70 +71,66 @@ let devErrorMessageLabel = document.getElementById("devErrorMessageLabel");
 // set the local_file which will be used to store data
 let local_file;
 
-// intervals to check vibrations
-let found = false;
-
+// function that runs in the background and start vibration to remind the user to complete the survey
 const buzzOptions = {
-    '0': [],
-    '1': [9, 10, 11, 12, 13, 14, 15, 16, 17],
-    '2': [9, 11, 13, 15, 17],
-    '3': [9, 12, 15]
+    0: [],
+    1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+    2: [9, 11, 13, 15, 17, 19, 21],
+    3: [9, 12, 15, 18, 21]
 };
 
-let buzzSelection;
+const bodyPresence = new BodyPresenceSensor();
+if (BodyPresenceSensor) {
+    console.log("This device has a BodyPresenceSensor!");
+    bodyPresence.addEventListener("reading", () => {
+        console.log(`The device is ${bodyPresence.present ? '' : 'not'} on the user's body.`);
+    });
+    bodyPresence.start();
+} else {
+    console.log("This device does NOT have a BodyPresenceSensor!");
+}
+
+let buzzSelection = 2; // default value
+let vibrationTimeArray = buzzOptions[buzzSelection];
+let completedVibrationCycleDay = false; // keeps in memory weather the watch has vibrated at all hours
+let startDay = new Date().getDay(); // get the day when the app started for the first time
+
 setInterval(function () {
+    const currentDate = new Date(); // get today's date
+    const currentDay = currentDate.getDay(); // get today's day
+    const currentHour = currentDate.getHours();
+
     try {
-        buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
+        const buzzSelection = parseInt(fs.readFileSync("buzzSelection.txt", "json").buzzSelection); // read user selection
+        vibrationTimeArray = buzzOptions[buzzSelection];
     } catch (err) {
         console.log(err);
-        console.log("buzz default option is [9,11,13,15,17]");
-        buzzSelection = 2;
     }
 
-    let vibrationTime = buzzOptions[buzzSelection];
-    const currentDate = new Date();
-    // vibrate and change to response screen based on selected buzz option
-    const currentHour = currentDate.getHours();
-    // make vibration during first minute
-    if (!found && vibrationTime.indexOf(currentHour) !== -1) {
-        vibrate();
-        found = true;
-    } else if (vibrationTime.indexOf(currentHour) === -1) {
-        found = false;
-    }
-}, 1200000); // timeout for 20 minutes
-
-// Collect 90 minutes of heart rate data
-let dataHistoryArray = [];
-// To run every  2 minute and populate the data history array with 60min of data
-setInterval(function () {
-    if (dataHistoryArray.length >= 30) {
-        dataHistoryArray.shift() // remove the first element of the array
+    if (currentDay !== startDay) { // if it is a new day check user
+        startDay = currentDay;
+        completedVibrationCycleDay = false;
     }
 
-    let currentTime = new Date().toISOString();
-    dataHistoryArray.push({time: currentTime, heartRate: hrm.heartRate, stepCount: today.adjusted.steps});
+    const maxHour = vibrationTimeArray.reduce(function (a, b) {
+        return Math.max(a, b);
+    });
 
-    console.log(JSON.stringify(dataHistoryArray));
-    console.log("number of heart rate data points", dataHistoryArray.length);
-
-    // store the data on the watch for debugging
-    if (!production) {
-        devMemoryLabel.text = `${Math.floor(memory.js.used / 1000)}/${Math.floor(memory.js.total / 1000)}kb`;
-        devHeartStorageLabel.text = dataHistoryArray.length + '/30';
-        // Colour based on memory allocation
-        if (memory.js.used > 50000) {
-            devMemoryLabel.style.fill = 'fb-violet' //pink
-        } else if (memory.js.used < 40000) {
-            devMemoryLabel.style.fill = 'fb-green'; //green
-        } else {
-            devMemoryLabel.style.fill = 'fb-peach'; //yelow
+    if (!completedVibrationCycleDay) {
+        if (vibrationTimeArray[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+            // this ensures that the watch does not vibrate if the user is still sleeping
+            vibrate();
+            const firstElement = vibrationTimeArray.shift();
+            vibrationTimeArray.push(firstElement);
+            if (currentHour == maxHour) {
+                completedVibrationCycleDay = true;
+            }
+        } else if (vibrationTimeArray[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
+            const firstElement = vibrationTimeArray.shift();
+            vibrationTimeArray.push(firstElement);
         }
     }
-
-    console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
-
-}, 120000); // timeout for 2 min
+}, 600000); // timeout for 10 minutes
 
 clock.ontick = (evt) => {
     let today_dt = evt.date;
@@ -164,14 +161,16 @@ clock.ontick = (evt) => {
     } else if (steps.text >= (goals.steps || 0) / 2) {
         steps.style.fill = 'fb-peach'; //yellow
     } else {
-        steps.style.fill = 'fb-red'; //pink
+        steps.style.fill = 'fb-orange'; //pink
     }
 
     //get screen width
     let charge = battery.chargeLevel / 100;
     chargeLabel.width = 300 * charge;
-    if (charge < 0.2) {
+    if (charge < 0.15) {
         chargeLabel.style.fill = 'fb-red'
+    } else if (charge < 0.3) {
+        chargeLabel.style.fill = 'fb-peach'
     } else {
         chargeLabel.style.fill = 'fb-light-gray'
     }
@@ -193,6 +192,8 @@ const loudQuiet = document.getElementById("loud-quiet");
 const happySad = document.getElementById("happy-sad");
 const clothing = document.getElementById("clothing");
 const svg_air_vel = document.getElementById("svg_air_vel");
+const svg_met = document.getElementById("metabolic_rate");
+const svg_change = document.getElementById("any_change");
 //Clock manipulation guis
 const thankyou = document.getElementById("thankyou");
 const svg_stop_survey = document.getElementById("stopSurvey");
@@ -201,10 +202,10 @@ const clockblock = document.getElementById("clockblock");
 // Default shows only thank you screen in the flow
 let flow_views = [thankyou];
 // Used to set all views to none when switching between screens
-const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, clockface, thankyou, clockblock, svg_stop_survey];
+const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, svg_met, svg_change, clockface, thankyou, clockblock, svg_stop_survey];
 let flowSelectorUpdateTime = 0;
 
-//read small icons 
+//read small icons
 const smallIcons = [document.getElementById("small-thermal"),
     document.getElementById("small-light"),
     document.getElementById("small-noise"),
@@ -212,7 +213,9 @@ const smallIcons = [document.getElementById("small-thermal"),
     document.getElementById("small-office"),
     document.getElementById("small-mood"),
     document.getElementById("small-clothing"),
-    document.getElementById("small-velocity")];
+    document.getElementById("small-velocity"),
+    document.getElementById("small-met"),
+    document.getElementById("small-any-change"),];
 
 // Flow may have been previously saved locally as flow.txt
 let flowFileRead;
@@ -334,8 +337,13 @@ const notComfy = document.getElementById("not-comfy");
 const indoor = document.getElementById("indoor");
 const outdoor = document.getElementById("outdoor");
 // buttons
-const in_office = document.getElementById("in-office");
-const out_office = document.getElementById("out-office");
+const location_work = document.getElementById("location_work");
+const location_home = document.getElementById("location_home");
+const location_other = document.getElementById("location_other");
+const location_portable = document.getElementById("location_portable");
+// buttons
+const change_no = document.getElementById("change_no");
+const change_yes = document.getElementById("change_yes");
 // buttons
 const thermal_comfy = document.getElementById('thermal_comfy');
 const prefer_warm = document.getElementById("prefer_warm");
@@ -356,9 +364,15 @@ const neutral = document.getElementById('neutral');
 const happy = document.getElementById("happy");
 const sad = document.getElementById("sad");
 // buttons
-const light_clothes = document.getElementById('light_clothes');
-const medium_clothes = document.getElementById("medium_clothes");
-const heavy_clothes = document.getElementById("heavy_clothes");
+const clothes_very_light = document.getElementById('clothes_very_light');
+const clothes_light = document.getElementById('clothes_light');
+const clothes_medium = document.getElementById("clothes_medium");
+const clothes_high = document.getElementById("clothes_high");
+// buttons
+const met_resting = document.getElementById('met_resting');
+const met_sitting = document.getElementById('met_sitting');
+const met_standing = document.getElementById("met_standing");
+const met_exercising = document.getElementById("met_exercising");
 // buttons air velocity
 const air_vel_low = document.getElementById('air_vel_low');
 const air_vel_medium = document.getElementById("air_vel_medium");
@@ -367,7 +381,9 @@ const air_vel_high = document.getElementById("air_vel_high");
 function showFace(view_to_display) {
     allViews.map(v => v.style.display = "none");
     view_to_display.style.display = "inline";
-    currentView++
+    currentView++;
+
+    vibration.start("bump");
 }
 
 function showThankYou() {
@@ -386,6 +402,9 @@ function showThankYou() {
     const startFeedback = new Date(feedbackData['startFeedback']);
     feedbackData['responseSpeed'] = (endFeedback - startFeedback) / 1000.0;
     feedbackData['endFeedback'] = endFeedback.toISOString();
+    if (BodyPresenceSensor) {
+        feedbackData['bodyPresence'] = bodyPresence.present;
+    }
     console.log(feedbackData['responseSpeed']);
 
     //send feedback to companion
@@ -433,9 +452,6 @@ function initiateFeedbackData() {
         heartRate: hrm.heartRate,
     };
 
-    // access heart rate array data
-    feedbackData['dataHistoryArray'] = dataHistoryArray;
-
     // reading log file for debuging purposes
     try {
         console.log("checking if local file exists");
@@ -471,13 +487,29 @@ let buttons = [{
     obj: outdoor,
     attribute: 'indoorOutdoor',
 }, {
+    value: 10,
+    obj: change_no,
+    attribute: 'change',
+}, {
     value: 11,
-    obj: in_office,
-    attribute: 'inOffice',
+    obj: change_yes,
+    attribute: 'change',
+}, {
+    value: 11,
+    obj: location_home,
+    attribute: 'location',
+}, {
+    value: 10,
+    obj: location_other,
+    attribute: 'location',
 }, {
     value: 9,
-    obj: out_office,
-    attribute: 'inOffice',
+    obj: location_work,
+    attribute: 'location',
+}, {
+    value: 8,
+    obj: location_portable,
+    attribute: 'location',
 }, {
     value: 10,
     obj: thermal_comfy,
@@ -535,17 +567,37 @@ let buttons = [{
     obj: sad,
     attribute: 'mood',
 }, {
+    value: 8,
+    obj: clothes_very_light,
+    attribute: 'clothing',
+}, {
     value: 9,
-    obj: light_clothes,
+    obj: clothes_light,
     attribute: 'clothing',
 }, {
     value: 10,
-    obj: medium_clothes,
+    obj: clothes_medium,
     attribute: 'clothing',
 }, {
     value: 11,
-    obj: heavy_clothes,
+    obj: clothes_high,
     attribute: 'clothing',
+}, {
+    value: 8,
+    obj: met_resting,
+    attribute: 'met',
+}, {
+    value: 9,
+    obj: met_sitting,
+    attribute: 'met',
+}, {
+    value: 10,
+    obj: met_standing,
+    attribute: 'met',
+}, {
+    value: 11,
+    obj: met_exercising,
+    attribute: 'met',
 }, {
     value: 9,
     obj: air_vel_low,
@@ -614,7 +666,7 @@ function vibrate() {
      * If there are questions in the flow, then it starts the flow
      */
 
-    vibration.start("ring");
+    vibration.start("alert");
 
     //Change main clock face to response screen
     if (flow_views.length === 1) {
@@ -630,11 +682,10 @@ function vibrate() {
     //Stop vibration after 5 seconds
     setTimeout(function () {
         vibration.stop()
-    }, 5000);
+    }, 2000);
 }
 
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------
-
 function sendEventIfReady(feedbackData) {
     console.log("sending feedbackData");
     console.log(JSON.stringify(feedbackData));
@@ -659,10 +710,10 @@ function sendEventIfReady(feedbackData) {
 }
 
 function sendDataToCompanion(data) {
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN 
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN
         && JSON.stringify(data).length < messaging.peerSocket.MAX_MESSAGE_SIZE) {
-        console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE)
-        console.log("data size", JSON.stringify(data).length)
+        console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE);
+        console.log("data sizealert", JSON.stringify(data).length);
         messaging.peerSocket.send(data);
         console.log("data sent directly to companion");
 

@@ -9,6 +9,7 @@
 - I am worried about my positive diagnosis, but I can't go to the hospital all the time due to my infection rate. I would like to remotely let doctors know about my situation and have them watch over me
 - I don't want to deal with
 
+
 ### Clinician Requirements
 - I may not have capacity to deal with all COVID positive cases, and healthlines are already overwhelmed. I would like to have an easy overview of all my patients and be able to call them when their situation deterioates
 - I have responsibilty for all my patients, and am responsible if their situation deterioates. My patients lives are in my hands
@@ -56,13 +57,15 @@ Wiki: https://github.com/buds-lab/cozie/wiki/Cozie-Development-Guide
 
 Latest Stable Release: Coming soon
 
+# Dev guide
+1. `npx fitbit-build` will build the project
+2. `npx fitbit` opens the browser, and logs into your fitbit account. From here you can connect to devices and install the app
 
 
-# Supported fitbit devices
-
+# Install  ClockFace to your own Fitbit Versa
 
 Supported Devices: Ionic, Versa, Versa-Lite, Versa 2
-The app is available by the link. To install ClockFace follow the link https://gam.fitbit.com/gallery/clock/731497ca-5e7c-4383-a702-18330587d048 on your phone, it will redirect to FitBit app gallery.
+Download inks coming soon
 
 # Backend
 

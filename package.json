@@ -28,11 +28,11 @@
   },
   "devDependencies": {
     "@fitbit/sdk": "~4.0.0",
-    "@fitbit/sdk-cli": "^1.7.0"
+    "@fitbit/sdk-cli": "^1.7.1"
   },
   "dependencies": {
     "@fitbit/sdk": "~4.0.0",
-    "@fitbit/sdk-cli": "^1.7.0"
+    "@fitbit/sdk-cli": "^1.7.1"
   },
   "scripts": {
     "build": "fitbit-build"

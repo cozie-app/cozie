@@ -122,8 +122,21 @@ function sendDataToInflux(data) {
     //   console.log("experiment id not defined, setting default")
     //   experiment_id = "default"
     // }
-    const user_id = JSON.parse(settingsStorage.getItem('user_id')).name;
-    const experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;
+    let user_id = "";
+    let experiment_id = "";
+    // if user_id is not defined then assign the value undefined
+    try {user_id = JSON.parse(settingsStorage.getItem('user_id')).name;}
+    catch (error) {
+        if (error instanceof TypeError) {
+            user_id = "undefined"
+    }}
+
+    try {experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;}
+    catch (error) {
+        if (error instanceof TypeError) {
+            experiment_id = "undefined"
+    }}
+
     data.user_id = user_id;
     data.experiment_id = experiment_id;
 
