@@ -24,6 +24,6 @@ Credits to https://github.com/gedankenstuecke/Minimal-Clock was used as a starte
 
 # License
 
-The Cozie clockface is open sourced under at GPLv3 License
+The Cozie clockface is open sourced under at [GPLv3 License](https://github.com/buds-lab/cozie/blob/master/LICENSE)
 
 Copyright © 2018-2020, BUDS Lab
