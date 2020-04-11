@@ -42,49 +42,6 @@
    /*  fill: #38f8df; */
 }
 
-#devMemoryLabel {
-  font-size: 25;
-  font-family: Seville-Book;
-  text-length: 32;
-  text-anchor: middle;
-  x: 50%;
-  y: 10%;
-  fill: #a0a0a0;
-  /*x: 260;
-  y: 15%; */
-   /*  fill: #38f8df; */
-}
-
-#devHeartStorageLabel {
-  font-size: 20;
-  font-family: Seville-Book;
-  text-length: 32;
-  text-anchor: start;
-  x: 300;
-  y: 98%;
-  fill: #a0a0a0;
-}
-
-#devErrorLabel {
-  font-size: 20;
-  font-family: Seville-Book;
-  text-anchor: start;
-  text-length: 32;
-  x: 5;
-  y: 50%;
-  fill: #f83478;
-}
-
-#devErrorMessageLabel {
-  font-size: 20;
-  font-family: Seville-Book;
-  text-anchor: start;
-  text-length: 100;
-  x: 5;
-  y: 55%;
-  fill: #f83478;
-}
-
 #hrmIcon {
   x: 270;
   y: 4%;
@@ -108,6 +65,23 @@
   text-anchor: middle;
   x: 50%;
   y: 40%;
+  fill: #a0a0a0;
+}
+
+#voteLogLabel {
+  font-size: 25;
+  font-family: Colfax;
+  text-length: 32;
+  text-anchor: middle;
+  x: 50%;
+  y: 10%;
+  fill: #a0a0a0;
+}
+
+#errorLabel {
+  font-size: 10;
+  font-family: Colfax;
+  y: 5%;
   fill: #a0a0a0;
 }
 

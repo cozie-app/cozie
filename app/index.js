@@ -17,7 +17,7 @@ import * as cbor from "cbor";
 import {memory} from "system";
 import {BodyPresenceSensor} from "body-presence";
 
-const production = true; // false for dev / debug releases
+const production = false; // false for dev / debug releases
 
 //-------- CLOCK FACE DESIGN -----------
 
@@ -67,10 +67,15 @@ let dateLabel = document.getElementById("dateLabel");
 let secLabel = document.getElementById("secLabel");
 let storageLabel = document.getElementById("storageLabel");
 // Note that dev elements are hidden in production mode
-let devMemoryLabel = document.getElementById("devMemoryLabel");
-let devHeartStorageLabel = document.getElementById("devHeartStorageLabel");
-let devErrorLabel = document.getElementById("devErrorLabel");
-let devErrorMessageLabel = document.getElementById("devErrorMessageLabel");
+let voteLogLabel = document.getElementById("voteLogLabel");
+
+if (!production){
+    timeLabel.style.display = "none";
+    dateLabel.style.display = "none";
+    secLabel.style.display = "none";
+    let errorLabel = document.getElementById("errorLabel");
+    let bodyErrorLabel = errorLabel.getElementById("copy");
+}
 
 // set the local_file which will be used to store data
 let local_file;
@@ -110,6 +115,9 @@ setInterval(function () {
         vibrationTimeArray = buzzOptions[buzzSelection];
     } catch (err) {
         console.log(err);
+        if (!production) {
+            bodyErrorLabel.text = bodyErrorLabel.text + "Vibration : " + err;
+        }
     }
 
     if (currentDay !== startDay) { // if it is a new day check user
@@ -172,6 +180,9 @@ clock.ontick = (evt) => {
             }
         } catch (e) {
             console.log("Change steps label color error: " + e);
+            if (!production) {
+                bodyErrorLabel.text = bodyErrorLabel.text + "Steps : " + err;
+            }
         }
     }
 
@@ -187,6 +198,9 @@ clock.ontick = (evt) => {
             chargeLabel.style.fill = 'fb-light-gray'
         }
     } catch (e) {
+        if (!production) {
+            bodyErrorLabel.text = bodyErrorLabel.text + "Battery : " + err;
+        }
     }
 };
 //-------- END (CLOCK FACE DESIGN) -----------
@@ -273,8 +287,7 @@ messaging.peerSocket.onmessage = function (evt) {
     } else if (evt.data.key === 'error') {
         console.log("error message called and displaying on watch");
         if (!production) {
-            devErrorLabel.text = evt.data.data.type;
-            devErrorMessageLabel.text = evt.data.data.message
+            bodyErrorLabel.text = "Socket : " + evt.data.data.type + evt.data.data.message;
         }
     }
     console.log("end message socket")
@@ -309,8 +322,7 @@ function processAllFiles() {
             } else if (fileData.key === 'error') {
                 console.log("error message called and displaying on watch");
                 if (!production) {
-                    devErrorLabel.text = fileData.data.type + ' ' + Date(fileData.time);
-                    devErrorMessageLabel.text = fileData.data.message
+                    bodyErrorLabel.text = "Process files : " + fileData.data.type + ' ' + Date(fileData.time) + fileData.data.message;
                 }
             }
         } else {
@@ -478,6 +490,7 @@ function initiateFeedbackData() {
     // Incremement the vote log by one
     votelog[0]++;
     console.log(votelog[0]);
+    voteLogLabel.text = votelog;
     // add the votelog to the feedback data json
     feedbackData['voteLog'] = votelog[0];
     // store the votelog on the device as votelog.txt
