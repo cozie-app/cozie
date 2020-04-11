@@ -24,6 +24,6 @@ Credits to https://github.com/gedankenstuecke/Minimal-Clock was used as a starte
 
 # License
 
-The Cozie clockface is open sourced under at [LGPL License](https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License)
+The Cozie clockface is open sourced under at GPLv3 License
 
 Copyright BUDS Lab and NUS 2018-2020
