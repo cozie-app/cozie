@@ -17,7 +17,7 @@ import * as cbor from "cbor";
 import {memory} from "system";
 import {BodyPresenceSensor} from "body-presence";
 
-const production = false; // false for dev / debug releases
+const production = true; // false for dev / debug releases
 
 //-------- CLOCK FACE DESIGN -----------
 
