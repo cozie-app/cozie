@@ -113,10 +113,10 @@ setInterval(function () {
     try {
         const buzzSelection = parseInt(fs.readFileSync("buzzSelection.txt", "json").buzzSelection); // read user selection
         vibrationTimeArray = buzzOptions[buzzSelection];
-    } catch (err) {
-        console.log(err);
+    } catch (e) {
+        console.log(e);
         if (!production) {
-            bodyErrorLabel.text = bodyErrorLabel.text + "Vibration : " + err;
+            bodyErrorLabel.text = bodyErrorLabel.text + "Vibration : " + e;
         }
     }
 
@@ -135,7 +135,7 @@ setInterval(function () {
             vibrate();
             const firstElement = vibrationTimeArray.shift();
             vibrationTimeArray.push(firstElement);
-            if (currentHour == maxHour) {
+            if (currentHour === maxHour) {
                 completedVibrationCycleDay = true;
             }
         } else if (vibrationTimeArray[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
@@ -181,7 +181,7 @@ clock.ontick = (evt) => {
         } catch (e) {
             console.log("Change steps label color error: " + e);
             if (!production) {
-                bodyErrorLabel.text = bodyErrorLabel.text + "Steps : " + err;
+                bodyErrorLabel.text = bodyErrorLabel.text + "Steps : " + e;
             }
         }
     }
@@ -199,7 +199,7 @@ clock.ontick = (evt) => {
         }
     } catch (e) {
         if (!production) {
-            bodyErrorLabel.text = bodyErrorLabel.text + "Battery : " + err;
+            bodyErrorLabel.text = bodyErrorLabel.text + "Battery : " + e;
         }
     }
 };
@@ -256,8 +256,8 @@ try {
     flowSelector = flowFileRead.flowSelector;
     mapFlows(flowSelector);
     console.log("flows loaded via file sync")
-} catch (err) {
-    console.log(err);
+} catch (e) {
+    console.log(e);
     console.log("resetting flows");
     flowSelector = []
 }
@@ -482,7 +482,7 @@ function initiateFeedbackData() {
     try {
         console.log("checking if local file exists");
         votelog = fs.readFileSync("votelog.txt", "json");
-    } catch (err) {
+    } catch (e) {
         // if can't read set local file to empty
         console.log("creating empty votelog.txt file");
         votelog = [0]
@@ -752,7 +752,7 @@ function sendDataToCompanion(data) {
         try {
             console.log("checking if local file exists");
             local_file = fs.readFileSync("local.txt", "json");
-        } catch (err) {
+        } catch (e) {
             // if can't read set local file to empty
             console.log("creating empty local.txt file");
             local_file = []
