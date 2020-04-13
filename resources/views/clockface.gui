@@ -23,7 +23,7 @@
     <set href="image" attributeName="href" to="images/icons/comfy.png"/>
   </use>
 
-  <use id="errorLabel" href="#mixed-text-center-top" height="50%">
+  <use href="#mixed-text-center-top" id="errorLabel" height="50%">
     <set href="#copy/text" attributeName="text-length" to="256" />
     <set href="#header/text" attributeName="fill" to="fb-red" />
   </use>
