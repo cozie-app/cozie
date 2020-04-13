@@ -17,7 +17,7 @@ import * as cbor from "cbor";
 import {memory} from "system";
 import {BodyPresenceSensor} from "body-presence";
 
-const production = false; // false for dev / debug releases
+const production = true; // false for dev / debug releases
 
 //-------- CLOCK FACE DESIGN -----------
 
@@ -490,7 +490,9 @@ function initiateFeedbackData() {
     // Incremement the vote log by one
     votelog[0]++;
     console.log(votelog[0]);
-    voteLogLabel.text = votelog;
+    if (!production) {
+        voteLogLabel.text = votelog;
+    }
     // add the votelog to the feedback data json
     feedbackData['voteLog'] = votelog[0];
     // store the votelog on the device as votelog.txt
