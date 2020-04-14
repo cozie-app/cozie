@@ -12,7 +12,7 @@ The foundation for this project is the [BUDS Lab](https://www.budslab.org/) effo
 
 # Tutorials
 
-Documentation found here and a shortcut to the [video tutorials](https://www.youtube.com/playlist?list=PLkQs5WJXVHbiBDjmv-1tBYNUQOkmNCctA) related to helping with the project or forking for yourself.
+Documentation found [here](https://www.budslab.org/website-dev/docs/home) and a shortcut to the [video tutorials](https://www.youtube.com/playlist?list=PLkQs5WJXVHbiBDjmv-1tBYNUQOkmNCctA) related to helping with the project or forking for yourself.
 
 # Download
 
