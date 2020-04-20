@@ -8,13 +8,9 @@
   <image id= "stepIcon" href="images/stat_steps_solid_48px.png" load="sync" />
   <text id="steps" class='red'>0</text>
   <rect x="0" y="0" width="300" height="3" fill="#505050" id='chargeLabel'/>
-  <text id="storageLabel" >  </text>
+  <text id="storageLabel" > </text>
+  <text id="voteLogLabel" > </text>
 
-  <text id="devMemoryLabel" > </text>
-  <text id="devHeartStorageLabel" > </text>
-  <text id="devErrorLabel" > </text>
-  <text id="devErrorMessageLabel" > </text>
-  
   <use href="#left-button" id="not-comfy" pointer-events="visible">
     <set href="circle" attributeName="fill" to="fb-orange"/>
     <set href="text" attributeName="text-buffer" to="Not Comfy"/>
@@ -25,6 +21,11 @@
     <set href="circle" attributeName="fill" to="fb-green"/>
     <set href="text" attributeName="text-buffer" to="Comfy"/>
     <set href="image" attributeName="href" to="images/icons/comfy.png"/>
+  </use>
+
+  <use href="#mixed-text-center-top" id="errorLabel" height="50%">
+    <set href="#copy/text" attributeName="text-length" to="256" />
+    <set href="#header/text" attributeName="fill" to="fb-red" />
   </use>
 
 </svg>

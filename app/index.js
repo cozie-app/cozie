@@ -11,7 +11,6 @@ import * as messaging from "messaging";
 import {vibration} from "haptics";
 import * as fs from "fs";
 import {geolocation} from "geolocation";
-
 import {inbox} from "file-transfer"
 import {outbox} from "file-transfer";
 import * as cbor from "cbor";
@@ -33,24 +32,29 @@ const weekdays = {1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: 'Sat', 0:
 clock.granularity = 'seconds';
 
 // read HR data
-let hrLabel = document.getElementById("hrm");
+let hrLabel = document.getElementById("hrm");  // get tag label
 hrLabel.text = "--";
 let chargeLabel = document.getElementById("chargeLabel");
 
-var hrm = new HeartRateSensor();
+const hrm = new HeartRateSensor();
 hrm.onreading = function () {
     // Peek the current sensor values
     // console.log("Current heart rate: " + hrm.heartRate);
-    hrLabel.text = `${hrm.heartRate}`;
-    if (user.heartRateZone(hrm.heartRate) === 'fat-burn') {
-        hrLabel.style.fill = 'fb-peach'; //yelow
-    } else if (user.heartRateZone(hrm.heartRate) === 'cardio') {
-        hrLabel.style.fill = 'fb-orange'; //light red
-    } else if (user.heartRateZone(hrm.heartRate) === 'peak') {
-        hrLabel.style.fill = 'fb-red'; //pink
-    } else if (user.heartRateZone(hrm.heartRate) === 'out-of-range') {
-        hrLabel.style.fill = 'fb-green'; //blue
+    try {
+        hrLabel.text = `${hrm.heartRate}`;
+        if (user.heartRateZone(hrm.heartRate) === 'fat-burn') {
+            hrLabel.style.fill = 'fb-peach'; //yelow
+        } else if (user.heartRateZone(hrm.heartRate) === 'cardio') {
+            hrLabel.style.fill = 'fb-orange'; //light red
+        } else if (user.heartRateZone(hrm.heartRate) === 'peak') {
+            hrLabel.style.fill = 'fb-red'; //pink
+        } else if (user.heartRateZone(hrm.heartRate) === 'out-of-range') {
+            hrLabel.style.fill = 'fb-green'; //blue
+        }
+    } catch (e) {
+        console.log("Heart rate reading error: " + e);
     }
+
 };
 
 // Begin monitoring the sensor
@@ -63,10 +67,15 @@ let dateLabel = document.getElementById("dateLabel");
 let secLabel = document.getElementById("secLabel");
 let storageLabel = document.getElementById("storageLabel");
 // Note that dev elements are hidden in production mode
-let devMemoryLabel = document.getElementById("devMemoryLabel");
-let devHeartStorageLabel = document.getElementById("devHeartStorageLabel");
-let devErrorLabel = document.getElementById("devErrorLabel");
-let devErrorMessageLabel = document.getElementById("devErrorMessageLabel");
+let voteLogLabel = document.getElementById("voteLogLabel");
+let errorLabel = document.getElementById("errorLabel");
+let bodyErrorLabel = errorLabel.getElementById("copy");
+
+if (!production){
+    timeLabel.style.display = "none";
+    dateLabel.style.display = "none";
+    secLabel.style.display = "none";
+}
 
 // set the local_file which will be used to store data
 let local_file;
@@ -79,6 +88,7 @@ const buzzOptions = {
     3: [9, 12, 15, 18, 21]
 };
 
+// log body presence if sensor is available
 const bodyPresence = new BodyPresenceSensor();
 if (BodyPresenceSensor) {
     console.log("This device has a BodyPresenceSensor!");
@@ -103,8 +113,11 @@ setInterval(function () {
     try {
         const buzzSelection = parseInt(fs.readFileSync("buzzSelection.txt", "json").buzzSelection); // read user selection
         vibrationTimeArray = buzzOptions[buzzSelection];
-    } catch (err) {
-        console.log(err);
+    } catch (e) {
+        console.log(e);
+        if (!production) {
+            bodyErrorLabel.text = bodyErrorLabel.text + "Vibration : " + e;
+        }
     }
 
     if (currentDay !== startDay) { // if it is a new day check user
@@ -122,7 +135,7 @@ setInterval(function () {
             vibrate();
             const firstElement = vibrationTimeArray.shift();
             vibrationTimeArray.push(firstElement);
-            if (currentHour == maxHour) {
+            if (currentHour === maxHour) {
                 completedVibrationCycleDay = true;
             }
         } else if (vibrationTimeArray[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
@@ -155,33 +168,46 @@ clock.ontick = (evt) => {
     dateLabel.text = `${weekday}, ${month} ${day}`;
 
     // Steps
-    steps.text = `${(Math.floor(today.adjusted.steps / 1000) || 0)}k`;
-    if (steps.text >= (goals.steps || 0)) {
-        steps.style.fill = 'fb-green'; //green
-    } else if (steps.text >= (goals.steps || 0) / 2) {
-        steps.style.fill = 'fb-peach'; //yellow
-    } else {
-        steps.style.fill = 'fb-orange'; //pink
+    if (today.adjusted.steps > 0) {
+        try {
+            steps.text = `${(Math.floor(today.adjusted.steps / 1000) || 0)}k`;
+            if (steps.text >= (goals.steps || 0)) {
+                steps.style.fill = 'fb-green'; //green
+            } else if (steps.text >= (goals.steps || 0) / 2) {
+                steps.style.fill = 'fb-peach'; //yellow
+            } else {
+                steps.style.fill = 'fb-orange'; //pink
+            }
+        } catch (e) {
+            console.log("Change steps label color error: " + e);
+            if (!production) {
+                bodyErrorLabel.text = bodyErrorLabel.text + "Steps : " + e;
+            }
+        }
     }
 
     //get screen width
-    let charge = battery.chargeLevel / 100;
-    chargeLabel.width = 300 * charge;
-    if (charge < 0.15) {
-        chargeLabel.style.fill = 'fb-red'
-    } else if (charge < 0.3) {
-        chargeLabel.style.fill = 'fb-peach'
-    } else {
-        chargeLabel.style.fill = 'fb-light-gray'
+    try {
+        let charge = battery.chargeLevel / 100;
+        chargeLabel.width = 300 * charge;
+        if (charge < 0.15) {
+            chargeLabel.style.fill = 'fb-red'
+        } else if (charge < 0.3) {
+            chargeLabel.style.fill = 'fb-peach'
+        } else {
+            chargeLabel.style.fill = 'fb-light-gray'
+        }
+    } catch (e) {
+        if (!production) {
+            bodyErrorLabel.text = bodyErrorLabel.text + "Battery : " + e;
+        }
     }
 };
-
 //-------- END (CLOCK FACE DESIGN) -----------
 
 //-------- READING EXPERIMENT QUESTIONS FROM PHONE SETTINGS -----------
 
 console.log("WARNING!! APP HAS RESET");
-
 //Flow GUIs
 const clockface = document.getElementById("clockface");
 const indoorOutdoor = document.getElementById("indoor-outdoor");
@@ -230,13 +256,13 @@ try {
     flowSelector = flowFileRead.flowSelector;
     mapFlows(flowSelector);
     console.log("flows loaded via file sync")
-} catch (err) {
-    console.log(err);
+} catch (e) {
+    console.log(e);
     console.log("resetting flows");
     flowSelector = []
 }
 
-//recieve message via peer socket
+// receive message via peer socket
 messaging.peerSocket.onmessage = function (evt) {
     console.log("settings received on device");
     console.log(JSON.stringify(evt));
@@ -261,11 +287,9 @@ messaging.peerSocket.onmessage = function (evt) {
     } else if (evt.data.key === 'error') {
         console.log("error message called and displaying on watch");
         if (!production) {
-            devErrorLabel.text = evt.data.data.type;
-            devErrorMessageLabel.text = evt.data.data.message
+            bodyErrorLabel.text = "Socket : " + evt.data.data.type + evt.data.data.message;
         }
     }
-
     console.log("end message socket")
 };
 
@@ -298,8 +322,7 @@ function processAllFiles() {
             } else if (fileData.key === 'error') {
                 console.log("error message called and displaying on watch");
                 if (!production) {
-                    devErrorLabel.text = fileData.data.type + ' ' + Date(fileData.time);
-                    devErrorMessageLabel.text = fileData.data.message
+                    bodyErrorLabel.text = "Process files : " + fileData.data.type + ' ' + Date(fileData.time) + fileData.data.message;
                 }
             }
         } else {
@@ -405,7 +428,18 @@ function showThankYou() {
     if (BodyPresenceSensor) {
         feedbackData['bodyPresence'] = bodyPresence.present;
     }
-    console.log(feedbackData['responseSpeed']);
+
+    try {
+        feedbackData['restingHR'] = user.restingHeartRate;
+    } catch (e) {
+        console.log("No resting heart rate data available");
+    }
+
+    try {
+        feedbackData['BMR'] = user.bmr;
+    } catch (e) {
+        console.log("No resting basal metabolic rate data available");
+    }
 
     //send feedback to companion
     sendEventIfReady(feedbackData);
@@ -440,7 +474,7 @@ function showClock() {
     currentView = 0
 }
 
-var feedbackData; // Global variable for handling feedbackData
+let feedbackData; // Global variable for handling feedbackData
 let votelog;       // Global variable for handling votelogs
 
 function initiateFeedbackData() {
@@ -456,7 +490,7 @@ function initiateFeedbackData() {
     try {
         console.log("checking if local file exists");
         votelog = fs.readFileSync("votelog.txt", "json");
-    } catch (err) {
+    } catch (e) {
         // if can't read set local file to empty
         console.log("creating empty votelog.txt file");
         votelog = [0]
@@ -464,6 +498,9 @@ function initiateFeedbackData() {
     // Incremement the vote log by one
     votelog[0]++;
     console.log(votelog[0]);
+    if (!production) {
+        voteLogLabel.text = votelog;
+    }
     // add the votelog to the feedback data json
     feedbackData['voteLog'] = votelog[0];
     // store the votelog on the device as votelog.txt
@@ -654,10 +691,9 @@ for (const button of buttons) {
         }
     });
 }
-
 //-------- END (DEFINE VIEWS BASED ON FLOW SELECTOR) -----------
 
-// vibrate for 3 sec and change screen to reponse
+// vibrate for 3 sec and change screen to response
 function vibrate() {
     /**
      * It causes the watch to vibrate, and forces the start of the feedback.
@@ -691,8 +727,8 @@ function sendEventIfReady(feedbackData) {
     console.log(JSON.stringify(feedbackData));
 
     console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
-    // set timeout of gps aquisition to 5 seconds and allow cached geo locations up to 1min to be allowed
-    geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 20000, maximumAge: 60000});
+    // set timeout of gps https://dev.fitbit.com/build/reference/device-api/geolocation/
+    geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 4 * 60 * 1000, maximumAge: 4 * 60 * 1000});
 
     function locationSuccess(position) {
         console.log("location success");
@@ -701,8 +737,9 @@ function sendEventIfReady(feedbackData) {
         sendDataToCompanion(feedbackData);
     }
 
-    function locationError() {
+    function locationError(error) {
         console.log("location fail");
+        console.log(error);
         feedbackData.lat = null;
         feedbackData.lon = null;
         sendDataToCompanion(feedbackData);
@@ -726,7 +763,7 @@ function sendDataToCompanion(data) {
         try {
             console.log("checking if local file exists");
             local_file = fs.readFileSync("local.txt", "json");
-        } catch (err) {
+        } catch (e) {
             // if can't read set local file to empty
             console.log("creating empty local.txt file");
             local_file = []

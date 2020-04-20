@@ -5,11 +5,12 @@
     "iconFile": "resources/icon.png",
     "wipeColor": "",
     "requestedPermissions": [
-      "access_heart_rate",
-      "access_location",
-      "access_internet",
-      "run_background",
       "access_activity",
+      "access_exercise",
+      "access_heart_rate",
+      "access_internet",
+      "access_location",
+      "run_background",
       "access_user_profile"
     ],
     "buildTargets": [
@@ -26,12 +27,8 @@
     "defaultLanguage": "en-US",
     "appUUID": "512ce6c5-f633-4f7b-853c-891869f5e3d8"
   },
-  "devDependencies": {
-    "@fitbit/sdk": "~4.0.0",
-    "@fitbit/sdk-cli": "^1.7.1"
-  },
   "dependencies": {
-    "@fitbit/sdk": "~4.0.0",
+    "@fitbit/sdk": "~4.1.0",
     "@fitbit/sdk-cli": "^1.7.1"
   },
   "scripts": {
