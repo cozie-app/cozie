@@ -68,13 +68,13 @@ let secLabel = document.getElementById("secLabel");
 let storageLabel = document.getElementById("storageLabel");
 // Note that dev elements are hidden in production mode
 let voteLogLabel = document.getElementById("voteLogLabel");
+let errorLabel = document.getElementById("errorLabel");
+let bodyErrorLabel = errorLabel.getElementById("copy");
 
 if (!production){
     timeLabel.style.display = "none";
     dateLabel.style.display = "none";
     secLabel.style.display = "none";
-    let errorLabel = document.getElementById("errorLabel");
-    let bodyErrorLabel = errorLabel.getElementById("copy");
 }
 
 // set the local_file which will be used to store data
@@ -429,9 +429,17 @@ function showThankYou() {
         feedbackData['bodyPresence'] = bodyPresence.present;
     }
 
-    feedbackData['restingHR'] = (user.restingHeartRate || 999);
-    feedbackData['BMR'] = (user.bmr || 999);
-    console.log("Resting HR: " + user.restingHeartRate);
+    try {
+        feedbackData['restingHR'] = user.restingHeartRate;
+    } catch (e) {
+        console.log("No resting heart rate data available");
+    }
+
+    try {
+        feedbackData['BMR'] = user.bmr;
+    } catch (e) {
+        console.log("No resting basal metabolic rate data available");
+    }
 
     //send feedback to companion
     sendEventIfReady(feedbackData);
@@ -719,8 +727,8 @@ function sendEventIfReady(feedbackData) {
     console.log(JSON.stringify(feedbackData));
 
     console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
-    // set timeout of gps aquisition to 5 seconds and allow cached geo locations up to 1min to be allowed
-    geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 20000, maximumAge: 60000});
+    // set timeout of gps https://dev.fitbit.com/build/reference/device-api/geolocation/
+    geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 4 * 60 * 1000, maximumAge: 4 * 60 * 1000});
 
     function locationSuccess(position) {
         console.log("location success");
@@ -729,8 +737,9 @@ function sendEventIfReady(feedbackData) {
         sendDataToCompanion(feedbackData);
     }
 
-    function locationError() {
+    function locationError(error) {
         console.log("location fail");
+        console.log(error);
         feedbackData.lat = null;
         feedbackData.lon = null;
         sendDataToCompanion(feedbackData);
