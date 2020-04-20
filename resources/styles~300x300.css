@@ -66,11 +66,11 @@
 }
 
 #voteLogLabel {
-  font-size: 25;
+  font-size: 22;
   font-family: Colfax;
   text-length: 32;
   text-anchor: middle;
-  x: 50%;
+  x: 33%;
   y: 10%;
   fill: #a0a0a0;
 }

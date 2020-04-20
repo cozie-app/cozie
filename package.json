@@ -1,7 +1,7 @@
 {
   "fitbit": {
     "appType": "clockface",
-    "appDisplayName": "cozie",
+    "appDisplayName": "Cozie-fed-debugging",
     "iconFile": "resources/icon.png",
     "wipeColor": "",
     "requestedPermissions": [
@@ -21,11 +21,11 @@
     ],
     "i18n": {
       "en": {
-        "name": "cozie"
+        "name": "Cozie-fed-debugging"
       }
     },
     "defaultLanguage": "en-US",
-    "appUUID": "512ce6c5-f633-4f7b-853c-891869f5e3d8"
+    "appUUID": "1ef995a9-ca67-4e76-b2c4-5d650a644c97"
   },
   "dependencies": {
     "@fitbit/sdk": "~4.1.0",

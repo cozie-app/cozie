@@ -17,8 +17,9 @@ import * as cbor from "cbor";
 import {memory} from "system";
 import {BodyPresenceSensor} from "body-presence";
 
-const production = true; // false for dev / debug releases
+const production = false; // false for dev / debug releases
 
+try {
 //-------- CLOCK FACE DESIGN -----------
 
 const months = {
@@ -32,9 +33,9 @@ const weekdays = {1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: 'Sat', 0:
 clock.granularity = 'seconds';
 
 // read HR data
-let hrLabel = document.getElementById("hrm");  // get tag label
+const hrLabel = document.getElementById("hrm");  // get tag label
 hrLabel.text = "--";
-let chargeLabel = document.getElementById("chargeLabel");
+const chargeLabel = document.getElementById("chargeLabel");
 
 const hrm = new HeartRateSensor();
 hrm.onreading = function () {
@@ -62,14 +63,17 @@ hrm.start();
 
 // Get a handle on the <text> elements
 const timeLabel = document.getElementById("timeLabel");
-let steps = document.getElementById("steps");
-let dateLabel = document.getElementById("dateLabel");
-let secLabel = document.getElementById("secLabel");
-let storageLabel = document.getElementById("storageLabel");
+const steps = document.getElementById("steps");
+const dateLabel = document.getElementById("dateLabel");
+const secLabel = document.getElementById("secLabel");
+const storageLabel = document.getElementById("storageLabel");
 // Note that dev elements are hidden in production mode
-let voteLogLabel = document.getElementById("voteLogLabel");
-let errorLabel = document.getElementById("errorLabel");
-let bodyErrorLabel = errorLabel.getElementById("copy");
+const voteLogLabel = document.getElementById("voteLogLabel");
+const voteLogPeerTransferLabel = document.getElementById("voteLogPeerTransferLabel");
+const voteLogFileTransferLabel = document.getElementById("voteLogFileTransferLabel");
+const memoryLabel = document.getElementById("memoryLabel");
+const errorLabel = document.getElementById("errorLabel");
+const bodyErrorLabel = errorLabel.getElementById("copy");
 
 if (!production){
     timeLabel.style.display = "none";
@@ -146,7 +150,7 @@ setInterval(function () {
 }, 600000); // timeout for 10 minutes
 
 clock.ontick = (evt) => {
-    let today_dt = evt.date;
+    const today_dt = evt.date;
     let hours = today_dt.getHours();
     if (preferences.clockDisplay === "12h") {
         // 12h format
@@ -155,15 +159,15 @@ clock.ontick = (evt) => {
         // 24h format
         hours = util.monoDigits(util.zeroPad(hours));
     }
-    let mins = util.monoDigits(util.zeroPad(today_dt.getMinutes()));
-    let secs = util.monoDigits(util.zeroPad(today_dt.getSeconds()));
+    const mins = util.monoDigits(util.zeroPad(today_dt.getMinutes()));
+    const secs = util.monoDigits(util.zeroPad(today_dt.getSeconds()));
 
     timeLabel.text = `${hours}:${mins}`;
     secLabel.text = secs;
 
-    let month = months[today_dt.getMonth()];
-    let weekday = weekdays[today_dt.getDay()];
-    let day = today_dt.getDate();
+    const month = months[today_dt.getMonth()];
+    const weekday = weekdays[today_dt.getDay()];
+    const day = today_dt.getDate();
 
     dateLabel.text = `${weekday}, ${month} ${day}`;
 
@@ -188,7 +192,7 @@ clock.ontick = (evt) => {
 
     //get screen width
     try {
-        let charge = battery.chargeLevel / 100;
+        const charge = battery.chargeLevel / 100;
         chargeLabel.width = 300 * charge;
         if (charge < 0.15) {
             chargeLabel.style.fill = 'fb-red'
@@ -201,6 +205,11 @@ clock.ontick = (evt) => {
         if (!production) {
             bodyErrorLabel.text = bodyErrorLabel.text + "Battery : " + e;
         }
+    }
+
+    // show memory utilization
+    if (!production) {
+        memoryLabel.text = "memory usage = " + Math.round(memory.js.used / memory.js.total * 100) + " %";
     }
 };
 //-------- END (CLOCK FACE DESIGN) -----------
@@ -245,8 +254,8 @@ const smallIcons = [document.getElementById("small-thermal"),
 
 // Flow may have been previously saved locally as flow.txt
 let flowFileRead;
-var flowFileWrite;
-var buzzFileWrite;
+let flowFileWrite;
+let buzzFileWrite;
 let flowSelector;
 
 try {
@@ -476,6 +485,8 @@ function showClock() {
 
 let feedbackData; // Global variable for handling feedbackData
 let votelog;       // Global variable for handling votelogs
+let voteLogPeerTransfer = 0;       // Global variable for handling votelogs
+let voteLogFileTransfer = 0;       // Global variable for handling votelogs
 
 function initiateFeedbackData() {
     // Initiating feedback data
@@ -499,7 +510,7 @@ function initiateFeedbackData() {
     votelog[0]++;
     console.log(votelog[0]);
     if (!production) {
-        voteLogLabel.text = votelog;
+        voteLogLabel.text = votelog + 'vl;';
     }
     // add the votelog to the feedback data json
     feedbackData['voteLog'] = votelog[0];
@@ -507,7 +518,7 @@ function initiateFeedbackData() {
     fs.writeFileSync("votelog.txt", votelog, "json");
 }
 
-let buttons = [{
+const buttons = [{
     value: 10,
     obj: comfy,
     attribute: 'comfort'
@@ -753,6 +764,10 @@ function sendDataToCompanion(data) {
         console.log("data sizealert", JSON.stringify(data).length);
         messaging.peerSocket.send(data);
         console.log("data sent directly to companion");
+        if (!production) {
+            voteLogPeerTransfer++;
+            voteLogPeerTransferLabel.text = voteLogPeerTransfer + 'pt;';
+        }
 
         //remove data to prevent it beint sent twice
         data = null
@@ -801,12 +816,24 @@ function onFileTransferEvent() {
     if (this.readyState === "transferred") {
         console.log("transferred successfully");
         // delete local.txt file as data is now trasnferred
-        fs.unlinkSync("local.txt");
+        if (fs.existsSync("local.txt")) {
+            fs.unlinkSync("local.txt");
+        }
         storageLabel.text = ``
+        if (!production) {
+            voteLogFileTransfer++;
+            voteLogFileTransferLabel.text = voteLogFileTransfer + 'ft';
+        }
     }
     if (this.readyState === "error") {
         console.log("WARNING: ERROR IN FILE TRANSFER");
         storageLabel.text = `Error`
     }
     //console.log(`onFileTransferEvent(): name=${this.name} readyState=${this.readyState};${Date.now()};`);
+}
+
+} catch (e) {
+    if (!production) {
+        bodyErrorLabel.text = bodyErrorLabel.text + "Unk: " + e;
+    }
 }
