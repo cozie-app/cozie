@@ -766,7 +766,7 @@ function sendDataToCompanion(data) {
         console.log("data sent directly to companion");
         if (!production) {
             voteLogPeerTransfer++;
-            voteLogPeerTransferLabel.text = voteLogPeerTransfer + 'pt;';
+            voteLogPeerTransferLabel.text = voteLogPeerTransfer + "pt;";
         }
 
         //remove data to prevent it beint sent twice
