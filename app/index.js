@@ -17,9 +17,8 @@ import * as cbor from "cbor";
 import {memory} from "system";
 import {BodyPresenceSensor} from "body-presence";
 
-const production = false; // false for dev / debug releases
+const production = true; // false for dev / debug releases
 
-try {
 //-------- CLOCK FACE DESIGN -----------
 
 const months = {
@@ -830,10 +829,4 @@ function onFileTransferEvent() {
         storageLabel.text = `Error`
     }
     //console.log(`onFileTransferEvent(): name=${this.name} readyState=${this.readyState};${Date.now()};`);
-}
-
-} catch (e) {
-    if (!production) {
-        bodyErrorLabel.text = bodyErrorLabel.text + "Unk: " + e;
-    }
 }
