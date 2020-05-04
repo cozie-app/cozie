@@ -495,26 +495,6 @@ function initiateFeedbackData() {
         startFeedback,
         heartRate: hrm.heartRate,
     };
-
-    // reading log file for debuging purposes
-    try {
-        console.log("checking if local file exists");
-        votelog = fs.readFileSync("votelog.txt", "json");
-    } catch (e) {
-        // if can't read set local file to empty
-        console.log("creating empty votelog.txt file");
-        votelog = [0]
-    }
-    // Incremement the vote log by one
-    votelog[0]++;
-    console.log(votelog[0]);
-    if (!production) {
-        voteLogLabel.text = votelog + 'vl;';
-    }
-    // add the votelog to the feedback data json
-    feedbackData['voteLog'] = votelog[0];
-    // store the votelog on the device as votelog.txt
-    fs.writeFileSync("votelog.txt", votelog, "json");
 }
 
 const buttons = [{
@@ -739,6 +719,26 @@ function sendEventIfReady(feedbackData) {
     console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
     // set timeout of gps https://dev.fitbit.com/build/reference/device-api/geolocation/
     geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 4 * 60 * 1000, maximumAge: 4 * 60 * 1000});
+
+    // reading log file for debuging purposes
+    try {
+        console.log("checking if local file exists");
+        votelog = fs.readFileSync("votelog.txt", "json");
+    } catch (e) {
+        // if can't read set local file to empty
+        console.log("creating empty votelog.txt file");
+        votelog = [0]
+    }
+    // Incremement the vote log by one
+    votelog[0]++;
+    console.log(votelog[0]);
+    if (!production) {
+        voteLogLabel.text = votelog + 'vl;';
+    }
+    // add the votelog to the feedback data json
+    feedbackData['voteLog'] = votelog[0];
+    // store the votelog on the device as votelog.txt
+    fs.writeFileSync("votelog.txt", votelog, "json");
 
     function locationSuccess(position) {
         console.log("location success");
