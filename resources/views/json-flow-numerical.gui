@@ -1,0 +1,55 @@
+<svg id="json-flow-numerical" display="none">
+
+  <g id="main-question-numerical">
+    <text id="question-text-numerical" x="50%" y="11%" class="comfyLabel"></text>
+    <text id="question-second-text-numerical" x="50%" y="21%" class="comfyLabel"></text>
+  </g>
+  
+   <defs>
+    <symbol id="tile-view-item" href="#tile-list-item" focusable="false"
+            pointer-events="none" system-events="all" width="50%">
+      <text id="text" text-anchor="middle"/>
+      <rect id="tile-divider-bottom" class="tile-divider-bottom" />
+      <rect id="tile-list-item-hitbox" pointer-events="all" x="-50%" y="0" width="100%"
+            height="100%-2" opacity="0" />
+    </symbol>
+  </defs>
+  <use id="tile-list" href="#tile-list" x="50%" width="40%" y="25%" height="50%">
+    <var id="separator-height-bottom" value="2" />
+    <var id="peek-enabled" value="0" />
+    <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+    <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+    <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+    <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+    <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+     <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+     <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+     <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+     <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+     <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+     <use href="#tile-view-item" class="tile-list-item">
+      <set href="text" attributeName="text-buffer" to="xxxx" />
+    </use>
+  </use>
+
+</svg>

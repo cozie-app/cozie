@@ -139,12 +139,12 @@ function sendDataToInflux(data) {
     data.experiment_id = experiment_id;
 
     fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     })
         .then(res => {
             console.log("Sending data to DB ...");

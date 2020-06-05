@@ -1,0 +1,31 @@
+<svg id="json-flow" display="none">
+
+  <g id="main-question">
+    <text id="question-text" x="50%" y="11%" class="comfyLabel"></text>
+    <text id="question-second-text" x="50%" y="21%" class="comfyLabel"></text>
+  </g>
+
+<g id="new-button-center" pointer-events="visible" display="none">
+    <circle id="circle-center" cx="50%" cy="36%" class= "circle_comfy" fill="red" />
+    <circle id="circle-push-center" cx="50%" cy="36%" r="50" opacity="0" fill="red"/>
+    <image id="image-center" x="50%-35" y="36%-35" width="70" height="70" href="images/icons/comfy.png" load="sync" />
+    <text id= "button-text-center" x="50%" y="36%+60" class= "comfyLabel">No Change</text>
+    <text id= "button-second-text-center" x="50%" y="36%+80" class= "comfyLabel"> </text>
+</g>
+
+<g id="new-button-left" pointer-events="visible" display="none">
+    <circle id="circle-left" cx="25%" cy="70%" r="35" fill="red" />
+    <circle id="circle-push-left" cx="25%" cy="70%" r="50" opacity="0" fill="red"/>
+    <image id="image-left" x="25%-35" y="70%-35" width="70" height="70" href="images/icons/nuetral.png" load="sync" />
+    <text id= "button-text-left" x="25%" y="70%+60" class= "comfyLabel">Lower</text>
+    <text id= "button-second-text-left" x="25%" y="70%+80" class= "comfyLabel">  </text>
+</g>
+
+<g id="new-button-right" pointer-events="visible" display="none">
+    <circle id="circle-right" cx="75%" cy="70%" r="35" fill="red" />
+    <circle id="circle-push-right" cx="75%" cy="70%" r="50" opacity="0" fill="red"/>
+    <image id="image-right" x="75%-35" y="70%-35" width="70" height="70" href="images/icons/nuetral.png" load="sync" />
+    <text id= "button-text-right" x="75%" y="70%+60" class= "comfyLabel">Lower</text>
+    <text id= "button-second-text-right" x="75%" y="70%+80" class= "comfyLabel">  </text>
+</g>
+</svg>

@@ -108,4 +108,14 @@
   fill: #a0a0a0;
 }
 
+.tile-list-item {
+  height: 53;
+}
+
+.tile-list-item text {
+  height: 32;
+  font-family: System-Regular;
+  fill: "white";
+}
+
 /* 348x250 */

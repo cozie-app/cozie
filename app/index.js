@@ -15,6 +15,9 @@ import * as cbor from "cbor";
 import {memory} from "system";
 import {BodyPresenceSensor} from "body-presence";
 
+import questionsFlow from "../resources/flows/dorn-flow";
+// import questionsFlow from "../resources/flows/covid-flow";
+
 const production = true; // false for dev / debug releases
 
 //-------- CLOCK FACE DESIGN -----------
@@ -213,38 +216,19 @@ clock.ontick = (evt) => {
 console.log("WARNING!! APP HAS RESET");
 //Flow GUIs
 const clockface = document.getElementById("clockface");
-const indoorOutdoor = document.getElementById("indoor-outdoor");
-const inOffice = document.getElementById("inoffice");
-const warmCold = document.getElementById("warm-cold");
-const brightDim = document.getElementById("bright-dim");
-const loudQuiet = document.getElementById("loud-quiet");
-const happySad = document.getElementById("happy-sad");
-const clothing = document.getElementById("clothing");
-const svg_air_vel = document.getElementById("svg_air_vel");
-const svg_met = document.getElementById("metabolic_rate");
-const svg_change = document.getElementById("any_change");
 //Clock manipulation guis
 const thankyou = document.getElementById("thankyou");
 const svg_stop_survey = document.getElementById("stopSurvey");
 const clockblock = document.getElementById("clockblock");
 
-// Default shows only thank you screen in the flow
-let flow_views = [thankyou];
-// Used to set all views to none when switching between screens
-const allViews = [warmCold, brightDim, loudQuiet, indoorOutdoor, inOffice, happySad, clothing, svg_air_vel, svg_met, svg_change, clockface, thankyou, clockblock, svg_stop_survey];
-let flowSelectorUpdateTime = 0;
+const jsonFlow = document.getElementById("json-flow");
+// const jsonFlowNumerical = document.getElementById("json-flow-numerical");
 
-//read small icons
-const smallIcons = [document.getElementById("small-thermal"),
-    document.getElementById("small-light"),
-    document.getElementById("small-noise"),
-    document.getElementById("small-indoor"),
-    document.getElementById("small-office"),
-    document.getElementById("small-mood"),
-    document.getElementById("small-clothing"),
-    document.getElementById("small-velocity"),
-    document.getElementById("small-met"),
-    document.getElementById("small-any-change"),];
+// Default shows only thank you screen in the flow
+let flow_views = [jsonFlow, thankyou];
+// Used to set all views to none when switching between screens
+const allViews = [clockface, thankyou, clockblock, svg_stop_survey, jsonFlow];
+let flowSelectorUpdateTime = 0;
 
 // Flow may have been previously saved locally as flow.txt
 let flowFileRead;
@@ -336,13 +320,10 @@ function processAllFiles() {
 
 function mapFlows(flowSelector) {
     flow_views = [];
-    //set opacity of all small icons to 0.2
-    smallIcons.map(icon => icon.style.opacity = 0.2);
     if (flowSelector) {
         flowSelector.map(index => {
             flow_views.push(allViews[index]);
-            smallIcons[index].style.opacity = 1.0;
-        })
+        });
     }
     flow_views.push(thankyou);
 }
@@ -356,70 +337,22 @@ processAllFiles();
 
 let currentView = 0; //current view of flow
 
-// buttons
+// home screen buttons
 const comfy = document.getElementById("comfy");
 const notComfy = document.getElementById("not-comfy");
-// buttons
-const indoor = document.getElementById("indoor");
-const outdoor = document.getElementById("outdoor");
-// buttons
-const location_work = document.getElementById("location_work");
-const location_home = document.getElementById("location_home");
-const location_other = document.getElementById("location_other");
-const location_portable = document.getElementById("location_portable");
-// buttons
-const change_no = document.getElementById("change_no");
-const change_yes = document.getElementById("change_yes");
-// buttons
-const thermal_comfy = document.getElementById('thermal_comfy');
-const prefer_warm = document.getElementById("prefer_warm");
-const prefer_cold = document.getElementById("prefer_cold");
-// back and stop buttons
+
+// flow buttons
 const flow_back = document.getElementById("flow_back");
 const flow_stop = document.getElementById("flow_stop");
-// buttons
-const noise_comfy = document.getElementById('noise_comfy');
-const prefer_bright = document.getElementById("prefer_bright");
-const prefer_dim = document.getElementById("prefer_dim");
-// buttons
-const light_comfy = document.getElementById('light_comfy');
-const prefer_loud = document.getElementById("prefer_loud");
-const prefer_quiet = document.getElementById("prefer_quiet");
-// buttons
-const neutral = document.getElementById('neutral');
-const happy = document.getElementById("happy");
-const sad = document.getElementById("sad");
-// buttons
-const clothes_very_light = document.getElementById('clothes_very_light');
-const clothes_light = document.getElementById('clothes_light');
-const clothes_medium = document.getElementById("clothes_medium");
-const clothes_high = document.getElementById("clothes_high");
-// buttons
-const met_resting = document.getElementById('met_resting');
-const met_sitting = document.getElementById('met_sitting');
-const met_standing = document.getElementById("met_standing");
-const met_exercising = document.getElementById("met_exercising");
-// buttons air velocity
-const air_vel_low = document.getElementById('air_vel_low');
-const air_vel_medium = document.getElementById("air_vel_medium");
-const air_vel_high = document.getElementById("air_vel_high");
 
-function showFace(view_to_display) {
-    allViews.map(v => v.style.display = "none");
-    view_to_display.style.display = "inline";
-    currentView++;
-
-    vibration.start("bump");
-}
+// flow buttons json
+const centerButton = document.getElementById("new-button-center");
+const rightButton = document.getElementById("new-button-right");
+const leftButton = document.getElementById("new-button-left");
 
 function showThankYou() {
-    allViews.map(v => v.style.display = "none");
-    smallIcons.map(icon => icon.style.opacity = 0.2);
-    if (flow_views.length >= 1) {
-        flowSelector.map(index => {
-            smallIcons[index].style.opacity = 1.0;
-        })
-    }
+    allViews.map((v) => (v.style.display = "none"));
+
     clockface.style.display = "inline";
     thankyou.style.display = "inline";
 
@@ -454,13 +387,9 @@ function showThankYou() {
 }
 
 function showMessageStopSurvey() {
-    allViews.map(v => v.style.display = "none");
-    smallIcons.map(icon => icon.style.opacity = 0.2);
+    allViews.map((v) => (v.style.display = "none"));
 
     // highlight all the icons corresponding to the questions selected in the fitbit app
-    flowSelector.map(index => {
-        smallIcons[index].style.opacity = 1.0;
-    });
     clockface.style.display = "inline";
     svg_stop_survey.style.display = "inline";
 
@@ -492,147 +421,43 @@ function initiateFeedbackData() {
     };
 }
 
-const buttons = [{
-    value: 10,
-    obj: comfy,
-    attribute: 'comfort'
-}, {
-    value: 9,
-    obj: notComfy,
-    attribute: 'comfort',
-}, {
-    value: 11,
-    obj: indoor,
-    attribute: 'indoorOutdoor',
-}, {
-    value: 9,
-    obj: outdoor,
-    attribute: 'indoorOutdoor',
-}, {
-    value: 10,
-    obj: change_no,
-    attribute: 'change',
-}, {
-    value: 11,
-    obj: change_yes,
-    attribute: 'change',
-}, {
-    value: 11,
-    obj: location_home,
-    attribute: 'location',
-}, {
-    value: 10,
-    obj: location_other,
-    attribute: 'location',
-}, {
-    value: 9,
-    obj: location_work,
-    attribute: 'location',
-}, {
-    value: 8,
-    obj: location_portable,
-    attribute: 'location',
-}, {
-    value: 10,
-    obj: thermal_comfy,
-    attribute: 'thermal',
-}, {
-    value: 9,
-    obj: prefer_warm,
-    attribute: 'thermal',
-}, {
-    value: 11,
-    obj: prefer_cold,
-    attribute: 'thermal',
-}, {
-    value: 'flow_back',
-    obj: flow_back,
-    attribute: 'flow_control',
-}, {
-    value: 'flow_stop',
-    obj: flow_stop,
-    attribute: 'flow_control',
-}, {
-    value: 10,
-    obj: light_comfy,
-    attribute: 'light',
-}, {
-    value: 9,
-    obj: prefer_bright,
-    attribute: 'light',
-}, {
-    value: 11,
-    obj: prefer_dim,
-    attribute: 'light',
-}, {
-    value: 10,
-    obj: noise_comfy,
-    attribute: 'noise',
-}, {
-    value: 9,
-    obj: prefer_loud,
-    attribute: 'noise',
-}, {
-    value: 11,
-    obj: prefer_quiet,
-    attribute: 'noise',
-}, {
-    value: 10,
-    obj: neutral,
-    attribute: 'mood',
-}, {
-    value: 11,
-    obj: happy,
-    attribute: 'mood',
-}, {
-    value: 9,
-    obj: sad,
-    attribute: 'mood',
-}, {
-    value: 8,
-    obj: clothes_very_light,
-    attribute: 'clothing',
-}, {
-    value: 9,
-    obj: clothes_light,
-    attribute: 'clothing',
-}, {
-    value: 10,
-    obj: clothes_medium,
-    attribute: 'clothing',
-}, {
-    value: 11,
-    obj: clothes_high,
-    attribute: 'clothing',
-}, {
-    value: 8,
-    obj: met_resting,
-    attribute: 'met',
-}, {
-    value: 9,
-    obj: met_sitting,
-    attribute: 'met',
-}, {
-    value: 10,
-    obj: met_standing,
-    attribute: 'met',
-}, {
-    value: 11,
-    obj: met_exercising,
-    attribute: 'met',
-}, {
-    value: 9,
-    obj: air_vel_low,
-    attribute: 'air-vel',
-}, {
-    value: 10,
-    obj: air_vel_medium,
-    attribute: 'air-vel',
-}, {
-    value: 11,
-    obj: air_vel_high,
-    attribute: 'air-vel',
-}];
+let buttons = [
+    {
+        value: 10,
+        obj: comfy,
+        attribute: "comfort",
+    },
+    {
+        value: 9,
+        obj: notComfy,
+        attribute: "comfort",
+    },
+    {
+        value: "flow_back",
+        obj: flow_back,
+        attribute: "flow_control",
+    },
+    {
+        value: "flow_stop",
+        obj: flow_stop,
+        attribute: "flow_control",
+    },
+    {
+        value: 9,
+        obj: centerButton,
+        attribute: "air-vel",
+    },
+    {
+        value: 10,
+        obj: rightButton,
+        attribute: "air-vel",
+    },
+    {
+        value: 11,
+        obj: leftButton,
+        attribute: "air-vel",
+    },
+];
 
 for (const button of buttons) {
     button.obj.addEventListener("click", () => {
@@ -640,7 +465,7 @@ for (const button of buttons) {
         // init data object on first view click
         if (button.attribute === 'comfort') {
             // if any of the two buttons in the main view have been pressed initiate the loop through the selected
-            smallIcons.map(icon => icon.style.opacity = 0);
+
             initiateFeedbackData();
         } else if (button.attribute === 'flow_control') {
             // if any of the two buttons (back arrow or cross) have been selected
@@ -652,8 +477,9 @@ for (const button of buttons) {
                     // if user pressed back button in first question survey
                     showMessageStopSurvey();
                 } else {
-                    // show previous view
-                    showFace(flow_views[currentView])
+                    // show previous view with flowback set to true
+                    let flowback;
+                    showFace((flowback = true));
                 }
             } else if (button.value === "flow_stop") {
                 // stop_flow button was pressed
@@ -661,21 +487,130 @@ for (const button of buttons) {
             }
         }
 
-        console.log(`${button.attribute}: ${button.value} clicked`);
+        console.log(`${button.value} clicked`);
 
-        if (button.attribute !== 'flow_control') {
+        if (button.attribute !== "flow_control") {
+            if (button.attribute != "comfort" && questionsFlow[currentView-1].name.indexOf("confirm") == -1) {
+                console.log(currentView);
+                //need to associate it to the prevous view
+                feedbackData[questionsFlow[currentView - 1].name] = button.value;
+            }
+            console.log(JSON.stringify(feedbackData));
 
-            feedbackData[button.attribute] = button.value;
-
-            if (flow_views[currentView] === thankyou) {
+            if (questionsFlow.length == currentView) {
+                console.log("all covid flow done, showing thankyou");
                 // if all the views have already been shown
                 showThankYou();
             } else {
-                showFace(flow_views[currentView])
+                console.log("next question");
+
+                showFace();
             }
         }
     });
 }
+
+function showFace(flowback = false) {
+    let skipQuestion = false;
+
+    // go through all views and set to none
+    allViews.map((v) => {
+        v.style.display = "none";
+    });
+
+    // check if numerical input is required and set Flow
+    if (questionsFlow[currentView].type === "numerical") {
+        jsonFlowNumerical.style.display = "inline";
+    } else {
+        jsonFlow.style.display = "inline";
+    }
+
+
+    //Does current flow have any requirements?
+    if (questionsFlow[currentView].requiresAnswer.length !== 0) {
+        //if so, see if the current feedback meets those requirements
+        questionsFlow[currentView].requiresAnswer.map((req) => {
+            if (feedbackData[req.question] !== req.value) {
+                //requirements not met, skipping question
+                skipQuestion = true;
+            }
+        });
+    }
+
+    if (skipQuestion === false) {
+        // Set title of question
+
+        if (questionsFlow[currentView].type === "numerical") {
+            document.getElementById("question-text-numerical").text = questionsFlow[currentView].questionText;
+            document.getElementById("question-second-text-numerical").text = questionsFlow[currentView].questionSecondText;
+
+            let list = document.getElementById("tile-list");
+            let items = list.getElementsByClassName("tile-list-item");
+
+            items.forEach((element, index) => {
+                element.text = questionsFlow[currentView].iconText[index];
+                let touch = element.getElementById("tile-list-item-hitbox");
+                touch.onclick = (evt) => {
+                    console.log(`${index} clicked`);
+                    feedbackData[questionsFlow[currentView-1].name] = questionsFlow[currentView-1].iconText[index];
+                    // make sure confirm loads correctly
+                    questionsFlow[currentView].requiresAnswer[0].value = questionsFlow[currentView-1].iconText[index];
+                    console.log(JSON.stringify(feedbackData));
+                    showFace()
+                }
+            });
+
+        } else {
+            document.getElementById("question-text").text = questionsFlow[currentView].questionText;
+            document.getElementById("question-second-text").text = questionsFlow[currentView].questionSecondText;
+            if(questionsFlow[currentView].name.indexOf("confirm")!=-1) {
+                document.getElementById("question-text").text = questionsFlow[currentView].questionText.replace("xxxx",feedbackData[questionsFlow[currentView-1].name]);
+            }
+            // set buttons
+            const buttonLocations = ["left", "right", "center"];
+            // hide all buttons
+            buttonLocations.forEach((location) => {
+                document.getElementById("new-button-" + location).style.display =
+                    "none";
+            });
+
+            // map through each text element in flow and map to button
+            questionsFlow[currentView].iconText.forEach((text, ii) => {
+                // first show the button
+                document.getElementById(
+                    "new-button-" + buttonLocations[ii]
+                ).style.display = "inline";
+
+                // then map the circle color, image, and text
+                document.getElementById(
+                    "circle-" + buttonLocations[ii]
+                ).style.fill = questionsFlow[currentView].iconColors[ii];
+                document.getElementById("image-" + buttonLocations[ii]).href =
+                    questionsFlow[currentView].iconImages[ii];
+                document.getElementById("button-text-" + buttonLocations[ii]).text =
+                    questionsFlow[currentView].iconText[ii];
+            });
+        }
+        // move onto next flow
+        currentView++;
+    }
+
+    // skipping question
+    else if (skipQuestion == true) {
+        // if we arrived here through the back button, then skip backwards
+        if (flowback === true) {
+            currentView--;
+            showFace((flowback = true));
+            // if we arrived here through the normal flow, skip forwards
+        } else {
+            currentView++;
+            showFace();
+        }
+    }
+
+    vibration.start("bump");
+}
+
 //-------- END (DEFINE VIEWS BASED ON FLOW SELECTOR) -----------
 
 // vibrate for 3 sec and change screen to response
@@ -693,12 +628,11 @@ function vibrate() {
     if (flow_views.length === 1) {
         clockblock.style.display = "inline";
     } else {
-        smallIcons.map(icon => icon.style.opacity = 0);
         initiateFeedbackData();
         // Reset currentView to prevent an unattended fitbit from moving through the flow
         currentView = 0;
         // go to first item in the flow
-        showFace(flow_views[currentView])
+        showFace();
     }
     //Stop vibration after 5 seconds
     setTimeout(function () {
