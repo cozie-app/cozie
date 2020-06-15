@@ -21,7 +21,7 @@ Documentation found [here](https://www.budslab.org/website-dev/docs/home) and a 
 
 ## License
 
-The Cozie clockface is open-sourced under at [GPLv3 License](https://github.com/buds-lab/cozie/blob/master/LICENSE)
+The Cozie clockface is open-sourced under at [LGPLv3 License](https://github.com/buds-lab/cozie/blob/master/LICENSE)
 
 Copyright © 2018-2020, BUDS Lab
 
