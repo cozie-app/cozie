@@ -16,7 +16,7 @@ settingsStorage.onchange = function (evt) {
 
 //Fire via event listener of settings storage
 settingsStorage.addEventListener("change", function () {
-    console.log("settings storage via addEventListner fired (route 2 - disabled). No code here")
+    console.log("settings storage via addEventListener fired (route 2 - disabled). No code here")
     //nothing for now, however this could be another method
 });
 
