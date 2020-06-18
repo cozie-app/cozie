@@ -148,20 +148,6 @@ export default [
 		],
 	},
 	{
-		name: "fever",
-		type: "numerical",
-		requiresAnswer: [{ question: "thermometer", value: 11 }],
-		questionText: "Select your temperature",
-		questionSecondText: "",
-		iconText: ["37.0", "37.1", "37.2", "37.3", "37.4", "37.5", "37.6", "37.7", "37.8", "37.9", "38.0"],
-		iconColors: ["fb-orange", "fb-cyan", "fb-indigo"],
-		iconImages: [
-			"images/icons/fever_high.png",
-			"images/icons/fever_no.png",
-			"images/icons/fever_unk.png",
-		],
-	},
-	{
 		name: "fever-confirm",
 		type: "icon",
 		requiresAnswer: [{ question: "fever", value: "determined by code" }],
