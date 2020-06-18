@@ -46,7 +46,7 @@ export default [
 		requiresAnswer: [],
 		questionText: "What are you wearing?",
 		questionSecondText: "",
-		iconText: ["light", "Heavy", "Medium"],
+		iconText: ["Light", "Heavy", "Medium"],
 		iconColors: ["#6decb9", "#42dee1", "#3fc5f0"],
 		iconImages: [
 			"images/icons/light_clothes.png",
@@ -73,7 +73,7 @@ export default [
 		requiresAnswer: [],
 		questionText: "Activity last 10-min?",
 		questionSecondText: "",
-		iconText: ["Resting", "Sitting", "Standing"],
+		iconText: ["Resting", "Standing", "Sitting"],
 		iconColors: ["#A7F3D5", "#6decb9", "#42dee1"],
 		iconImages: [
 			"images/icons/met_resting.png",
