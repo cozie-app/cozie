@@ -37,11 +37,9 @@ const allViews = [clockface, thankyou, clockblock, svg_stop_survey, jsonFlow];
 let currentView = 0; //current view of flow
 
 // show thank you message at the end of survey, add more info to message to be sent and send message
-function showThankYou() {
+function endSurvey(reasonEnd) {
     allViews.map((v) => (v.style.display = "none"));
-
     clockface.style.display = "inline";
-    thankyou.style.display = "inline";
 
     //Find out how many seconds has passed to give response
     const endFeedback = new Date();
@@ -69,23 +67,16 @@ function showThankYou() {
         console.log("No resting basal metabolic rate data available");
     }
 
-    // send feedback to companion
-    sendEventIfReady(feedbackData);
 
-    clearDataAndShowFirstQuestion()
-}
+    if (reasonEnd === 'EndSurvey') {
+        thankyou.style.display = "inline";
 
-function showMessageStopSurvey() {
-    allViews.map((v) => (v.style.display = "none"));
+        // send feedback to companion
+        sendEventIfReady(feedbackData);
+    } else {
+        svg_stop_survey.style.display = "inline";
+    }
 
-    // highlight all the icons corresponding to the questions selected in the Fitbit app
-    clockface.style.display = "inline";
-    svg_stop_survey.style.display = "inline";
-
-    clearDataAndShowFirstQuestion()
-}
-
-function clearDataAndShowFirstQuestion() {
     feedbackData = {};
 
     setTimeout(() => {
@@ -93,6 +84,7 @@ function clearDataAndShowFirstQuestion() {
         clockface.style.display = "inline";
         currentView = 0
     }, 2000);
+
 }
 
 let feedbackData; // Global variable for handling feedbackData
@@ -161,7 +153,7 @@ for (const button of buttons) {
                 currentView--;
                 if (currentView < 0) {
                     // if user pressed back button in first question survey
-                    showMessageStopSurvey();
+                    endSurvey("StoppedSurvey");
                 } else {
                     // show previous view with flowback set to true
                     let flowback;
@@ -169,7 +161,7 @@ for (const button of buttons) {
                 }
             } else if (button.value === "flow_stop") {
                 // stop_flow button was pressed
-                showMessageStopSurvey();
+                endSurvey("StoppedSurvey");
             }
         }
 
@@ -186,7 +178,7 @@ for (const button of buttons) {
             if (questionsFlow.length === currentView) {
                 console.log("all covid flow done, showing thankyou");
                 // if all the views have already been shown
-                showThankYou();
+                endSurvey("EndSurvey");
             } else {
                 console.log("next question");
 
