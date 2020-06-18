@@ -77,47 +77,18 @@ const clockblock = document.getElementById("clockblock");
 const jsonFlow = document.getElementById("json-flow");
 // const jsonFlowNumerical = document.getElementById("json-flow-numerical");
 
-// Default shows only thank you screen in the flow
-let flow_views = [jsonFlow, thankyou];
 // Used to set all views to none when switching between screens
 const allViews = [clockface, thankyou, clockblock, svg_stop_survey, jsonFlow];
 let flowSelectorUpdateTime = 0;
 
-// Flow may have been previously saved locally as flow.txt
-let flowFileRead;
-let flowFileWrite;
 let buzzFileWrite;
-let flowSelector;
-
-try {
-    flowFileRead = fs.readFileSync("flow.txt", "json");
-    console.log(JSON.stringify(flowFileRead));
-    console.log(JSON.stringify(flowFileRead.flowSelector));
-    flowSelector = flowFileRead.flowSelector;
-    mapFlows(flowSelector);
-    console.log("flows loaded via file sync")
-} catch (e) {
-    console.log(e);
-    console.log("resetting flows");
-    flowSelector = []
-}
 
 // receive message via peer socket
 messaging.peerSocket.onmessage = function (evt) {
     console.log("settings received on device");
     console.log(JSON.stringify(evt));
 
-    if (evt.data.key === 'flow_index') {
-        flowSelector = evt.data.data;
-        flowSelectorUpdateTime = evt.data.time;
-        console.log("flow selector from peer socket is", flowSelector);
-        mapFlows(flowSelector);
-        //save flows locally in event of app rest
-        flowFileWrite = {flowSelector: flowSelector};
-        console.log(JSON.stringify(flowFileWrite));
-        fs.writeFileSync("flow.txt", flowFileWrite, "json");
-        console.log("flowSelector, files saved locally")
-    } else if (evt.data.key === 'buzz_time') {
+    if (evt.data.key === 'buzz_time') {
         buzzFileWrite = {buzzSelection: evt.data.data};
         console.log(evt.data.data);
         fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
@@ -143,17 +114,7 @@ function processAllFiles() {
         console.log("settings received via file transfer");
         if (fileData.time > flowSelectorUpdateTime) {
             flowSelectorUpdateTime = fileData.time;
-            if (fileData.key === 'flow_index') {
-                flowSelector = fileData.data;
-                mapFlows(flowSelector);
-                console.log("settings updated via file transfer");
-
-                //save flows locally in event of app rest
-                flowFileWrite = {flowSelector: flowSelector};
-                console.log(JSON.stringify(flowFileWrite));
-                fs.writeFileSync("flow.txt", flowFileWrite, "json");
-                console.log("files saved locally")
-            } else if (fileData.key === 'buzz_time') {
+            if (fileData.key === 'buzz_time') {
                 buzzSelection = fileData.data;
                 console.log("buzz selection is", buzzSelection);
                 buzzFileWrite = {buzzSelection: fileData.data};
@@ -169,16 +130,6 @@ function processAllFiles() {
             console.log("settings already updated via peer socket")
         }
     }
-}
-
-function mapFlows(flowSelector) {
-    flow_views = [];
-    if (flowSelector) {
-        flowSelector.map(index => {
-            flow_views.push(allViews[index]);
-        });
-    }
-    flow_views.push(thankyou);
 }
 
 inbox.addEventListener("newfile", processAllFiles);
@@ -295,17 +246,17 @@ let buttons = [
     {
         value: 9,
         obj: centerButton,
-        attribute: "air-vel",
+        attribute: "question",
     },
     {
         value: 10,
         obj: rightButton,
-        attribute: "air-vel",
+        attribute: "question",
     },
     {
         value: 11,
         obj: leftButton,
-        attribute: "air-vel",
+        attribute: "question",
     },
 ];
 

@@ -1,18 +1,9 @@
 <svg class="background">
   <link rel="import" href="components/buttons-versa.gui" />
   <link rel="import" href="views/clockface.gui" />
-  <link rel="import" href="views/warm-cold.gui" />
-  <link rel="import" href="views/bright-dim.gui" />
-  <link rel="import" href="views/loud-quite.gui" />
-  <link rel="import" href="views/happy-sad.gui" />
-  <link rel="import" href="views/in-office.gui" />
-  <link rel="import" href="views/clothing.gui" />
   <link rel="import" href="views/thankyou.gui" />
   <link rel="import" href="views/gui_stop_survey.gui" />
   <link rel="import" href="views/clockblock.gui" />
-  <link rel="import" href="views/gui_air_vel.gui" />
-  <link rel="import" href="views/metabolic_rate.gui" />
-  <link rel="import" href="views/any_change.gui" />
 
   <link rel="import" href="views/json-flow.gui" />
 

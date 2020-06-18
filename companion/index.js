@@ -31,7 +31,7 @@ if (me.launchReasons.settingsChanged) {
 function sendValue(key, val) {
     if (val) {
         // check that the change was a change in the flow
-        if (key === "flow_index" || key === "buzz_time") {
+        if (key === "buzz_time") {
             var sendTime = new Date().getTime();
             sendSettingData({
                 key: key,
