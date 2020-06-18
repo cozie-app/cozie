@@ -1,105 +1,23 @@
-import clock from "clock";
 import document from "document";
-import {preferences} from "user-settings";
-import {HeartRateSensor} from "heart-rate";
-import {goals, today} from "user-activity";
-import * as util from "../common/utils";
+import {today} from "user-activity";
 import {user} from "user-profile";
-import {battery} from "power";
 import * as messaging from "messaging";
 import {vibration} from "haptics";
 import * as fs from "fs";
-import {geolocation} from "geolocation";
-import {inbox, outbox} from "file-transfer"
+import {inbox} from "file-transfer"
 import * as cbor from "cbor";
-import {memory} from "system";
 import {BodyPresenceSensor} from "body-presence";
 
+import {hrm, bodyPresence} from './sensors';
+import {buzzOptions, production} from "./options";
+import {sendEventIfReady} from "./send";
+import './clock'
+
 import questionsFlow from "../resources/flows/dorn-flow";
-// import questionsFlow from "../resources/flows/covid-flow";
-
-const production = true; // false for dev / debug releases
-
-//-------- CLOCK FACE DESIGN -----------
-
-const months = {
-    0: "Jan", 1: "Feb", 2: "Mar", 3: 'Apr', 4: "May", 5: 'Jun',
-    6: "Jul", 7: "Aug", 8: "Sep", 9: "Oct", 10: "Nov", 11: "Dec"
-};
-
-const weekdays = {1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: 'Sat', 0: 'Sun'};
-
-// Update the clock every minute
-clock.granularity = 'seconds';
-
-// read HR data
-const hrLabel = document.getElementById("hrm");  // get tag label
-hrLabel.text = "--";
-const chargeLabel = document.getElementById("chargeLabel");
-
-const hrm = new HeartRateSensor();
-hrm.onreading = function () {
-    // Peek the current sensor values
-    // console.log("Current heart rate: " + hrm.heartRate);
-    try {
-        hrLabel.text = `${hrm.heartRate}`;
-        if (user.heartRateZone(hrm.heartRate) === 'fat-burn') {
-            hrLabel.style.fill = 'fb-peach'; //yelow
-        } else if (user.heartRateZone(hrm.heartRate) === 'cardio') {
-            hrLabel.style.fill = 'fb-orange'; //light red
-        } else if (user.heartRateZone(hrm.heartRate) === 'peak') {
-            hrLabel.style.fill = 'fb-red'; //pink
-        } else if (user.heartRateZone(hrm.heartRate) === 'out-of-range') {
-            hrLabel.style.fill = 'fb-green'; //blue
-        }
-    } catch (e) {
-        console.log("Heart rate reading error: " + e);
-    }
-
-};
-
-// Begin monitoring the sensor
-hrm.start();
 
 // Get a handle on the <text> elements
-const timeLabel = document.getElementById("timeLabel");
-const steps = document.getElementById("steps");
-const dateLabel = document.getElementById("dateLabel");
-const secLabel = document.getElementById("secLabel");
-const storageLabel = document.getElementById("storageLabel");
-// Note that dev elements are hidden in production mode
-const voteLogLabel = document.getElementById("voteLogLabel");
-const voteLogPeerTransferLabel = document.getElementById("voteLogPeerTransferLabel");
-const voteLogFileTransferLabel = document.getElementById("voteLogFileTransferLabel");
-const memoryLabel = document.getElementById("memoryLabel");
 const errorLabel = document.getElementById("errorLabel");
 const bodyErrorLabel = errorLabel.getElementById("copy");
-
-if (!production) {
-    timeLabel.style.display = "none";
-    dateLabel.style.display = "none";
-    secLabel.style.display = "none";
-}
-
-// function that runs in the background and start vibration to remind the user to complete the survey
-const buzzOptions = {
-    0: [],
-    1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-    2: [9, 11, 13, 15, 17, 19, 21],
-    3: [9, 12, 15, 18, 21]
-};
-
-// log body presence if sensor is available
-const bodyPresence = new BodyPresenceSensor();
-if (BodyPresenceSensor) {
-    console.log("This device has a BodyPresenceSensor!");
-    bodyPresence.addEventListener("reading", () => {
-        console.log(`The device is ${bodyPresence.present ? '' : 'not'} on the user's body.`);
-    });
-    bodyPresence.start();
-} else {
-    console.log("This device does NOT have a BodyPresenceSensor!");
-}
 
 let buzzSelection = 2; // default value
 let vibrationTimeArray = buzzOptions[buzzSelection];
@@ -145,71 +63,6 @@ setInterval(function () {
         }
     }
 }, 600000); // timeout for 10 minutes
-
-clock.ontick = (evt) => {
-    const today_dt = evt.date;
-    let hours = today_dt.getHours();
-    if (preferences.clockDisplay === "12h") {
-        // 12h format
-        hours = hours % 12 || 12;
-    } else {
-        // 24h format
-        hours = util.monoDigits(util.zeroPad(hours));
-    }
-    const mins = util.monoDigits(util.zeroPad(today_dt.getMinutes()));
-    const secs = util.monoDigits(util.zeroPad(today_dt.getSeconds()));
-
-    timeLabel.text = `${hours}:${mins}`;
-    secLabel.text = secs;
-
-    const month = months[today_dt.getMonth()];
-    const weekday = weekdays[today_dt.getDay()];
-    const day = today_dt.getDate();
-
-    dateLabel.text = `${weekday}, ${month} ${day}`;
-
-    // Steps
-    if (today.adjusted.steps > 0) {
-        try {
-            steps.text = `${(Math.floor(today.adjusted.steps / 1000) || 0)}k`;
-            if (steps.text >= (goals.steps || 0)) {
-                steps.style.fill = 'fb-green'; //green
-            } else if (steps.text >= (goals.steps || 0) / 2) {
-                steps.style.fill = 'fb-peach'; //yellow
-            } else {
-                steps.style.fill = 'fb-orange'; //pink
-            }
-        } catch (e) {
-            console.log("Change steps label color error: " + e);
-            if (!production) {
-                bodyErrorLabel.text = bodyErrorLabel.text + "Steps : " + e;
-            }
-        }
-    }
-
-    //get screen width
-    try {
-        const charge = battery.chargeLevel / 100;
-        chargeLabel.width = 300 * charge;
-        if (charge < 0.15) {
-            chargeLabel.style.fill = 'fb-red'
-        } else if (charge < 0.3) {
-            chargeLabel.style.fill = 'fb-peach'
-        } else {
-            chargeLabel.style.fill = 'fb-light-gray'
-        }
-    } catch (e) {
-        if (!production) {
-            bodyErrorLabel.text = bodyErrorLabel.text + "Battery : " + e;
-        }
-    }
-
-    // show memory utilization
-    if (!production) {
-        memoryLabel.text = "memory usage = " + Math.round(memory.js.used / memory.js.total * 100) + " %";
-    }
-};
-//-------- END (CLOCK FACE DESIGN) -----------
 
 //-------- READING EXPERIMENT QUESTIONS FROM PHONE SETTINGS -----------
 
@@ -407,9 +260,6 @@ function showClock() {
 }
 
 let feedbackData; // Global variable for handling feedbackData
-let votelog;       // Global variable for handling votelogs
-let voteLogPeerTransfer = 0;       // Global variable for handling votelogs
-let voteLogFileTransfer = 0;       // Global variable for handling votelogs
 
 function initiateFeedbackData() {
     // Initiating feedback data
@@ -490,14 +340,14 @@ for (const button of buttons) {
         console.log(`${button.value} clicked`);
 
         if (button.attribute !== "flow_control") {
-            if (button.attribute != "comfort" && questionsFlow[currentView-1].name.indexOf("confirm") == -1) {
+            if (button.attribute !== "comfort" && questionsFlow[currentView-1].name.indexOf("confirm") === -1) {
                 console.log(currentView);
                 //need to associate it to the prevous view
                 feedbackData[questionsFlow[currentView - 1].name] = button.value;
             }
             console.log(JSON.stringify(feedbackData));
 
-            if (questionsFlow.length == currentView) {
+            if (questionsFlow.length === currentView) {
                 console.log("all covid flow done, showing thankyou");
                 // if all the views have already been shown
                 showThankYou();
@@ -596,7 +446,7 @@ function showFace(flowback = false) {
     }
 
     // skipping question
-    else if (skipQuestion == true) {
+    else if (skipQuestion === true) {
         // if we arrived here through the back button, then skip backwards
         if (flowback === true) {
             currentView--;
@@ -613,154 +463,4 @@ function showFace(flowback = false) {
 
 //-------- END (DEFINE VIEWS BASED ON FLOW SELECTOR) -----------
 
-// vibrate for 3 sec and change screen to response
-function vibrate() {
-    /**
-     * It causes the watch to vibrate, and forces the start of the feedback.
-     *
-     * If there are no questions selected then it blocks the time until a response is given.
-     * If there are questions in the flow, then it starts the flow
-     */
 
-    vibration.start("alert");
-
-    //Change main clock face to response screen
-    if (flow_views.length === 1) {
-        clockblock.style.display = "inline";
-    } else {
-        initiateFeedbackData();
-        // Reset currentView to prevent an unattended fitbit from moving through the flow
-        currentView = 0;
-        // go to first item in the flow
-        showFace();
-    }
-    //Stop vibration after 5 seconds
-    setTimeout(function () {
-        vibration.stop()
-    }, 2000);
-}
-
-//-------- COMPILE DATA AND SEND TO COMPANION  -----------
-function sendEventIfReady(_feedbackData) {
-    console.log(JSON.stringify(_feedbackData));
-
-    console.log("Fitbit memory usage: " + memory.js.used + ", of the available: " + memory.js.total);
-    // set timeout of gps https://dev.fitbit.com/build/reference/device-api/geolocation/
-    console.log("Getting GPS location ... it may take a couple of minutes");
-    geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 4 * 60 * 1000, maximumAge: 4 * 60 * 1000});
-
-    // reading log file for debuging purposes
-    try {
-        votelog = fs.readFileSync("votelog.txt", "json");
-    } catch (e) {
-        // if can't read set local file to empty
-        console.log("creating empty votelog.txt file");
-        votelog = [0]
-    }
-    // Incremement the vote log by one
-    votelog[0]++;
-    console.log("Vote log: " + votelog[0]);
-    if (!production) {
-        voteLogLabel.text = votelog + 'vl;';
-    }
-    // add the votelog to the feedback data json
-    _feedbackData['voteLog'] = votelog[0];
-    // store the votelog on the device as votelog.txt
-    fs.writeFileSync("votelog.txt", votelog, "json");
-
-    function locationSuccess(position) {
-        console.log("GPS location success");
-        _feedbackData.lat = position.coords.latitude;
-        _feedbackData.lon = position.coords.longitude;
-        sendDataToCompanion(_feedbackData);
-    }
-
-    function locationError(error) {
-        console.log("GPS location fail");
-        console.log(error);
-        _feedbackData.lat = null;
-        _feedbackData.lon = null;
-        sendDataToCompanion(_feedbackData);
-    }
-}
-
-function sendDataToCompanion(data) {
-    console.log("Sending feedback data ... ");
-
-    if (JSON.stringify(data).length > (messaging.peerSocket.MAX_MESSAGE_SIZE - 200)) {
-        console.log('The message you are sending has a length of : ' + JSON.stringify(data).length + "but you can only send messages up to this size" + messaging.peerSocket.MAX_MESSAGE_SIZE);
-    }
-
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-
-        console.log("data sent via Peer Socket");
-        messaging.peerSocket.send(data);
-
-        if (!production) {
-            voteLogPeerTransfer++;
-            voteLogPeerTransferLabel.text = voteLogPeerTransfer + "pt;";
-        }
-    } else {
-        console.log("No peerSocket connection. Attempting to send via file transfer");
-
-        let local_file;
-
-        // try to read file with local data
-        try {
-            console.log("checking if local file exists");
-            local_file = fs.readFileSync("local.txt", "json");
-        } catch (e) {
-            // if can't read set local file to empty
-            console.log("creating empty local.txt file");
-            local_file = [];
-        }
-
-        // push new reponce and save
-        local_file.push(data);
-
-        fs.writeFileSync("local.txt", local_file, "json");
-
-        // Prepare outbox for file transfer
-        outbox
-            .enqueueFile("local.txt")
-            .then((ft) => {
-                console.log(`Transfer of ${ft.name} successfully queued.`);
-
-                // Let user know that data is in queue
-                storageLabel.text = `q ${local_file.length}`;
-                // On change of ft, launch file transfer event
-                ft.onchange = onFileTransferEvent;
-            })
-            .catch((error) => {
-                console.log(`Failed to schedule transfer: ${error}`);
-                storageLabel.text = `e ${local_file.length}`;
-            })
-    }
-}
-
-// function to determine changes in the status of the file transfer
-function onFileTransferEvent() {
-    console.log('File transfer state: ' + this.readyState);
-    if (this.readyState === "transferred") {
-
-        console.log("data sent via File Transfer");
-
-        // delete local.txt file as data is now transferred
-        if (fs.existsSync("local.txt")) {
-            fs.unlinkSync("local.txt");
-        }
-
-        storageLabel.text = ``
-
-        if (!production) {
-            voteLogFileTransfer++;
-            voteLogFileTransferLabel.text = voteLogFileTransfer + 'ft';
-        }
-    }
-
-    if (this.readyState === "error") {
-        console.log("WARNING: ERROR IN FILE TRANSFER");
-        storageLabel.text = `e ${local_file.length}`;
-    }
-    //console.log(`onFileTransferEvent(): name=${this.name} readyState=${this.readyState};${Date.now()};`);
-}
