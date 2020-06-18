@@ -1,145 +1,20 @@
 import document from "document";
-import {today} from "user-activity";
 import {user} from "user-profile";
-import * as messaging from "messaging";
 import {vibration} from "haptics";
-import * as fs from "fs";
-import {inbox} from "file-transfer"
-import * as cbor from "cbor";
 import {BodyPresenceSensor} from "body-presence";
 
 import {hrm, bodyPresence} from './sensors';
-import {buzzOptions, production} from "./options";
 import {sendEventIfReady} from "./send";
 import './clock'
+import './buzz'
 
 import questionsFlow from "../resources/flows/dorn-flow";
 
-// Get a handle on the <text> elements
-const errorLabel = document.getElementById("errorLabel");
-const bodyErrorLabel = errorLabel.getElementById("copy");
-
-let buzzSelection = 2; // default value
-let vibrationTimeArray = buzzOptions[buzzSelection];
-let completedVibrationCycleDay = false; // keeps in memory weather the watch has vibrated at all hours
-let startDay = new Date().getDay(); // get the day when the app started for the first time
-
-setInterval(function () {
-    const currentDate = new Date(); // get today's date
-    const currentDay = currentDate.getDay(); // get today's day
-    const currentHour = currentDate.getHours();
-
-    try {
-        const buzzSelection = parseInt(fs.readFileSync("buzzSelection.txt", "json").buzzSelection); // read user selection
-        vibrationTimeArray = buzzOptions[buzzSelection];
-    } catch (e) {
-        console.log(e);
-        if (!production) {
-            bodyErrorLabel.text = bodyErrorLabel.text + "Vibration : " + e;
-        }
-    }
-
-    if (currentDay !== startDay) { // if it is a new day check user
-        startDay = currentDay;
-        completedVibrationCycleDay = false;
-    }
-
-    const maxHour = vibrationTimeArray.reduce(function (a, b) {
-        return Math.max(a, b);
-    });
-
-    if (!completedVibrationCycleDay) {
-        if (vibrationTimeArray[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
-            // this ensures that the watch does not vibrate if the user is still sleeping
-            vibrate();
-            const firstElement = vibrationTimeArray.shift();
-            vibrationTimeArray.push(firstElement);
-            if (currentHour === maxHour) {
-                completedVibrationCycleDay = true;
-            }
-        } else if (vibrationTimeArray[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
-            const firstElement = vibrationTimeArray.shift();
-            vibrationTimeArray.push(firstElement);
-        }
-    }
-}, 600000); // timeout for 10 minutes
-
-//-------- READING EXPERIMENT QUESTIONS FROM PHONE SETTINGS -----------
-
-console.log("WARNING!! APP HAS RESET");
-//Flow GUIs
+// Import GUI elements
 const clockface = document.getElementById("clockface");
-//Clock manipulation guis
 const thankyou = document.getElementById("thankyou");
 const svg_stop_survey = document.getElementById("stopSurvey");
 const clockblock = document.getElementById("clockblock");
-
-const jsonFlow = document.getElementById("json-flow");
-// const jsonFlowNumerical = document.getElementById("json-flow-numerical");
-
-// Used to set all views to none when switching between screens
-const allViews = [clockface, thankyou, clockblock, svg_stop_survey, jsonFlow];
-let flowSelectorUpdateTime = 0;
-
-let buzzFileWrite;
-
-// receive message via peer socket
-messaging.peerSocket.onmessage = function (evt) {
-    console.log("settings received on device");
-    console.log(JSON.stringify(evt));
-
-    if (evt.data.key === 'buzz_time') {
-        buzzFileWrite = {buzzSelection: evt.data.data};
-        console.log(evt.data.data);
-        fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
-        console.log("buzzSelection, files saved locally");
-        buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
-        console.log("Buzz Selection is", buzzSelection)
-    } else if (evt.data.key === 'error') {
-        console.log("error message called and displaying on watch");
-        if (!production) {
-            bodyErrorLabel.text = "Socket : " + evt.data.data.type + evt.data.data.message;
-        }
-    }
-    console.log("end message socket")
-};
-
-// receive message via inbox
-function processAllFiles() {
-    let fileName;
-    while (fileName = inbox.nextFile()) {
-        console.log(`/private/data/${fileName} is now available`);
-        let fileData = fs.readFileSync(`${fileName}`, "cbor");
-        console.log(JSON.stringify(fileData));
-        console.log("settings received via file transfer");
-        if (fileData.time > flowSelectorUpdateTime) {
-            flowSelectorUpdateTime = fileData.time;
-            if (fileData.key === 'buzz_time') {
-                buzzSelection = fileData.data;
-                console.log("buzz selection is", buzzSelection);
-                buzzFileWrite = {buzzSelection: fileData.data};
-                fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
-
-            } else if (fileData.key === 'error') {
-                console.log("error message called and displaying on watch");
-                if (!production) {
-                    bodyErrorLabel.text = "Process files : " + fileData.data.type + ' ' + Date(fileData.time) + fileData.data.message;
-                }
-            }
-        } else {
-            console.log("settings already updated via peer socket")
-        }
-    }
-}
-
-inbox.addEventListener("newfile", processAllFiles);
-processAllFiles();
-
-//-------- END (READING EXPERIMENT QUESTIONS FROM PHONE SETTINGS) -----------
-
-//-------- DEFINE VIEWS AND DATA COLLECTION BASED ON FLOW SELECTOR -----------
-
-let currentView = 0; //current view of flow
 
 // home screen buttons
 const comfy = document.getElementById("comfy");
@@ -154,6 +29,14 @@ const centerButton = document.getElementById("new-button-center");
 const rightButton = document.getElementById("new-button-right");
 const leftButton = document.getElementById("new-button-left");
 
+const jsonFlow = document.getElementById("json-flow");
+
+// Used to set all views to none when switching between screens
+const allViews = [clockface, thankyou, clockblock, svg_stop_survey, jsonFlow];
+
+let currentView = 0; //current view of flow
+
+// show thank you message at the end of survey, add more info to message to be sent and send message
 function showThankYou() {
     allViews.map((v) => (v.style.display = "none"));
 
@@ -165,8 +48,13 @@ function showThankYou() {
     const startFeedback = new Date(feedbackData['startFeedback']);
     feedbackData['responseSpeed'] = (endFeedback - startFeedback) / 1000.0;
     feedbackData['endFeedback'] = endFeedback.toISOString();
+
     if (BodyPresenceSensor) {
-        feedbackData['bodyPresence'] = bodyPresence.present;
+        try {
+            feedbackData['bodyPresence'] = bodyPresence.present;
+        } catch (e) {
+            console.log("No body presence data");
+        }
     }
 
     try {
@@ -181,33 +69,30 @@ function showThankYou() {
         console.log("No resting basal metabolic rate data available");
     }
 
-    //send feedback to companion
+    // send feedback to companion
     sendEventIfReady(feedbackData);
-    feedbackData = {};
-    setTimeout(() => {
-        showClock()
-    }, 2000);
-    currentView = 0
+
+    clearDataAndShowFirstQuestion()
 }
 
 function showMessageStopSurvey() {
     allViews.map((v) => (v.style.display = "none"));
 
-    // highlight all the icons corresponding to the questions selected in the fitbit app
+    // highlight all the icons corresponding to the questions selected in the Fitbit app
     clockface.style.display = "inline";
     svg_stop_survey.style.display = "inline";
 
-    //clear feedback data recorded
-    feedbackData = {};
-    setTimeout(() => {
-        showClock()
-    }, 2000);
+    clearDataAndShowFirstQuestion()
 }
 
-function showClock() {
-    allViews.map(v => v.style.display = "none");
-    clockface.style.display = "inline";
-    currentView = 0
+function clearDataAndShowFirstQuestion() {
+    feedbackData = {};
+
+    setTimeout(() => {
+        allViews.map(v => v.style.display = "none");
+        clockface.style.display = "inline";
+        currentView = 0
+    }, 2000);
 }
 
 let feedbackData; // Global variable for handling feedbackData

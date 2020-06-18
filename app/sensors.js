@@ -34,6 +34,7 @@ hrm.start();
 
 // Body Presence sensor, log body presence if sensor is available
 export const bodyPresence = new BodyPresenceSensor();
+
 if (BodyPresenceSensor) {
     console.log("This device has a BodyPresenceSensor!");
     bodyPresence.addEventListener("reading", () => {

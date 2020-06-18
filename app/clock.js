@@ -24,6 +24,8 @@ const steps = document.getElementById("steps");
 const dateLabel = document.getElementById("dateLabel");
 const secLabel = document.getElementById("secLabel");
 const memoryLabel = document.getElementById("memoryLabel");
+const errorLabel = document.getElementById("errorLabel");
+const bodyErrorLabel = errorLabel.getElementById("copy");
 
 if (!production) {
     timeLabel.style.display = "none";
