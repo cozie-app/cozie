@@ -1,13 +1,3 @@
-import thermal from '../resources/images/icons/prefer_warmer.png';
-import light from '../resources/images/icons/prefer_brighter.png';
-import noise from '../resources/images/icons/prefer_louder.png';
-import indoorOutdoor from '../resources/images/icons/out_in.png';
-import location from '../resources/images/icons/home.png';
-import mood from '../resources/images/icons/not-comfy.png';
-import clothing from '../resources/images/icons/light_clothes.png';
-import icon_velocity from '../resources/images/icons/air_vel_high.png';
-import icon_met from '../resources/images/icons/met_exercising.png';
-import icon_change from '../resources/images/icons/outdoor.png';
 import noSound from '../resources/images/icons/prefer_quieter.png';
 import sound from '../resources/images/icons/prefer_louder.png';
 

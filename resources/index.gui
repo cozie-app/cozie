@@ -4,7 +4,6 @@
   <link rel="import" href="views/thankyou.gui" />
   <link rel="import" href="views/gui_stop_survey.gui" />
   <link rel="import" href="views/clockblock.gui" />
-
   <link rel="import" href="views/json-flow.gui" />
 </svg>
 
