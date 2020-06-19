@@ -2,17 +2,15 @@ import clock from "clock";
 import document from "document";
 import {preferences} from "user-settings";
 import {HeartRateSensor} from "heart-rate";
-import {today} from "user-activity";
+import {goals, today} from "user-activity";
 import * as util from "../common/utils";
 import {user} from "user-profile";
-import {goals} from "user-activity";
 import {battery} from "power";
 import * as messaging from "messaging";
 import {vibration} from "haptics";
 import * as fs from "fs";
 import {geolocation} from "geolocation";
-import {inbox} from "file-transfer"
-import {outbox} from "file-transfer";
+import {inbox, outbox} from "file-transfer"
 import * as cbor from "cbor";
 import {memory} from "system";
 import {BodyPresenceSensor} from "body-presence";
@@ -32,9 +30,9 @@ const weekdays = {1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: 'Sat', 0:
 clock.granularity = 'seconds';
 
 // read HR data
-let hrLabel = document.getElementById("hrm");  // get tag label
+const hrLabel = document.getElementById("hrm");  // get tag label
 hrLabel.text = "--";
-let chargeLabel = document.getElementById("chargeLabel");
+const chargeLabel = document.getElementById("chargeLabel");
 
 const hrm = new HeartRateSensor();
 hrm.onreading = function () {
@@ -62,23 +60,23 @@ hrm.start();
 
 // Get a handle on the <text> elements
 const timeLabel = document.getElementById("timeLabel");
-let steps = document.getElementById("steps");
-let dateLabel = document.getElementById("dateLabel");
-let secLabel = document.getElementById("secLabel");
-let storageLabel = document.getElementById("storageLabel");
+const steps = document.getElementById("steps");
+const dateLabel = document.getElementById("dateLabel");
+const secLabel = document.getElementById("secLabel");
+const storageLabel = document.getElementById("storageLabel");
 // Note that dev elements are hidden in production mode
-let voteLogLabel = document.getElementById("voteLogLabel");
-let errorLabel = document.getElementById("errorLabel");
-let bodyErrorLabel = errorLabel.getElementById("copy");
+const voteLogLabel = document.getElementById("voteLogLabel");
+const voteLogPeerTransferLabel = document.getElementById("voteLogPeerTransferLabel");
+const voteLogFileTransferLabel = document.getElementById("voteLogFileTransferLabel");
+const memoryLabel = document.getElementById("memoryLabel");
+const errorLabel = document.getElementById("errorLabel");
+const bodyErrorLabel = errorLabel.getElementById("copy");
 
-if (!production){
+if (!production) {
     timeLabel.style.display = "none";
     dateLabel.style.display = "none";
     secLabel.style.display = "none";
 }
-
-// set the local_file which will be used to store data
-let local_file;
 
 // function that runs in the background and start vibration to remind the user to complete the survey
 const buzzOptions = {
@@ -146,7 +144,7 @@ setInterval(function () {
 }, 600000); // timeout for 10 minutes
 
 clock.ontick = (evt) => {
-    let today_dt = evt.date;
+    const today_dt = evt.date;
     let hours = today_dt.getHours();
     if (preferences.clockDisplay === "12h") {
         // 12h format
@@ -155,15 +153,15 @@ clock.ontick = (evt) => {
         // 24h format
         hours = util.monoDigits(util.zeroPad(hours));
     }
-    let mins = util.monoDigits(util.zeroPad(today_dt.getMinutes()));
-    let secs = util.monoDigits(util.zeroPad(today_dt.getSeconds()));
+    const mins = util.monoDigits(util.zeroPad(today_dt.getMinutes()));
+    const secs = util.monoDigits(util.zeroPad(today_dt.getSeconds()));
 
     timeLabel.text = `${hours}:${mins}`;
     secLabel.text = secs;
 
-    let month = months[today_dt.getMonth()];
-    let weekday = weekdays[today_dt.getDay()];
-    let day = today_dt.getDate();
+    const month = months[today_dt.getMonth()];
+    const weekday = weekdays[today_dt.getDay()];
+    const day = today_dt.getDate();
 
     dateLabel.text = `${weekday}, ${month} ${day}`;
 
@@ -188,7 +186,7 @@ clock.ontick = (evt) => {
 
     //get screen width
     try {
-        let charge = battery.chargeLevel / 100;
+        const charge = battery.chargeLevel / 100;
         chargeLabel.width = 300 * charge;
         if (charge < 0.15) {
             chargeLabel.style.fill = 'fb-red'
@@ -201,6 +199,11 @@ clock.ontick = (evt) => {
         if (!production) {
             bodyErrorLabel.text = bodyErrorLabel.text + "Battery : " + e;
         }
+    }
+
+    // show memory utilization
+    if (!production) {
+        memoryLabel.text = "memory usage = " + Math.round(memory.js.used / memory.js.total * 100) + " %";
     }
 };
 //-------- END (CLOCK FACE DESIGN) -----------
@@ -245,8 +248,8 @@ const smallIcons = [document.getElementById("small-thermal"),
 
 // Flow may have been previously saved locally as flow.txt
 let flowFileRead;
-var flowFileWrite;
-var buzzFileWrite;
+let flowFileWrite;
+let buzzFileWrite;
 let flowSelector;
 
 try {
@@ -476,6 +479,8 @@ function showClock() {
 
 let feedbackData; // Global variable for handling feedbackData
 let votelog;       // Global variable for handling votelogs
+let voteLogPeerTransfer = 0;       // Global variable for handling votelogs
+let voteLogFileTransfer = 0;       // Global variable for handling votelogs
 
 function initiateFeedbackData() {
     // Initiating feedback data
@@ -485,29 +490,9 @@ function initiateFeedbackData() {
         startFeedback,
         heartRate: hrm.heartRate,
     };
-
-    // reading log file for debuging purposes
-    try {
-        console.log("checking if local file exists");
-        votelog = fs.readFileSync("votelog.txt", "json");
-    } catch (e) {
-        // if can't read set local file to empty
-        console.log("creating empty votelog.txt file");
-        votelog = [0]
-    }
-    // Incremement the vote log by one
-    votelog[0]++;
-    console.log(votelog[0]);
-    if (!production) {
-        voteLogLabel.text = votelog;
-    }
-    // add the votelog to the feedback data json
-    feedbackData['voteLog'] = votelog[0];
-    // store the votelog on the device as votelog.txt
-    fs.writeFileSync("votelog.txt", votelog, "json");
 }
 
-let buttons = [{
+const buttons = [{
     value: 10,
     obj: comfy,
     attribute: 'comfort'
@@ -676,7 +661,7 @@ for (const button of buttons) {
             }
         }
 
-        console.log(`${button.value} clicked`);
+        console.log(`${button.attribute}: ${button.value} clicked`);
 
         if (button.attribute !== 'flow_control') {
 
@@ -722,42 +707,69 @@ function vibrate() {
 }
 
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------
-function sendEventIfReady(feedbackData) {
-    console.log("sending feedbackData");
-    console.log(JSON.stringify(feedbackData));
+function sendEventIfReady(_feedbackData) {
+    console.log(JSON.stringify(_feedbackData));
 
-    console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
+    console.log("Fitbit memory usage: " + memory.js.used + ", of the available: " + memory.js.total);
     // set timeout of gps https://dev.fitbit.com/build/reference/device-api/geolocation/
+    console.log("Getting GPS location ... it may take a couple of minutes");
     geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 4 * 60 * 1000, maximumAge: 4 * 60 * 1000});
 
+    // reading log file for debuging purposes
+    try {
+        votelog = fs.readFileSync("votelog.txt", "json");
+    } catch (e) {
+        // if can't read set local file to empty
+        console.log("creating empty votelog.txt file");
+        votelog = [0]
+    }
+    // Incremement the vote log by one
+    votelog[0]++;
+    console.log("Vote log: " + votelog[0]);
+    if (!production) {
+        voteLogLabel.text = votelog + 'vl;';
+    }
+    // add the votelog to the feedback data json
+    _feedbackData['voteLog'] = votelog[0];
+    // store the votelog on the device as votelog.txt
+    fs.writeFileSync("votelog.txt", votelog, "json");
+
     function locationSuccess(position) {
-        console.log("location success");
-        feedbackData.lat = position.coords.latitude;
-        feedbackData.lon = position.coords.longitude;
-        sendDataToCompanion(feedbackData);
+        console.log("GPS location success");
+        _feedbackData.lat = position.coords.latitude;
+        _feedbackData.lon = position.coords.longitude;
+        sendDataToCompanion(_feedbackData);
     }
 
     function locationError(error) {
-        console.log("location fail");
+        console.log("GPS location fail");
         console.log(error);
-        feedbackData.lat = null;
-        feedbackData.lon = null;
-        sendDataToCompanion(feedbackData);
+        _feedbackData.lat = null;
+        _feedbackData.lon = null;
+        sendDataToCompanion(_feedbackData);
     }
 }
 
 function sendDataToCompanion(data) {
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN
-        && JSON.stringify(data).length < messaging.peerSocket.MAX_MESSAGE_SIZE) {
-        console.log("Max message size=" + messaging.peerSocket.MAX_MESSAGE_SIZE);
-        console.log("data sizealert", JSON.stringify(data).length);
-        messaging.peerSocket.send(data);
-        console.log("data sent directly to companion");
+    console.log("Sending feedback data ... ");
 
-        //remove data to prevent it beint sent twice
-        data = null
+    if (JSON.stringify(data).length > (messaging.peerSocket.MAX_MESSAGE_SIZE - 200)) {
+        console.log('The message you are sending has a length of : ' + JSON.stringify(data).length + "but you can only send messages up to this size" + messaging.peerSocket.MAX_MESSAGE_SIZE);
+    }
+
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+
+        console.log("data sent via Peer Socket");
+        messaging.peerSocket.send(data);
+
+        if (!production) {
+            voteLogPeerTransfer++;
+            voteLogPeerTransferLabel.text = voteLogPeerTransfer + "pt;";
+        }
     } else {
-        console.log("No peerSocket connection OR data too large. Attempting to send via file transfer");
+        console.log("No peerSocket connection. Attempting to send via file transfer");
+
+        let local_file;
 
         // try to read file with local data
         try {
@@ -766,16 +778,13 @@ function sendDataToCompanion(data) {
         } catch (e) {
             // if can't read set local file to empty
             console.log("creating empty local.txt file");
-            local_file = []
+            local_file = [];
         }
 
         // push new reponce and save
-        console.log("pushing new data to local file");
         local_file.push(data);
 
         fs.writeFileSync("local.txt", local_file, "json");
-        // Note on device how many locally stored files are present
-        storageLabel.text = `${local_file.length}`;
 
         // Prepare outbox for file transfer
         outbox
@@ -790,23 +799,34 @@ function sendDataToCompanion(data) {
             })
             .catch((error) => {
                 console.log(`Failed to schedule transfer: ${error}`);
-                storageLabel.text = `${local_file.length}`
+                storageLabel.text = `e ${local_file.length}`;
             })
     }
 }
 
 // function to determine changes in the status of the file transfer
 function onFileTransferEvent() {
-    console.log(this.readyState);
+    console.log('File transfer state: ' + this.readyState);
     if (this.readyState === "transferred") {
-        console.log("transferred successfully");
-        // delete local.txt file as data is now trasnferred
-        fs.unlinkSync("local.txt");
+
+        console.log("data sent via File Transfer");
+
+        // delete local.txt file as data is now transferred
+        if (fs.existsSync("local.txt")) {
+            fs.unlinkSync("local.txt");
+        }
+
         storageLabel.text = ``
+
+        if (!production) {
+            voteLogFileTransfer++;
+            voteLogFileTransferLabel.text = voteLogFileTransfer + 'ft';
+        }
     }
+
     if (this.readyState === "error") {
         console.log("WARNING: ERROR IN FILE TRANSFER");
-        storageLabel.text = `Error`
+        storageLabel.text = `e ${local_file.length}`;
     }
     //console.log(`onFileTransferEvent(): name=${this.name} readyState=${this.readyState};${Date.now()};`);
 }
