@@ -1,4 +1,4 @@
-import {buzzOptions, production} from "./options";
+import {production} from "./options";
 import {bodyPresence} from "./sensors";
 import {today} from "user-activity";
 import * as messaging from "messaging";
@@ -6,9 +6,18 @@ import * as fs from "fs";
 import {inbox} from "file-transfer"
 import * as cbor from "cbor";
 import document from "document";
+import {vibration} from "haptics";
 
 const errorLabel = document.getElementById("errorLabel");
 const bodyErrorLabel = errorLabel.getElementById("copy");
+
+// define below the buzz options
+const buzzOptions = {
+    0: [],
+    1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+    2: [9, 11, 13, 15, 17, 19, 21],
+    3: [9, 12, 15, 18, 21]
+};
 
 let buzzSelection = 2; // default value
 let vibrationTimeArray = buzzOptions[buzzSelection];
@@ -25,6 +34,7 @@ setInterval(function () {
         const buzzSelection = parseInt(fs.readFileSync("buzzSelection.txt", "json").buzzSelection); // read user selection
         vibrationTimeArray = buzzOptions[buzzSelection];
     } catch (e) {
+        console.log("Could not open the file buzzSelection.txt");
         console.log(e);
         if (!production) {
             bodyErrorLabel.text = bodyErrorLabel.text + "Vibration : " + e;
@@ -113,3 +123,19 @@ function processAllFiles() {
 
 inbox.addEventListener("newfile", processAllFiles);
 processAllFiles();
+
+function vibrate() {
+    /**
+     * It causes the watch to vibrate, and forces the start of the feedback.
+     *
+     * If there are no questions selected then it blocks the time until a response is given.
+     * If there are questions in the flow, then it starts the flow
+     */
+
+    vibration.start("alert");
+
+    //Stop vibration after 2 seconds
+    setTimeout(function () {
+        vibration.stop()
+    }, 2000);
+}
