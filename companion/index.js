@@ -150,7 +150,7 @@ function sendDataToInflux(data) {
             console.log("Sending data to DB ...");
             console.log(JSON.stringify(data));
             console.log('POST request status code: ' + res.status);
-            if (res.status !== 200) {
+            if (res.status === 200) {
                 console.log("Successfully sent data to DB!");
             }
             if (res.status !== 200) {
