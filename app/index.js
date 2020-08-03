@@ -177,8 +177,12 @@ for (const button of buttons) {
     });
 }
 
-function showFace(flowback = false) {
+function showFace(flowback = false, isFirst = false) {
     let skipQuestion = false;
+
+    if(isFirst) {
+        currentView=0;
+    }    
 
     // go through all views and set to none
     allViews.map((v) => {
@@ -249,4 +253,8 @@ function showFace(flowback = false) {
     vibration.start("bump");
 }
 
+function getView() {
+    return currentView;
+}
 
+export default {getView, showFace};

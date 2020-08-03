@@ -7,6 +7,7 @@ import {inbox} from "file-transfer"
 import * as cbor from "cbor";
 import document from "document";
 import {vibration} from "haptics";
+import Index from './index'
 
 const errorLabel = document.getElementById("errorLabel");
 const bodyErrorLabel = errorLabel.getElementById("copy");
@@ -51,7 +52,7 @@ setInterval(function () {
     });
 
     if (!completedVibrationCycleDay) {
-        if (vibrationTimeArray[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+        if (vibrationTimeArray[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present && Index.getView()==0) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
             // this ensures that the watch does not vibrate if the user is still sleeping
             vibrate();
             const firstElement = vibrationTimeArray.shift();
@@ -133,6 +134,7 @@ function vibrate() {
      */
 
     vibration.start("alert");
+    Index.showFace(false, true);
 
     //Stop vibration after 2 seconds
     setTimeout(function () {
