@@ -3,11 +3,13 @@ import {user} from "user-profile";
 import {vibration} from "haptics";
 import {BodyPresenceSensor} from "body-presence";
 
+// import custom built modules
 import {hrm, bodyPresence} from './sensors';
 import {sendEventIfReady} from "./send";
 import './clock'
 import './buzz'
 
+// import file containing question flow
 import questionsFlow from "../resources/flows/dorn-flow";
 
 // Import GUI elements
