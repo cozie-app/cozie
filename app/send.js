@@ -2,13 +2,15 @@
 This code sends the survey completed by the user to the companion app.
 */
 
-import {isProduction} from "./options";
 import fs from "fs";
 import document from "document";
 import {geolocation} from "geolocation";
 import {memory} from "system";
 import {outbox} from "file-transfer"
-import * as messaging from "messaging";
+import {peerSocket} from "messaging";
+
+// import custom built modules
+import {isProduction} from "./options";
 
 const storageLabel = document.getElementById("storageLabel");
 const voteLogLabel = document.getElementById("voteLogLabel");
@@ -66,14 +68,14 @@ export function sendEventIfReady(_feedbackData) {
 function sendDataToCompanion(data) {
     console.log("Sending feedback data ... ");
 
-    if (JSON.stringify(data).length > (messaging.peerSocket.MAX_MESSAGE_SIZE - 200)) {
-        console.log('The message you are sending has a length of : ' + JSON.stringify(data).length + "but you can only send messages up to this size" + messaging.peerSocket.MAX_MESSAGE_SIZE);
+    if (JSON.stringify(data).length > (peerSocket.MAX_MESSAGE_SIZE - 200)) {
+        console.log('The message you are sending has a length of : ' + JSON.stringify(data).length + "but you can only send messages up to this size" + peerSocket.MAX_MESSAGE_SIZE);
     }
 
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    if (peerSocket.readyState === peerSocket.OPEN) {
 
         console.log("data sent via Peer Socket");
-        messaging.peerSocket.send(data);
+        peerSocket.send(data);
 
         if (!isProduction) {
             voteLogPeerTransfer++;

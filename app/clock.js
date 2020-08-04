@@ -11,9 +11,10 @@ import document from "document";
 import {preferences} from "user-settings";
 import {goals, today} from "user-activity";
 import {battery} from "power";
-import {isProduction} from "./options";
 import {memory} from "system";
 
+// import custom built modules
+import {isProduction} from "./options";
 import * as util from "../common/utils";
 
 const months = {

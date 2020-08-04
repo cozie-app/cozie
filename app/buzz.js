@@ -10,8 +10,6 @@ Every 10 minute the code check if it is time to buzz the Fitbit and if the
 user change the vibration settings in the FItbit app.
 */
 
-import {isProduction} from "./options";
-import {bodyPresence} from "./sensors";
 import {today} from "user-activity";
 import * as messaging from "messaging";
 import * as fs from "fs";
@@ -19,12 +17,16 @@ import {inbox} from "file-transfer"
 import * as cbor from "cbor";
 import document from "document";
 import {vibration} from "haptics";
+
+// import custom built modules
+import {bodyPresence} from "./sensors";
+import {isProduction} from "./options";
 import Index from './index'
 
 const errorLabel = document.getElementById("errorLabel");
 const bodyErrorLabel = errorLabel.getElementById("copy");
 
-// define below the buzz options
+// define what at what hour of the day each buzz option would buzz at
 const buzzOptions = {
     0: [],
     1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
