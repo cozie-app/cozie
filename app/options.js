@@ -1,1 +1,5 @@
-export const production = true
+/*
+It contains global variables
+*/
+
+export const isProduction = true

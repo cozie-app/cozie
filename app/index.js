@@ -1,3 +1,11 @@
+/*
+This is the main function that handles the Cozie clock face on the FItbit.
+
+Here we are importing the Fitbit APIs, external modules we have added and more.
+
+The code below control which view needs to be shown to the participant.
+*/
+
 import document from "document";
 import {user} from "user-profile";
 import {vibration} from "haptics";
@@ -79,6 +87,7 @@ let buttons = [
 
 // show thank you message at the end of survey, add more info to message to be sent and send message
 function endSurvey(reasonEnd) {
+    // hiding all views to just show the clock
     allViews.map((v) => (v.style.display = "none"));
     clockface.style.display = "inline";
 
@@ -184,7 +193,7 @@ function showFace(flowback = false, isFirst = false) {
 
     if(isFirst) {
         currentView=0;
-    }    
+    }
 
     // go through all views and set to none
     allViews.map((v) => {

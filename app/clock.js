@@ -1,9 +1,17 @@
+/*
+This code takes care of displaying the time and date to the user.
+It also displays the steps walked, the HR and the battery charge level.
+
+When in debugging mode, i.e., isProduction = False the time and date are
+not displayed and instead that area is used to display possible errors.
+*/
+
 import clock from "clock";
 import document from "document";
 import {preferences} from "user-settings";
 import {goals, today} from "user-activity";
 import {battery} from "power";
-import {production} from "./options";
+import {isProduction} from "./options";
 import {memory} from "system";
 
 import * as util from "../common/utils";
@@ -27,7 +35,7 @@ const memoryLabel = document.getElementById("memoryLabel");
 const errorLabel = document.getElementById("errorLabel");
 const bodyErrorLabel = errorLabel.getElementById("copy");
 
-if (!production) {
+if (!isProduction) {
     timeLabel.style.display = "none";
     dateLabel.style.display = "none";
     secLabel.style.display = "none";
@@ -68,7 +76,7 @@ clock.ontick = (evt) => {
             }
         } catch (e) {
             console.log("Change steps label color error: " + e);
-            if (!production) {
+            if (!isProduction) {
                 bodyErrorLabel.text = bodyErrorLabel.text + "Steps : " + e;
             }
         }
@@ -86,13 +94,13 @@ clock.ontick = (evt) => {
             chargeLabel.style.fill = 'fb-light-gray'
         }
     } catch (e) {
-        if (!production) {
+        if (!isProduction) {
             bodyErrorLabel.text = bodyErrorLabel.text + "Battery : " + e;
         }
     }
 
     // show memory utilization
-    if (!production) {
+    if (!isProduction) {
         memoryLabel.text = "memory usage = " + Math.round(memory.js.used / memory.js.total * 100) + " %";
     }
 };

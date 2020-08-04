@@ -1,4 +1,16 @@
-import {production} from "./options";
+/*
+The Cozie clock face offers the functionality of reminding participants
+to complete the survey at predefined intervals with a short buzz.
+The frequency at which participants are reminded to complete the survey
+can be changed in the settings of the Cozie clock face in the Fitbit app,
+the options that will be presented to the users are hardcoded below
+"buzzOptions".
+
+Every 10 minute the code check if it is time to buzz the Fitbit and if the
+user change the vibration settings in the FItbit app.
+*/
+
+import {isProduction} from "./options";
 import {bodyPresence} from "./sensors";
 import {today} from "user-activity";
 import * as messaging from "messaging";
@@ -37,7 +49,7 @@ setInterval(function () {
     } catch (e) {
         console.log("Could not open the file buzzSelection.txt");
         console.log(e);
-        if (!production) {
+        if (!isProduction) {
             bodyErrorLabel.text = bodyErrorLabel.text + "Vibration : " + e;
         }
     }
@@ -52,7 +64,7 @@ setInterval(function () {
     });
 
     if (!completedVibrationCycleDay) {
-        if (vibrationTimeArray[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present && Index.getView()==0) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+        if (vibrationTimeArray[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present && Index.getView()===0) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
             // this ensures that the watch does not vibrate if the user is still sleeping
             vibrate();
             const firstElement = vibrationTimeArray.shift();
@@ -85,7 +97,7 @@ messaging.peerSocket.onmessage = function (evt) {
         console.log("Buzz Selection is", buzzSelection)
     } else if (evt.data.key === 'error') {
         console.log("error message called and displaying on watch");
-        if (!production) {
+        if (!isProduction) {
             bodyErrorLabel.text = "Socket : " + evt.data.data.type + evt.data.data.message;
         }
     }
@@ -112,7 +124,7 @@ function processAllFiles() {
 
             } else if (fileData.key === 'error') {
                 console.log("error message called and displaying on watch");
-                if (!production) {
+                if (!isProduction) {
                     bodyErrorLabel.text = "Process files : " + fileData.data.type + ' ' + Date(fileData.time) + fileData.data.message;
                 }
             }

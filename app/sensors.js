@@ -1,3 +1,8 @@
+/*
+This code queries data from Fitbit APIs, in particular here we are
+requesting HR, and body presence data.
+*/
+
 import {HeartRateSensor} from "heart-rate";
 import {user} from "user-profile";
 import document from "document";

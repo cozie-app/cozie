@@ -1,4 +1,8 @@
-import {production} from "./options";
+/*
+This code sends the survey completed by the user to the companion app.
+*/
+
+import {isProduction} from "./options";
 import fs from "fs";
 import document from "document";
 import {geolocation} from "geolocation";
@@ -35,7 +39,7 @@ export function sendEventIfReady(_feedbackData) {
     // Incremement the vote log by one
     voteLog[0]++;
     console.log("Vote log: " + voteLog[0]);
-    if (!production) {
+    if (!isProduction) {
         voteLogLabel.text = voteLog + 'vl;';
     }
     // add the votelog to the feedback data json
@@ -71,7 +75,7 @@ function sendDataToCompanion(data) {
         console.log("data sent via Peer Socket");
         messaging.peerSocket.send(data);
 
-        if (!production) {
+        if (!isProduction) {
             voteLogPeerTransfer++;
             voteLogPeerTransferLabel.text = voteLogPeerTransfer + "pt;";
         }
@@ -127,7 +131,7 @@ function onFileTransferEvent() {
 
         storageLabel.text = ``
 
-        if (!production) {
+        if (!isProduction) {
             voteLogFileTransfer++;
             voteLogFileTransferLabel.text = voteLogFileTransfer + 'ft';
         }
