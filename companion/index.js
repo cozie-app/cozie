@@ -113,15 +113,9 @@ function sendDataToInflux(data) {
 
     let url = `https://0cs0bcauyc.execute-api.us-east-1.amazonaws.com/default/write-coziePublic-fitbitAPI`;
 
-    //get experiment id and set empty value to "default"
-    // try {
-    //   experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;
-    // } catch {
-    //   console.log("experiment id not defined, setting default")
-    //   experiment_id = "default"
-    // }
     let user_id = "";
     let experiment_id = "";
+    let api_key;
     // if user_id is not defined then assign the value undefined
     try {user_id = JSON.parse(settingsStorage.getItem('user_id')).name;}
     catch (error) {
@@ -135,6 +129,11 @@ function sendDataToInflux(data) {
             experiment_id = "undefined"
     }}
 
+    try {api_key = JSON.parse(settingsStorage.getItem('api_key')).name}
+    catch (error) {
+        api_key = "UBQpWptj9HaBJVAVEDOZ14aQoNh7EpTK9zccvBTa"
+    }
+
     data.user_id = user_id;
     data.experiment_id = experiment_id;
 
@@ -144,7 +143,7 @@ function sendDataToInflux(data) {
         withCredentials: true,
         headers: {
             Accept: "application/json",
-            "x-api-key": "UBQpWptj9HaBJVAVEDOZ14aQoNh7EpTK9zccvBTa",
+            "x-api-key": api_key,
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data),

@@ -25,6 +25,16 @@ function mySettings(props) {
             </Section>
 
             <Section>
+                <TextInput
+                    label="API key (required)"
+                    settingsKey="api_key"
+                    oninput={selection =>
+                        props.settingsStorage.setItem("api_key", selection)
+                    }
+                />
+            </Section>
+
+            <Section>
                 <Select
                     label={`Select Buzz Time`}
                     settingsKey="buzz_time"
