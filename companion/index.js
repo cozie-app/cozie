@@ -111,7 +111,7 @@ processAllFiles();
 
 function sendDataToInflux(data) {
 
-    let url = `https://ay1bwnlt74.execute-api.us-east-1.amazonaws.com/test`;
+    let url = `https://0cs0bcauyc.execute-api.us-east-1.amazonaws.com/default/write-coziePublic-fitbitAPI`;
 
     //get experiment id and set empty value to "default"
     // try {
@@ -140,8 +140,11 @@ function sendDataToInflux(data) {
 
     fetch(url, {
         method: "POST",
+        credentials: 'include',
+        withCredentials: true,
         headers: {
             Accept: "application/json",
+            "x-api-key": "UBQpWptj9HaBJVAVEDOZ14aQoNh7EpTK9zccvBTa",
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
