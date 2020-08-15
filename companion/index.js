@@ -2,8 +2,7 @@ import * as messaging from "messaging";
 import {settingsStorage} from "settings";
 import {me} from "companion";
 import * as cbor from "cbor";
-import {outbox} from "file-transfer";
-import {inbox} from "file-transfer";
+import {outbox, inbox} from "file-transfer";
 
 //-------- SENDING SETTINGS DATA TO WATCH -----------
 //Send Settings Data to Fitbit
@@ -45,7 +44,7 @@ function sendValue(key, val) {
     }
 }
 
-//Fire via both peer socket artilary cannon, and outbox guided missile 
+//Fire via both peer socket artillery cannon, and outbox guided missile
 function sendSettingData(data) {
     // If we have a MessageSocket, send the data to the device
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
@@ -71,11 +70,10 @@ function sendSettingData(data) {
 
 //-------- READING DATA FROM WATCH -----------
 
-//Listen for peer socket from fitbit to send data to budslab.me
+//Listen for peer socket from fitbit to send data to Influx
 messaging.peerSocket.addEventListener("message", (evt) => {
     //get user id
     if (evt.data) {
-        // get location
         // AWS API gateway link, triggers lambda function
         sendDataToInflux(evt.data)
     } else {
@@ -86,15 +84,15 @@ messaging.peerSocket.addEventListener("message", (evt) => {
 
 // receive message via inbox
 async function processAllFiles() {
-    console.log("recieving file from fitbit");
+    console.log("receiving file from fitbit");
 
     let file;
 
     while ((file = await inbox.pop())) {
         const input_data_file = JSON.parse(await file.text());
         //console.log(`file contents: ${input_data_file}`);
+        console.log("preparing to send data to DB received from File Transfer");
         input_data_file.map(data => {
-            console.log("preparing to send data to influx");
             sendDataToInflux(data);
         });
         //console.log(`file contents: ${JSON.stringify(input_data_file)}`);
@@ -149,11 +147,12 @@ function sendDataToInflux(data) {
         body: JSON.stringify(data)
     })
         .then(res => {
-            console.log("sent data");
+            console.log("Sending data to DB ...");
             console.log(JSON.stringify(data));
-            console.log(JSON.stringify(res));
-            console.log(JSON.stringify(res.body));
-            console.log(res.status);
+            console.log('POST request status code: ' + res.status);
+            if (res.status !== 200) {
+                console.log("Successfully sent data to DB!");
+            }
             if (res.status !== 200) {
                 sendSettingData({
                     key: 'error',

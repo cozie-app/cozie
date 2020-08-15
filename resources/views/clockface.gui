@@ -8,8 +8,14 @@
   <image id= "stepIcon" href="images/stat_steps_solid_48px.png" load="sync" />
   <text id="steps" class='red'>0</text>
   <rect x="0" y="0" width="300" height="3" fill="#505050" id='chargeLabel'/>
+
   <text id="storageLabel" > </text>
+
   <text id="voteLogLabel" > </text>
+  <text id="voteLogPeerTransferLabel" x="50%" y="10%" fill="#ffffff" text-anchor="middle" font-size="22"> </text>
+  <text id="voteLogFileTransferLabel" x="65%" y="10%" fill="#ffffff" text-anchor="middle" font-size="22"> </text>
+
+  <text id="memoryLabel" x="50%" y="53%" fill="#ffffff" text-anchor="middle" text-length="200" font-size="22"> </text>
 
   <use href="#left-button" id="not-comfy" pointer-events="visible">
     <set href="circle" attributeName="fill" to="fb-orange"/>
