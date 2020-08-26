@@ -7,7 +7,7 @@
 The foundation for this project is the [BUDS Lab](https://www.budslab.org/) efforts towards human sujective feedback in the built environment:
 
 - [Is your clock-face cozie? A smartwatch methodology for the in-situ collection of occupant comfort data](https://www.researchgate.net/publication/337376844_Is_your_clock-face_cozie_A_smartwatch_methodology_for_the_in-situ_collection_of_occupant_comfort_data)
-- [Indoor Comfort Personalities: Scalable Occupant Preference Capture Using Micro Ecological Momentary Assessments](https://www.researchgate.net/publication/338527635_Indoor_Comfort_Personalities_Scalable_Occupant_Preference_Capture_Using_Micro_Ecological_Momentary_Assessments)
+- [Humans-as-a-sensor for buildings: Intensive longitudinal indoor comfort models](https://arxiv.org/abs/2007.02014)
 
 ## Tutorials
 
