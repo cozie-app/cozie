@@ -426,7 +426,7 @@ function showThankYou() {
     //Find out how many seconds has passed to give response
     const endFeedback = new Date();
     const startFeedback = new Date(feedbackData['startFeedback']);
-    feedbackData['responseSpeed'] = (endFeedback - startFeedback) / 1000.0;
+    feedbackData['responseSpeed'] = ((endFeedback - startFeedback) / 1000.0).toFixed(1);
     feedbackData['endFeedback'] = endFeedback.toISOString();
     if (BodyPresenceSensor) {
         feedbackData['bodyPresence'] = bodyPresence.present;
