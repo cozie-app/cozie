@@ -85,6 +85,8 @@ setInterval(function () {
 
 let buzzFileWrite;
 
+let flowSelectorUpdateTime = 0;
+
 // listen from any changes in the Settings
 messaging.peerSocket.onmessage = function (evt) {
     console.log("settings received on device");
@@ -106,7 +108,7 @@ messaging.peerSocket.onmessage = function (evt) {
     console.log("end message socket")
 };
 
-let flowSelectorUpdateTime = 0;
+
 
 // receive message via inbox
 function processAllFiles() {
@@ -118,7 +120,7 @@ function processAllFiles() {
         console.log("settings received via file transfer");
         if (fileData.time > flowSelectorUpdateTime) {
             flowSelectorUpdateTime = fileData.time;
-            if (fileData.key === 'buzz_time') {
+             if (fileData.key === 'buzz_time') {
                 buzzSelection = fileData.data;
                 console.log("buzz selection is", buzzSelection);
                 buzzFileWrite = {buzzSelection: fileData.data};
@@ -155,3 +157,4 @@ function vibrate() {
         vibration.stop()
     }, 2000);
 }
+
