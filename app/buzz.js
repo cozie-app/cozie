@@ -157,4 +157,3 @@ function vibrate() {
         vibration.stop()
     }, 2000);
 }
-

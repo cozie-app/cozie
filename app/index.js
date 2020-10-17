@@ -305,6 +305,7 @@ try {
     console.log(JSON.stringify(flowFileRead));
     console.log(JSON.stringify(flowFileRead.flowSelector));
     flowSelector = flowFileRead.flowSelector;
+    // if the flow-json has changed and is smaller
     if (flowSelector.length() > totalFlow.length()){
         flowSelector = []
     }
