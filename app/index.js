@@ -23,7 +23,10 @@ import './clock'
 import './buzz'
 
 // import file containing question flow
-import totalFlow from "../resources/flows/dorn-flow";
+import totalFlow from "../resources/flows/main-flow";
+
+// question flow changes dynamically based on settings
+let questionsFlow = totalFlow
 
 // Import views
 const clockface = document.getElementById("clockface");
@@ -274,7 +277,7 @@ function getView() {
     return currentView;
 }
 
-// ------ TODO Tidy up the code from here
+// ------ Code to determine what questions are selected
 
 
 
@@ -282,13 +285,10 @@ let flowFileRead;
 let flowFileWrite;
 let flowSelector;
 
-let questionsFlow = []
-
 let flowSelectorUpdateTime = 0;
 
 function mapFlows(flowSelector) {
-    console.log("Nothing Here Yet", flowSelector)
-    console.log(questionsFlow)
+    vibration.start("bump")
     questionsFlow = [];
 
     if (flowSelector) {
@@ -299,11 +299,15 @@ function mapFlows(flowSelector) {
     console.log(JSON.stringify(questionsFlow))
 }
 
+// retain selection incase the watch runs out of battery or crashes
 try {
     flowFileRead = fs.readFileSync("flow.txt", "json");
     console.log(JSON.stringify(flowFileRead));
     console.log(JSON.stringify(flowFileRead.flowSelector));
     flowSelector = flowFileRead.flowSelector;
+    if (flowSelector.length() > totalFlow.length()){
+        flowSelector = []
+    }
     mapFlows(flowSelector);
     console.log("flows loaded via file sync")
 } catch (e) {

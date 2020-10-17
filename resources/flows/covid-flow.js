@@ -1,6 +1,7 @@
 export default [
 	{
 		name: "cough",
+		displayName: "Cough",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Do you have a cough?",
@@ -14,6 +15,7 @@ export default [
 	},
 	{
 		name: "cough-difference",
+		displayName: "Cough Difference (Requires Cough)",
 		type: "icon",
 		requiresAnswer: [{ question: "cough", value: 11 }],
 		questionText: "Is it worse than ",
@@ -28,6 +30,7 @@ export default [
 	},
 	{
 		name: "cough-severity",
+		displayName: "Cough Severity (Requires Cough)",
 		type: "icon",
 		requiresAnswer: [{ question: "cough", value: 11 }],
 		questionText: "How frequent is",
@@ -42,6 +45,7 @@ export default [
 	},
 	{
 		name: "cough-progress",
+		displayName: "Cough Progress (Requires Cough)",
 		type: "icon",
 		requiresAnswer: [{ question: "cough", value: 11 }],
 		questionText: "Is your cough",
@@ -56,6 +60,7 @@ export default [
 	},
 	{
 		name: "breathing",
+		displayName: "Breathing",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Is it difficult to breath?",
@@ -69,6 +74,7 @@ export default [
 	},
 	{
 		name: "breathing-progress",
+		displayName: "Breathing Progress (Requires Breathing)",
 		type: "icon",
 		requiresAnswer: [{ question: "breathing", value: 11 }],
 		questionText: "Is your breathing",
@@ -83,6 +89,7 @@ export default [
 	},
 	{
 		name: "breathing-resting",
+		displayName: "Breathing Resting (Requires Breathing)",
 		type: "icon",
 		requiresAnswer: [{ question: "breathing", value: 11 }],
 		questionText: "Is it difficult to breath",
@@ -96,6 +103,7 @@ export default [
 	},
 	{
 		name: "breathing-concern",
+		displayName: "Breathing Concern (Requires Breathing)",
 		type: "icon",
 		requiresAnswer: [{ question: "breathing", value: 11 }],
 		questionText: "Are you concerned with",
@@ -109,6 +117,7 @@ export default [
 	},
 	{
 		name: "fever",
+		displayName: "Fever",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Do you have a fever?",
@@ -123,6 +132,7 @@ export default [
 	},
 	{
 		name: "fever-concern",
+		displayName: "Fever Concern (Requires Fever)",
 		type: "icon",
 		requiresAnswer: [{ question: "fever", value: 11 }],
 		questionText: "Are you concerned",
@@ -136,6 +146,7 @@ export default [
 	},
 	{
 		name: "thermometer",
+		displayName: "Have a thermometer?",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Do you have a",
@@ -149,6 +160,7 @@ export default [
 	},
 	{
 		name: "fever-confirm",
+		displayName: "Confirm Fever (Requires Fever)",
 		type: "icon",
 		requiresAnswer: [{ question: "fever", value: "determined by code" }],
 		questionText: "You selected xxxx",
@@ -159,6 +171,7 @@ export default [
 	},
 	{
 		name: "lethargy",
+		displayName: "Lethargy",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Do you feel tired?",
@@ -172,6 +185,7 @@ export default [
 	},
 	{
 		name: "lethargy-severity",
+		displayName: "Lethargy Severity  (Requires Lethargy)",
 		type: "icon",
 		requiresAnswer: [{ question: "lethargy", value: 11 }],
 		questionText: "How severe is your",

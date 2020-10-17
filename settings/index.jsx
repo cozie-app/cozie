@@ -1,16 +1,48 @@
 import noSound from '../resources/images/icons/prefer_quieter.png';
 import sound from '../resources/images/icons/prefer_louder.png';
 
-import thermal from '../resources/images/icons/prefer_warmer.png';
-import light from '../resources/images/icons/prefer_brighter.png';
-import noise from '../resources/images/icons/prefer_louder.png';
-import indoorOutdoor from '../resources/images/icons/outdoor.png';
-import location from '../resources/images/icons/home.png';
-import mood from '../resources/images/icons/not-comfy.png';
-import clothing from '../resources/images/icons/light_clothes.png';
+import icon_thermal from '../resources/images/icons/prefer_warmer.png';
+import icon_light from '../resources/images/icons/prefer_brighter.png';
+import icon_noise from '../resources/images/icons/prefer_louder.png';
+import icon_indoorOutdoor from '../resources/images/icons/outdoor.png';
+import icon_location from '../resources/images/icons/home.png';
+import icon_mood from '../resources/images/icons/not-comfy.png';
+import icon_clothing from '../resources/images/icons/light_clothes.png';
 import icon_velocity from '../resources/images/icons/air_vel_high.png';
 import icon_met from '../resources/images/icons/met_exercising.png';
 import icon_change from '../resources/images/icons/outdoor.png';
+
+import totalFlow from "../resources/flows/main-flow";
+
+// map names of the json-flow to imported icons
+// TODO: There is probably a better way to do this with the URL
+const iconList = {
+    thermal: icon_thermal,
+    indoorOutdoor: icon_indoorOutdoor,
+    location: icon_location,
+    clothing: icon_clothing,
+    airSpeed: icon_velocity,
+    met: icon_met,
+    anyChange: icon_change,
+    mood: icon_mood,
+    noise: icon_noise,
+    light: icon_light,
+}
+
+// set option selector for 
+// diable this to prevent the user from changing the flow
+let flowSelectorOptions = [];
+
+// comment out this mapping to prevent the user from changing the flow
+totalFlow.map(question => {
+    let option = {}
+    option.name = question.displayName
+    option.subLabel = question.iconText.join(", ")
+    option.img = iconList[question.name]
+    flowSelectorOptions.push(option)
+})
+
+
 
 function mySettings(props) {
     return (
@@ -90,68 +122,7 @@ function mySettings(props) {
                     label={`Select Questions`}
                     multiple
                     settingsKey="flow_index"
-                    options={[
-                        {
-                            name: "Thermal preference",
-                            value: "showThermal",
-                            subLabel: "Cooler, No change, Warmer",
-                            img: thermal
-                        },
-                        {
-                            name: "Indoor or outdoor",
-                            value: "showIndoor",
-                            subLabel: "Indoor, Outdoor",
-                            img: indoorOutdoor
-                        },
-                        {
-                            name: "Where are you?",
-                            value: "showInOffice",
-                            subLabel: "Home, Office, Other",
-                            img: location
-                        },
-                        {
-                            name: "Clothing",
-                            value: "showClothing",
-                            subLabel: "Very light, Light, Medium, Heavy",
-                            img: clothing
-                        },
-                        {
-                            name: "Perceived air movement",
-                            value: "showVelocity",
-                            subLabel: "Perceived, Not perceived",
-                            img: icon_velocity
-                        },
-                        {
-                            name: "Activity previous 10 minutes",
-                            value: "showMet",
-                            subLabel: "Resting, Sitting, Standing, Exercising",
-                            img: icon_met
-                        },
-                        {
-                            name: "Any changes location/activity",
-                            value: "showMet",
-                            subLabel: "No, Yes",
-                            img: icon_change
-                        },
-                        {
-                            name: "Mood",
-                            value: "showMood",
-                            subLabel: "Good, Bad or Neither",
-                            img: mood
-                        },
-                        {
-                            name: "Light preference",
-                            value: "showLight",
-                            subLabel: "Dimmer, No change, Brighter",
-                            img: light
-                        },
-                        {
-                            name: "Noise preference",
-                            value: "showNoise",
-                            subLabel: "Quieter, No change, Louder",
-                            img: noise
-                        }
-                    ]}
+                    options={flowSelectorOptions}
                     renderItem={option => (
                         <TextImageRow
                             label={option.name}
