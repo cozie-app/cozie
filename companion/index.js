@@ -31,7 +31,7 @@ if (me.launchReasons.settingsChanged) {
 function sendValue(key, val) {
     if (val) {
         // check that the change was a change in the flow
-        if (key === "buzz_time") {
+        if (key === "flow_index" || key === "buzz_time") {
             var sendTime = new Date().getTime();
             sendSettingData({
                 key: key,
@@ -48,7 +48,7 @@ function sendValue(key, val) {
 function sendSettingData(data) {
     // If we have a MessageSocket, send the data to the device
     if (peerSocket.readyState === peerSocket.OPEN) {
-        console.log(data);
+        // console.log(data);
         peerSocket.send({data: data.value.selected, time: data.time, key: data.key});
         console.log("data sent from companion")
     } else {

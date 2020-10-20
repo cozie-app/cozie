@@ -11,6 +11,11 @@ import {user} from "user-profile";
 import {vibration} from "haptics";
 import {BodyPresenceSensor} from "body-presence";
 
+// communication systems
+import * as messaging from "messaging";
+import * as fs from "fs";
+import {inbox} from "file-transfer"
+
 // import custom built modules
 import {hrm, bodyPresence} from './sensors';
 import {sendEventIfReady} from "./send";
@@ -18,9 +23,12 @@ import './clock'
 import './buzz'
 
 // import file containing question flow
-import questionsFlow from "../resources/flows/dorn-flow";
+import totalFlow from "../resources/flows/main-flow";
 
-// Import GUI elements
+// question flow changes dynamically based on settings
+let questionsFlow = totalFlow
+
+// Import views
 const clockface = document.getElementById("clockface");
 const thankyou = document.getElementById("thankyou");
 const svg_stop_survey = document.getElementById("stopSurvey");
@@ -39,6 +47,7 @@ const centerButton = document.getElementById("new-button-center");
 const rightButton = document.getElementById("new-button-right");
 const leftButton = document.getElementById("new-button-left");
 
+// main view that shows the buttons in the flow
 const jsonFlow = document.getElementById("json-flow");
 
 // Used to set all views to none when switching between screens
@@ -267,5 +276,106 @@ function showFace(flowback = false, isFirst = false) {
 function getView() {
     return currentView;
 }
+
+// ------ Code to determine what questions are selected
+
+
+
+let flowFileRead;
+let flowFileWrite;
+let flowSelector;
+
+let flowSelectorUpdateTime = 0;
+
+function mapFlows(flowSelector) {
+    vibration.start("bump")
+    questionsFlow = [];
+
+    if (flowSelector) {
+        flowSelector.map(index => {
+            questionsFlow.push(totalFlow[index]);
+        })
+    }
+    console.log(JSON.stringify(questionsFlow))
+}
+
+// retain selection incase the watch runs out of battery or crashes
+try {
+    flowFileRead = fs.readFileSync("flow.txt", "json");
+    console.log(JSON.stringify(flowFileRead));
+    console.log(JSON.stringify(flowFileRead.flowSelector));
+    flowSelector = flowFileRead.flowSelector;
+    // if the flow-json has changed and is smaller
+    if (flowSelector.length() > totalFlow.length()){
+        flowSelector = []
+    }
+    mapFlows(flowSelector);
+    console.log("flows loaded via file sync")
+} catch (e) {
+    console.log(e);
+    console.log("resetting flows");
+    flowSelector = []
+}
+
+// listen from any changes in the Settings
+messaging.peerSocket.onmessage = function (evt) {
+    console.log("settings received on device");
+    console.log(JSON.stringify(evt));
+
+    if (evt.data.key === 'flow_index') {
+        flowSelector = evt.data.data;
+        flowSelectorUpdateTime = evt.data.time;
+        console.log("flow selector from peer socket is", flowSelector);
+        mapFlows(flowSelector);
+        //save flows locally in event of app rest
+        flowFileWrite = {flowSelector: flowSelector};
+        console.log(JSON.stringify(flowFileWrite));
+        fs.writeFileSync("flow.txt", flowFileWrite, "json");
+        console.log("flowSelector, files saved locally")
+    } else if (evt.data.key === 'error') {
+        console.log("error message called and displaying on watch");
+        if (!isProduction) {
+            bodyErrorLabel.text = "Socket : " + evt.data.data.type + evt.data.data.message;
+        }
+    }
+    console.log("end message socket")
+};
+
+
+
+// receive message via inbox
+function processAllFiles() {
+    let fileName;
+    while (fileName = inbox.nextFile()) {
+        console.log(`/private/data/${fileName} is now available`);
+        let fileData = fs.readFileSync(`${fileName}`, "cbor");
+        console.log(JSON.stringify(fileData));
+        console.log("settings received via file transfer");
+        if (fileData.time > flowSelectorUpdateTime) {
+            flowSelectorUpdateTime = fileData.time;
+            if (fileData.key === 'flow_index') {
+                flowSelector = fileData.data;
+                mapFlows(flowSelector);
+                console.log("settings updated via file transfer");
+
+                //save flows locally in event of app rest
+                flowFileWrite = {flowSelector: flowSelector};
+                console.log(JSON.stringify(flowFileWrite));
+                fs.writeFileSync("flow.txt", flowFileWrite, "json");
+                console.log("files saved locally")
+            } else if (fileData.key === 'error') {
+                console.log("error message called and displaying on watch");
+                if (!isProduction) {
+                    bodyErrorLabel.text = "Process files : " + fileData.data.type + ' ' + Date(fileData.time) + fileData.data.message;
+                }
+            }
+        } else {
+            console.log("settings already updated via peer socket")
+        }
+    }
+}
+
+inbox.addEventListener("newfile", processAllFiles);
+processAllFiles();
 
 export default {getView, showFace};

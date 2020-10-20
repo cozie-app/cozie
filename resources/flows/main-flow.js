@@ -1,6 +1,7 @@
 export default [
 	{
 		name: "thermal",
+		displayName: "Thermal",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Would you prefer to be?",
@@ -15,6 +16,7 @@ export default [
 	},
 	{
 		name: "indoorOutdoor",
+		displayName: "Indoor / Outdoor",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Are you?",
@@ -28,6 +30,7 @@ export default [
 	},
 	{
 		name: "location",
+		displayName: "Location",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Where are you?",
@@ -42,6 +45,7 @@ export default [
 	},
 	{
 		name: "clothing",
+		displayName: "Clothing",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "What are you wearing?",
@@ -56,6 +60,7 @@ export default [
 	},
 	{
 		name: "airSpeed",
+		displayName: "Air Speed",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Can you perceive air",
@@ -69,6 +74,7 @@ export default [
 	},
 	{
 		name: "met",
+		displayName: "Activity",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Activity last 10-min?",
@@ -83,6 +89,7 @@ export default [
 	},
 	{
 		name: "anyChange",
+		displayName: "Any Changes",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Any changes in clo, loc",
@@ -96,6 +103,7 @@ export default [
 	},
 	{
 		name: "mood",
+		displayName: "Mood",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "What mood are you in?",
@@ -110,6 +118,7 @@ export default [
 	},
 	{
 		name: "noise",
+		displayName: "Noise",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Sound preference",
@@ -124,6 +133,7 @@ export default [
 	},
 	{
 		name: "light",
+		displayName: "Light",
 		type: "icon",
 		requiresAnswer: [],
 		questionText: "Light preference",
