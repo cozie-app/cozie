@@ -319,9 +319,15 @@ setInterval(function () {
         completedVibrationCycleDay = false;
     }
 
-    const maxHour = vibrationTimeArray.reduce(function (a, b) {
+    if (vibrationTimeArray.length == 0){
+        const maxHour = vibrationTimeArray.reduce(function (a, b) {
         return Math.max(a, b);
-    });
+        });
+    }
+    else {
+        const maxHour = 0
+    }
+    
 
     if (!completedVibrationCycleDay) {
         if (vibrationTimeArray[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present && getView()===0) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
