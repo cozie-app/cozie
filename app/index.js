@@ -7,6 +7,7 @@ The code below control which view needs to be shown to the participant.
 */
 
 import document from "document";
+import {today} from "user-activity";
 import {user} from "user-profile";
 import {vibration} from "haptics";
 import {BodyPresenceSensor} from "body-presence";
@@ -15,12 +16,13 @@ import {BodyPresenceSensor} from "body-presence";
 import * as messaging from "messaging";
 import * as fs from "fs";
 import {inbox} from "file-transfer"
+import * as cbor from "cbor";
 
 // import custom built modules
 import {hrm, bodyPresence} from './sensors';
 import {sendEventIfReady} from "./send";
+import {isProduction} from "./options";
 import './clock'
-import './buzz'
 
 // import file containing question flow
 import totalFlow from "../resources/flows/main-flow";
@@ -277,9 +279,87 @@ function getView() {
     return currentView;
 }
 
-// ------ Code to determine what questions are selected
+// ------- BUZZ SELECTOR -------------------
 
+const errorLabel = document.getElementById("errorLabel");
+const bodyErrorLabel = errorLabel.getElementById("copy");
 
+// define what at what hour of the day each buzz option would buzz at
+const buzzOptions = {
+    0: [],
+    1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+    2: [9, 11, 13, 15, 17, 19, 21],
+    3: [9, 12, 15, 18, 21]
+};
+
+let buzzSelection = 2; // default value
+let vibrationTimeArray = buzzOptions[buzzSelection];
+let completedVibrationCycleDay = false; // keeps in memory weather the watch has vibrated at all hours
+let startDay = new Date().getDay(); // get the day when the app started for the first time
+
+// this function runs every ten minutes to ensure that the Fitbit buzzes when selected
+setInterval(function () {
+    const currentDate = new Date(); // get today's date
+    const currentDay = currentDate.getDay(); // get today's day
+    const currentHour = currentDate.getHours();
+
+    try {
+        const buzzSelection = parseInt(fs.readFileSync("buzzSelection.txt", "json").buzzSelection); // read user selection
+        vibrationTimeArray = buzzOptions[buzzSelection];
+    } catch (e) {
+        console.log("Could not open the file buzzSelection.txt");
+        console.log(e);
+        if (!isProduction) {
+            bodyErrorLabel.text = bodyErrorLabel.text + "Vibration : " + e;
+        }
+    }
+
+    if (currentDay !== startDay) { // if it is a new day check user
+        startDay = currentDay;
+        completedVibrationCycleDay = false;
+    }
+
+    const maxHour = vibrationTimeArray.reduce(function (a, b) {
+        return Math.max(a, b);
+    });
+
+    if (!completedVibrationCycleDay) {
+        if (vibrationTimeArray[0] === currentHour && today.adjusted.steps > 300 && bodyPresence.present && getView()===0) { // vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+            // this ensures that the watch does not vibrate if the user is still sleeping
+            vibrate();
+            const firstElement = vibrationTimeArray.shift();
+            vibrationTimeArray.push(firstElement);
+            if (currentHour === maxHour) {
+                completedVibrationCycleDay = true;
+            }
+        } else if (vibrationTimeArray[0] < currentHour) {  // the vector is shifted by one since the that hour is already passed
+            const firstElement = vibrationTimeArray.shift();
+            vibrationTimeArray.push(firstElement);
+        }
+    }
+}, 600000); // timeout for 10 minutes
+
+function vibrate() {
+    /**
+     * Causes the watch to vibrate, and forces the start of the feedback.
+     *
+     * If there are no questions selected then it blocks the time until a response is given.
+     * If there are questions in the flow, then it starts the flow
+     */
+
+    vibration.start("alert");
+    showFace(false, true);
+
+    //Stop vibration after 2 seconds
+    setTimeout(function () {
+        vibration.stop()
+    }, 2000);
+}
+
+//-------- READING EXPERIMENT QUESTIONS FROM PHONE SETTINGS -----------
+
+let buzzFileWrite;
+let flowSelectorUpdateTime = 0;
 
 let flowFileRead;
 let flowFileWrite;
@@ -332,6 +412,13 @@ messaging.peerSocket.onmessage = function (evt) {
         console.log(JSON.stringify(flowFileWrite));
         fs.writeFileSync("flow.txt", flowFileWrite, "json");
         console.log("flowSelector, files saved locally")
+    } else if (evt.data.key === 'buzz_time') {
+        buzzFileWrite = {buzzSelection: evt.data.data};
+        console.log(evt.data.data);
+        fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
+        console.log("buzzSelection, files saved locally");
+        buzzSelection = fs.readFileSync("buzzSelection.txt", "json").buzzSelection;
+        console.log("Buzz Selection is", buzzSelection)
     } else if (evt.data.key === 'error') {
         console.log("error message called and displaying on watch");
         if (!isProduction) {
@@ -363,6 +450,12 @@ function processAllFiles() {
                 console.log(JSON.stringify(flowFileWrite));
                 fs.writeFileSync("flow.txt", flowFileWrite, "json");
                 console.log("files saved locally")
+            } else if (fileData.key === 'buzz_time') {
+                buzzSelection = fileData.data;
+                console.log("buzz selection is", buzzSelection);
+                buzzFileWrite = {buzzSelection: fileData.data};
+                fs.writeFileSync("buzzSelection.txt", buzzFileWrite, "json");
+
             } else if (fileData.key === 'error') {
                 console.log("error message called and displaying on watch");
                 if (!isProduction) {
@@ -378,4 +471,3 @@ function processAllFiles() {
 inbox.addEventListener("newfile", processAllFiles);
 processAllFiles();
 
-export default {getView, showFace};
