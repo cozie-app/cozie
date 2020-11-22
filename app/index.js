@@ -319,7 +319,7 @@ setInterval(function () {
         completedVibrationCycleDay = false;
     }
 
-    if (vibrationTimeArray.length == 0){
+    if (vibrationTimeArray.length != 0){
         const maxHour = vibrationTimeArray.reduce(function (a, b) {
         return Math.max(a, b);
         });
