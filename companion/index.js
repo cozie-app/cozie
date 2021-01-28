@@ -75,6 +75,7 @@ peerSocket.addEventListener("message", (evt) => {
     //get user id
     if (evt.data) {
         // AWS API gateway link, triggers lambda function
+        console.log('data recieved at companion, preparing to send to influx')
         sendDataToInflux(evt.data)
     } else {
         console.log("Error! Can not send request to server.")
