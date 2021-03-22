@@ -5,5 +5,7 @@
   <link rel="import" href="views/gui_stop_survey.gui" />
   <link rel="import" href="views/clockblock.gui" />
   <link rel="import" href="views/json-flow.gui" />
+  <link rel="import" href="views/json-flow2q.gui" />
+  <link rel="import" href="views/json-flow4q.gui" />
 </svg>
 

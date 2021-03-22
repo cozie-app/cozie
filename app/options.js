@@ -2,4 +2,4 @@
 It contains global variables
 */
 
-export const isProduction = true
+export const isProduction = false
