@@ -6,7 +6,7 @@ export default [{
     questionText: "Would you prefer to be?",
     questionSecondText: "",
     iconText: ["Cooler", "Warmer", "No change", "somethingElse"],
-    iconColors: ["fb-cyan", "fb-orange", "fb-green", "fb-orange"],
+    iconColors: ["fb-cyan", "fb-orange", "fb-green", "fb-yellow"],
     iconImages: [
         "images/icons/prefer_cold.png",
         "images/icons/prefer_warmer.png",

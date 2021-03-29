@@ -42,7 +42,7 @@ import {
 import './clock'
 
 // import file containing question flow
-import totalFlow from "../resources/flows/main-flow";
+import totalFlow from "../resources/flows/fitness-flow";
 
 // question flow changes dynamically based on settings
 let questionsFlow = totalFlow
@@ -90,6 +90,10 @@ const jsonFlow4 = document.getElementById("json-flow4"); // 4 question flow
 const allViews = [clockface, thankyou, clockblock, svg_stop_survey, jsonFlow, jsonFlow2, jsonFlow4];
 
 let currentView = 0; //current view of flow
+let nextView = -99;
+let clickedButton = 0;
+let currentVeiwObject = {}
+let viewHistory = []
 let feedbackData; // Global variable for handling feedbackData
 
 let buttons = [{
@@ -161,6 +165,10 @@ function endSurvey(reasonEnd) {
     if (reasonEnd === 'EndSurvey') {
         thankyou.style.display = "inline";
 
+        //rest the view history
+        viewHistory = [0]
+        currentView = 0
+
         // send feedback to companion
         sendEventIfReady(feedbackData);
     } else {
@@ -177,14 +185,58 @@ function endSurvey(reasonEnd) {
 
 }
 
+
+
+function getquestionIndex(q_name, questionsFlow) {
+    // returns the question index by the question name .. 
+    //TODO, use the index directly instead of the name in the question-flow json. 
+    for (let index = 0; index < questionsFlow.length; index++) {
+        const element = questionsFlow[index];
+        try {
+            if (element.name === q_name) {
+                console.log(`${index} is the required index`)
+                return index;
+            }
+        } catch {
+            return -99;
+        }
+    }
+}
+
 for (const button of buttons) {
-    button.obj.addEventListener("click", () => {
+    button.obj.addEventListener("mousedown", () => {
         /** Constantly monitors if any buttons have been pressed */
 
         console.log(`${button.value} clicked`);
+        // clickedButton = button.value;
+
+
+        // try {
+        //     console.log(`DIRECTS TO  ::: ${JSON.stringify(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"])}`)
+        //     if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] != undefined) {
+
+        //         if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] == "end") {
+        //             endSurvey("EndSurvey");
+        //             console.log("lets see what happens")
+
+        //         } else {
+        //             nextView = parseInt(getquestionIndex(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"], questionsFlow));
+        //             currentView = nextView;
+        //             console.log(` --------------> ${currentView === none}`);
+        //         }
+        //     } else {
+        //         nextView == -99;
+        //     }
+        // } catch {
+        //     nextView == -99;
+        //     // currentView++;
+        //     console.log(`DIRECTS TO  ::: NOTHING -----`)
+        // }
+
 
         // if any of the two buttons in the main view have been pressed initiate the loop through the selected
         if (button.attribute === 'startSurvey') {
+            currentVeiwObject = 0;
 
             // Initiate feedbackData object
             feedbackData = {
@@ -211,40 +263,97 @@ for (const button of buttons) {
             } catch (e) {
                 console.log("No resting basal metabolic rate data available");
             }
+            showFace();
         } else if (button.attribute === 'flow_control') { // if any of the two buttons (back arrow or cross) have been selected
 
             if (button.value === "flow_back") {
                 // decrease the value of currentView by 2 to go to previous view
-                currentView--;
-                currentView--;
+                nextView = viewHistory[(viewHistory.length) - 1];
+                console.log(`Len viewHistory : ${viewHistory.length} viewHistory : ${viewHistory}, nextView : ${nextView}`)
 
-                if (currentView < 0) {
+
+                // showFace();
+
+                if (viewHistory.length <= 0) {
                     // if user pressed back button in first question survey
                     endSurvey("StoppedSurvey");
                 } else {
                     showFace(true);
                 }
+
+                viewHistory.pop();
             } else if (button.value === "flow_stop") {
                 // stop_flow button was pressed
                 endSurvey("StoppedSurvey");
             }
+            showFace();
         }
 
         if (button.attribute !== "flow_control") {
-            if (button.attribute !== "startSurvey" && questionsFlow[currentView - 1].name.indexOf("confirm") === -1) {
-                console.log(currentView);
+            if (button.attribute !== "startSurvey") { // && questionsFlow[viewHistory[viewHistory.length - 1]].name.indexOf("confirm") === -1) {
+                console.log(`CURRENT VIEW : ${currentView}`);
                 //need to associate it to the previous view
-                feedbackData[questionsFlow[currentView - 1].name] = button.value;
-            }
-            console.log(JSON.stringify(feedbackData));
 
-            if (questionsFlow.length === currentView) {
-                // if all the views have already been shown
-                endSurvey("EndSurvey");
-            } else {
-                console.log("next question");
-                showFace();
+                console.log(`FEEDBACK DATA (clicked button) : ${JSON.stringify(feedbackData)}`);
+
+                console.log(`Question flow lenght = ${questionsFlow.length} However, current view is ${currentView}`)
+                if (questionsFlow.length === currentView) {
+                    // if all the views have already been shown
+                    // endSurvey("EndSurvey");
+                } else {
+                    viewHistory.push(currentView)
+
+                    try {
+                        console.log(`viewHistory ${JSON.stringify(viewHistory)},
+                        viewHistory.length : ${viewHistory.length},
+                        button value : ${button.value},
+                        questionsFlow[(viewHistory.length) - 1]] : ${JSON.stringify(questionsFlow[(viewHistory.length) - 1])}`);
+                        // feedbackData[questionsFlow[viewHistory[viewHistory.length - 2]].name] = button.value;
+
+                        feedbackData[questionsFlow[viewHistory[(viewHistory.length) - 1]].name] = button.value;
+                        console.log(JSON.stringify(feedbackData))
+
+                    } catch (error) {
+                        console.error(error)
+                    }
+
+
+                    clickedButton = button.value;
+
+
+                    try {
+                        console.log(`DIRECTS TO  ::: ${JSON.stringify(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"])}`)
+                        if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] != undefined) {
+
+                            if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] == "end") {
+                                endSurvey("EndSurvey");
+                                console.log("lets see what happens")
+
+                            } else {
+                                nextView = parseInt(getquestionIndex(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"], questionsFlow));
+                                currentView = nextView;
+                                console.log(` --------------> ${currentView === none}`);
+                                showFace();
+                            }
+
+                        } else {
+                            nextView == -99;
+                        }
+                    } catch {
+                        nextView == -99;
+                        // currentView++;
+                        console.log(`DIRECTS TO  ::: NOTHING -----`)
+                        showFace();
+                    }
+
+
+
+                }
+
             }
+
+
+
         }
     });
 }
@@ -306,6 +415,7 @@ function returnButtonLocations(len_buttons) {
 }
 
 
+
 function showFace(flowback = false, isFirst = false) {
 
     let allButtonLocations = ["left", "right", "center", "bottom"];
@@ -321,10 +431,15 @@ function showFace(flowback = false, isFirst = false) {
         v.style.display = "none";
     });
 
-    console.log(currentView)
+    // console.log(`CURRENT VIEW : ${currentView}`)
 
     // get the lenth of the question and extract the corresponding location data cx, cy
-    var question_length = questionsFlow[currentView]["iconText"].length;
+    try {
+        var question_length = questionsFlow[currentView]["iconText"].length;
+    } catch {
+        var question_length = 3;
+
+    }
 
     if (question_length === 2) {
         jsonFlow2.style.display = "inline";
@@ -337,10 +452,11 @@ function showFace(flowback = false, isFirst = false) {
         allButtonLocations = ["left", "right", "center", "bottom"];
     }
 
-
-    console.log("question_length: " + question_length.toString() + ", allButtonLocations: " + JSON.stringify(allButtonLocations))
-        //Does current flow have any requirements?
-    if (questionsFlow[currentView].requiresAnswer.length !== 0) {
+    //Does the current answer refer to 
+    currentVeiwObject = questionsFlow[currentView];
+    //Does current flow have any requirements?
+    /*if (questionsFlow[currentView].requiresAnswer.length !== 0 && questionsFlow[currentView]["name"] !== questionsFlow[currentView + 1]["name"]) {
+        console.log(`CURRENT VIEW :${[currentView]} ----> ${JSON.stringify(questionsFlow[currentView])}`);
         //if so, see if the current feedback meets those requirements
         questionsFlow[currentView].requiresAnswer.map((req) => {
             if (feedbackData[req.question] !== req.value) {
@@ -348,7 +464,7 @@ function showFace(flowback = false, isFirst = false) {
                 skipQuestion = true;
             }
         });
-    }
+    }*/
 
     if (skipQuestion === false) {
         // Set title of question
@@ -368,12 +484,12 @@ function showFace(flowback = false, isFirst = false) {
         // set buttons . eg : ["left", "right", "center"]
         const buttonLocations = Object.keys(object_lcations); //["left", "right", "center"];
 
-        for (const location in object_lcations) {
-            if (object_lcations.hasOwnProperty.call(object_lcations, location)) {
-                const element = object_lcations[location];
-                console.log(location + " --> " + JSON.stringify(element))
-            }
-        }
+        // for (const location in object_lcations) {
+        //     if (object_lcations.hasOwnProperty.call(object_lcations, location)) {
+        //         const element = object_lcations[location];
+        //         console.log(location + " --> " + JSON.stringify(element))
+        //     }
+        // }
 
         // hide all buttons
         //TODO : remove this and dynamic initate only the required buttons
@@ -395,7 +511,6 @@ function showFace(flowback = false, isFirst = false) {
 
         // map through each text element in flow and map to button
         questionsFlow[currentView].iconText.forEach((text, ii) => {
-            console.log("new-button-" + buttonLocations[ii] + question_length.toString())
 
             // first show the button
             document.getElementById(
@@ -418,14 +533,22 @@ function showFace(flowback = false, isFirst = false) {
 
         });
         // move onto next flow
-        currentView++;
+        if (nextView === -99) {
+            console.log("-99")
+        } else {
+            currentView = nextView;
+        }
+
     }
 
     // skipping question
     else if (skipQuestion === true) {
         // if we arrived here through the back button, then skip backwards
         if (flowback === true) {
-            currentView--;
+            viewHistory.pop();
+            viewHistory.pop();
+            console.log(viewHistory)
+            currentView = viewHistory[(viewHistory.length) - 1];
             showFace(true);
             // if we arrived here through the normal flow, skip forwards
         } else {
@@ -543,7 +666,7 @@ function mapFlows(flowSelector) {
             questionsFlow.push(totalFlow[index]);
         })
     }
-    console.log(JSON.stringify(questionsFlow))
+    // console.log(JSON.stringify(questionsFlow))
 }
 
 // retain selection incase the watch runs out of battery or crashes

@@ -8,34 +8,34 @@
 </g>
 
 <g id="new-button-center4" pointer-events="visible" display="none">
-    <circle id="circle-center4" cx="50%" cy="26%" class= "circle_comfy" fill="red"  r="30" />
-    <circle id="circle-push-center4" cx="50%" cy="26%" r="50" opacity="0.4" fill="red"/>
-    <image id="image-center4" x="50%-30" y="26%-30" width="60" height="60" href="images/icons/comfy.png" load="sync" />
-    <text id= "button-text-center4" x="50%" y="26%+50" class= "comfyLabel">Center</text>
+    <circle id="circle-center4" cx="50%" cy="26%" class= "circle_comfy" fill="red"  r="35" />
+    <circle id="circle-push-center4" cx="50%" cy="26%" r="50" opacity="0.0" fill="red"/>
+    <image id="image-center4" x="50%-23" y="26%-23" width="46" height="46" href="images/icons/comfy.png" load="sync" />
+    <text id= "button-text-center4" x="50%" y="26%+55" class= "comfyLabel">Center</text>
     <text id= "button-second-text-center4" x="50%" y="26%+80" class= "comfyLabel"> </text>
 </g>
 
 <g id="new-button-left4" pointer-events="visible" display="none">
-    <circle id="circle-left4" cx="20%" cy="50%" r="35" fill="red" r="30"  />
-    <circle id="circle-push-left4" cx="20%" cy="50%" r="50" opacity="0.4" fill="red"/>
-    <image id="image-left4" x="20%-30" y="50%-30" width="60" height="60" href="images/icons/neutral.png" load="sync" />
-    <text id= "button-text-left4" x="20%" y="50%+50" class= "comfyLabel">Left</text>
+    <circle id="circle-left4" cx="20%" cy="50%" r="35" fill="red"  />
+    <circle id="circle-push-left4" cx="20%" cy="50%" r="50" opacity="0.0" fill="red"/>
+    <image id="image-left4" x="20%-23" y="50%-23" width="46" height="46" href="images/icons/neutral.png" load="sync" />
+    <text id= "button-text-left4" x="20%" y="50%+55" class= "comfyLabel">Left</text>
     <text id= "button-second-text-left4" x="20%" y="50%+80" class= "comfyLabel">  </text>
 </g>
 
 <g id="new-button-right4" pointer-events="visible" display="none">
-    <circle id="circle-right4" cx="80%" cy="50%" r="35" fill="red"  r="30" />
-    <circle id="circle-push-right4" cx="80%" cy="50%" r="50" opacity="0.4" fill="red"/>
-    <image id="image-right4" x="80%-30" y="50%-30" width="60" height="60" href="images/icons/neutral.png" load="sync" />
-    <text id= "button-text-right4" x="80%" y="50%+50" class= "comfyLabel">Right</text>
+    <circle id="circle-right4" cx="80%" cy="50%" r="35" fill="red"  r="35" />
+    <circle id="circle-push-right4" cx="80%" cy="50%" r="50" opacity="0.0" fill="red"/>
+    <image id="image-right4" x="80%-23" y="50%-23" width="46" height="46" href="images/icons/neutral.png" load="sync" />
+    <text id= "button-text-right4" x="80%" y="50%+55" class= "comfyLabel">Right</text>
     <text id= "button-second-text-right4" x="80%" y="50%+80" class= "comfyLabel">  </text>
 </g>
 
 <g id="new-button-bottom4" pointer-events="visible" display="none">
-    <circle id="circle-bottom4" cx="50%" cy="75%" r="30" fill="red" />
-    <circle id="circle-push-bottom4" cx="50%" cy="75%" r="50" opacity="0.4" fill="red"/>
-    <image id="image-bottom4" x="50%-30" y="75%-30" width="60" height="60" href="images/icons/neutral.png" load="sync" />
-    <text id= "button-text-bottom4" x="50%" y="75%+50" class= "comfyLabel">Bottom</text>
+    <circle id="circle-bottom4" cx="50%" cy="75%" r="35" fill="red" />
+    <circle id="circle-push-bottom4" cx="50%" cy="75%" r="50" opacity="0.0" fill="red"/>
+    <image id="image-bottom4" x="50%-23" y="75%-23" width="46" height="46" href="images/icons/neutral.png" load="sync" />
+    <text id= "button-text-bottom4" x="50%" y="75%+55" class= "comfyLabel">Bottom</text>
     <text id= "button-second-text-bottom4" x="50%" y="75%+80" class= "comfyLabel">  </text>
 </g>
 </svg>
