@@ -4,22 +4,32 @@ This code sends the survey completed by the user to the companion app.
 
 import fs from "fs";
 import document from "document";
-import {geolocation} from "geolocation";
-import {memory} from "system";
-import {outbox} from "file-transfer"
-import {peerSocket} from "messaging";
+import {
+    geolocation
+} from "geolocation";
+import {
+    memory
+} from "system";
+import {
+    outbox
+} from "file-transfer"
+import {
+    peerSocket
+} from "messaging";
 
 // import custom built modules
-import {isProduction} from "./options";
+import {
+    isProduction
+} from "./options";
 
 const storageLabel = document.getElementById("storageLabel");
 const voteLogLabel = document.getElementById("voteLogLabel");
 const voteLogPeerTransferLabel = document.getElementById("voteLogPeerTransferLabel");
 const voteLogFileTransferLabel = document.getElementById("voteLogFileTransferLabel");
 
-let voteLog;       // Global variable for handling vote logs
-let voteLogPeerTransfer = 0;       // Global variable for handling vote logs
-let voteLogFileTransfer = 0;       // Global variable for handling vote logs
+let voteLog; // Global variable for handling vote logs
+let voteLogPeerTransfer = 0; // Global variable for handling vote logs
+let voteLogFileTransfer = 0; // Global variable for handling vote logs
 
 //-------- COMPILE DATA AND SEND TO COMPANION  -----------
 export function sendEventIfReady(_feedbackData) {
@@ -28,7 +38,10 @@ export function sendEventIfReady(_feedbackData) {
     console.log("Fitbit memory usage: " + memory.js.used + ", of the available: " + memory.js.total);
     // set timeout of gps https://dev.fitbit.com/build/reference/device-api/geolocation/
     console.log("Getting GPS location ... it may take a couple of minutes");
-    geolocation.getCurrentPosition(locationSuccess, locationError, {timeout: 4 * 60 * 1000, maximumAge: 4 * 60 * 1000});
+    geolocation.getCurrentPosition(locationSuccess, locationError, {
+        timeout: 4 * 60 * 1000,
+        maximumAge: 4 * 60 * 1000
+    });
 
     // reading log file for debugging purposes
     try {
@@ -40,7 +53,7 @@ export function sendEventIfReady(_feedbackData) {
     }
     // Incremement the vote log by one
     voteLog[0]++;
-    console.log("Vote log: " + voteLog[0]);
+    // console.log("Vote log: " + voteLog[0]);
     if (!isProduction) {
         voteLogLabel.text = voteLog + 'vl;';
     }
