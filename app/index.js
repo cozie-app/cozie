@@ -588,6 +588,8 @@ setInterval(function() {
     const currentDay = currentDate.getDay(); // get today's day
     const currentHour = currentDate.getHours();
 
+    console.log("starting to evaluate whether the watch need to vibrate or not");
+
     try {
         const buzzSelection = parseInt(fs.readFileSync("buzzSelection.txt", "json").buzzSelection); // read user selection
         vibrationTimeArray = buzzOptions[buzzSelection];
@@ -613,29 +615,31 @@ setInterval(function() {
     }
 
 
-    // Ensure that the next vibration isn't passed
-    let i = 0;
-    while (vibrationTimeArray[i] <= currentHour)
-    {
-        const firstElement = vibrationTimeArray.shift();
-        vibrationTimeArray.push(firstElement);
-        i++;
-    }
-    if (i != vibrationTimeArray.length)
-    {
-        console.log("Next hour of vibration : " + vibrationTimeArray[0]);
-        if (vibrationTimeArray[0] === currentHour && bodyPresence.present && getView() === 0) { // REMOVED : && today.adjusted.steps > 300 -- vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
-            // this ensures that the watch does not vibrate if the user is still sleeping
-            console.log("The watch should vibrate");
-            vibrate();
+    if (!completedVibrationCycleDay) {
+        // Ensure that the next vibration isn't passed
+        let i = 0;
+        while (vibrationTimeArray[i] <= currentHour)
+        {
             const firstElement = vibrationTimeArray.shift();
             vibrationTimeArray.push(firstElement);
-            if (currentHour === maxHour) {
-                completedVibrationCycleDay = true;
+            i++;
+        }
+        if (i != vibrationTimeArray.length)
+        {
+            console.log("Next hour of vibration : " + vibrationTimeArray[0]);
+            if (vibrationTimeArray[0] === currentHour && bodyPresence.present && getView() === 0) { // REMOVED : && today.adjusted.steps > 300 -- vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+                // this ensures that the watch does not vibrate if the user is still sleeping
+                console.log("The watch should vibrate");
+                vibrate();
+                const firstElement = vibrationTimeArray.shift();
+                vibrationTimeArray.push(firstElement);
+                if (currentHour === maxHour) {
+                    completedVibrationCycleDay = true;
+                }
+            } else if (vibrationTimeArray[0] < currentHour) { // the vector is shifted by one since the that hour is already passed
+                const firstElement = vibrationTimeArray.shift();
+                vibrationTimeArray.push(firstElement);
             }
-        } else if (vibrationTimeArray[0] < currentHour) { // the vector is shifted by one since the that hour is already passed
-            const firstElement = vibrationTimeArray.shift();
-            vibrationTimeArray.push(firstElement);
         }
     }
 }, 600000); // timeout for 10 minutes
@@ -665,8 +669,6 @@ let flowSelectorUpdateTime = 0;
 let flowFileRead;
 let flowFileWrite;
 let flowSelector;
-
-let flowSelectorUpdateTime = 0;
 
 function mapFlows(flowSelector) {
     vibration.start("bump")
