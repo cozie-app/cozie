@@ -1,6 +1,6 @@
 export default [{
         name: "stairsElevators",
-        displayName: "Satir or Lift",
+        displayName: "Stair or Lift",
         type: "icon",
         // requiresAnswer: [],
         questionText: "In the past 60 min, I used:",
