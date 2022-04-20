@@ -42,7 +42,7 @@ import {
 import './clock'
 
 // import file containing question flow
-import totalFlow from "../resources/flows/onith-flow";
+import totalFlow from "../resources/flows/main-flow";
 
 // question flow changes dynamically based on settings
 let questionsFlow = totalFlow
@@ -165,13 +165,14 @@ function endSurvey(reasonEnd) {
     if (reasonEnd === 'EndSurvey') {
         thankyou.style.display = "inline";
 
-        //rest the view history
+        //reset the view history
         viewHistory = [0]
         currentView = 0
 
         // send feedback to companion
         sendEventIfReady(feedbackData);
     } else {
+        console.log("Survey has been stopped !");
         svg_stop_survey.style.display = "inline";
     }
 
@@ -265,95 +266,74 @@ for (const button of buttons) {
             }
             showFace();
         } else if (button.attribute === 'flow_control') { // if any of the two buttons (back arrow or cross) have been selected
-
             if (button.value === "flow_back") {
                 // decrease the value of currentView by 2 to go to previous view
                 nextView = viewHistory[(viewHistory.length) - 1];
                 console.log(`Len viewHistory : ${viewHistory.length} viewHistory : ${viewHistory}, nextView : ${nextView}`)
-
-
-                // showFace();
-
                 if (viewHistory.length <= 0) {
                     // if user pressed back button in first question survey
                     endSurvey("StoppedSurvey");
                 } else {
                     showFace(true);
                 }
-
+                showFace();
                 viewHistory.pop();
             } else if (button.value === "flow_stop") {
                 // stop_flow button was pressed
+                console.log("Stopping Survey....");
                 endSurvey("StoppedSurvey");
             }
-            showFace();
-        }
+            //showFace();
+        } else if (button.attribute !== "flow_control") {
+            console.log(`CURRENT VIEW : ${currentView}`);
+            //need to associate it to the previous view
 
-        if (button.attribute !== "flow_control") {
-            if (button.attribute !== "startSurvey") { // && questionsFlow[viewHistory[viewHistory.length - 1]].name.indexOf("confirm") === -1) {
-                console.log(`CURRENT VIEW : ${currentView}`);
-                //need to associate it to the previous view
+            console.log(`FEEDBACK DATA (clicked button) : ${JSON.stringify(feedbackData)}`);
 
-                console.log(`FEEDBACK DATA (clicked button) : ${JSON.stringify(feedbackData)}`);
+            console.log(`Question flow lenght = ${questionsFlow.length} However, current view is ${currentView}`)
+            if (questionsFlow.length === currentView) {
+                // if all the views have already been shown
+                endSurvey("EndSurvey");
+            } else {
+                viewHistory.push(currentView)
 
-                console.log(`Question flow lenght = ${questionsFlow.length} However, current view is ${currentView}`)
-                if (questionsFlow.length === currentView) {
-                    // if all the views have already been shown
-                    // endSurvey("EndSurvey");
-                } else {
-                    viewHistory.push(currentView)
+                try {
+                    console.log(`viewHistory ${JSON.stringify(viewHistory)},
+                    viewHistory.length : ${viewHistory.length},
+                    button value : ${button.value},
+                    questionsFlow[(viewHistory.length) - 1]] : ${JSON.stringify(questionsFlow[(viewHistory.length) - 1])}`);
+                    feedbackData[questionsFlow[viewHistory[(viewHistory.length) - 1]].name] = button.value;
+                    console.log(JSON.stringify(feedbackData));
+                } catch (error) {
+                    console.error(error);
+                }
 
-                    try {
-                        console.log(`viewHistory ${JSON.stringify(viewHistory)},
-                        viewHistory.length : ${viewHistory.length},
-                        button value : ${button.value},
-                        questionsFlow[(viewHistory.length) - 1]] : ${JSON.stringify(questionsFlow[(viewHistory.length) - 1])}`);
-                        // feedbackData[questionsFlow[viewHistory[viewHistory.length - 2]].name] = button.value;
-
-                        feedbackData[questionsFlow[viewHistory[(viewHistory.length) - 1]].name] = button.value;
-                        console.log(JSON.stringify(feedbackData))
-
-                    } catch (error) {
-                        console.error(error)
-                    }
-
-
-                    clickedButton = button.value;
-
-
-                    try {
-                        console.log(`DIRECTS TO  ::: ${JSON.stringify(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"])}`)
-                        if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] != undefined) {
-
-                            if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] == "end") {
-                                endSurvey("EndSurvey");
-                                console.log("lets see what happens")
-
-                            } else {
-                                nextView = parseInt(getquestionIndex(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"], questionsFlow));
-                                currentView = nextView;
-                                console.log(` --------------> ${currentView === none}`);
-                                showFace();
-                            }
-
+                clickedButton = button.value;
+                console.log("Next question : " + currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"]);
+                try {
+                    if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] != undefined) {
+                        console.log(`DIRECTS TO  ::: ${JSON.stringify(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"])}`);
+                        if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] == "end") {
+                            endSurvey("EndSurvey");
                         } else {
-                            nextView == -99;
+                            nextView = parseInt(getquestionIndex(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"], questionsFlow));
+                            console.log("Next view : " + nextView);
+                            currentView = nextView;
+                            console.log(` --------------> ${currentView === none}`);
+                            showFace();
                         }
-                    } catch {
+
+                    } else {
                         nextView == -99;
-                        // currentView++;
-                        console.log(`DIRECTS TO  ::: NOTHING -----`)
-                        showFace();
                     }
-
-
-
+                } catch {
+                    nextView == -99;
+                    // currentView++;
+                    console.log(`DIRECTS TO  ::: NOTHING -----`)
+                    showFace();
                 }
 
             }
-
-
-
         }
     });
 }
@@ -419,7 +399,6 @@ function returnButtonLocations(len_buttons) {
 function showFace(flowback = false, isFirst = false) {
 
     let allButtonLocations = ["left", "right", "center", "bottom"];
-
     let skipQuestion = false;
 
     if (isFirst) {
@@ -433,12 +412,11 @@ function showFace(flowback = false, isFirst = false) {
 
     // console.log(`CURRENT VIEW : ${currentView}`)
 
-    // get the lenth of the question and extract the corresponding location data cx, cy
+    // get the length of the question and extract the corresponding location data cx, cy
     try {
         var question_length = questionsFlow[currentView]["iconText"].length;
     } catch {
         var question_length = 3;
-
     }
 
     if (question_length === 2) {

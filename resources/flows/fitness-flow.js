@@ -135,7 +135,7 @@ export default [{
         ],
     }, {
         name: "whyStairs",
-        displayName: "Why staris?",
+        displayName: "Why stairs?",
         type: "icon",
         answerDirectTo: {
             9: {

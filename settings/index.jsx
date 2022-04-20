@@ -12,7 +12,7 @@ import icon_velocity from '../resources/images/icons/air_vel_high.png';
 import icon_met from '../resources/images/icons/met_exercising.png';
 import icon_change from '../resources/images/icons/outdoor.png';
 
-import totalFlow from "../resources/flows/onith-flow";
+import totalFlow from "../resources/flows/main-flow";
 
 // map names of the json-flow to imported icons
 // TODO: There is probably a better way to do this with the URL
@@ -117,7 +117,7 @@ function mySettings(props) {
                 />
             </Section>
 
-            <Section>
+            {/* <Section>
                 <Select
                     label={`Select Questions`}
                     multiple
@@ -131,7 +131,7 @@ function mySettings(props) {
                         />
                     )}
                 />
-            </Section>
+            </Section> */}
         </Page>
     );
 }

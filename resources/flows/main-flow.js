@@ -2,9 +2,22 @@ export default [{
     name: "thermal",
     displayName: "Thermal",
     type: "icon",
-    requiresAnswer: [],
     questionText: "Would you prefer to be?",
     questionSecondText: "",
+    answerDirectTo: {
+        9: {
+            next: "indoorOutdoor"
+        },
+        10: {
+            next: "indoorOutdoor"
+        },
+        11: {
+            next: "indoorOutdoor"
+        },
+        12: {
+            next: "indoorOutdoor"
+        }
+    },
     iconText: ["Cooler", "Warmer", "No change", "somethingElse"],
     iconColors: ["fb-cyan", "fb-orange", "fb-green", "fb-yellow"],
     iconImages: [
@@ -17,9 +30,22 @@ export default [{
     name: "indoorOutdoor",
     displayName: "Indoor / Outdoor",
     type: "icon",
-    requiresAnswer: [],
     questionText: "Are you?",
     questionSecondText: "",
+    answerDirectTo: {
+        9: {
+            next: "location"
+        },
+        10: {
+            next: "location"
+        },
+        11: {
+            next: "location"
+        },
+        12: {
+            next: "location"
+        }
+    },
     iconText: ["Indoor", "Outdoor"],
     iconColors: ["fb-peach", "fb-peach"],
     iconImages: [
@@ -30,9 +56,22 @@ export default [{
     name: "location",
     displayName: "Location",
     type: "icon",
-    requiresAnswer: [],
     questionText: "Where are you?",
     questionSecondText: "",
+    answerDirectTo: {
+        9: {
+            next: "clothing"
+        },
+        10: {
+            next: "clothing"
+        },
+        11: {
+            next: "clothing"
+        },
+        12: {
+            next: "clothing"
+        }
+    },
     iconText: ["Home", "Office", "Neither"],
     iconColors: ["fb-peach", "fb-peach", "fb-peach"],
     iconImages: [
@@ -44,9 +83,22 @@ export default [{
     name: "clothing",
     displayName: "Clothing",
     type: "icon",
-    requiresAnswer: [],
     questionText: "What are you wearing?",
     questionSecondText: "",
+    answerDirectTo: {
+        9: {
+            next: "airSpeed"
+        },
+        10: {
+            next: "airSpeed"
+        },
+        11: {
+            next: "airSpeed"
+        },
+        12: {
+            next: "airSpeed"
+        }
+    },
     iconText: ["Light", "Heavy", "Medium"],
     iconColors: ["#6decb9", "#42dee1", "#3fc5f0"],
     iconImages: [
@@ -58,9 +110,22 @@ export default [{
     name: "airSpeed",
     displayName: "Air Speed",
     type: "icon",
-    requiresAnswer: [],
     questionText: "Can you perceive air",
     questionSecondText: "movement around you?",
+    answerDirectTo: {
+        9: {
+            next: "met"
+        },
+        10: {
+            next: "met"
+        },
+        11: {
+            next: "met"
+        },
+        12: {
+            next: "met"
+        }
+    },
     iconText: ["No", "Yes"],
     iconColors: ["fb-orange", "fb-green"],
     iconImages: [
@@ -71,9 +136,22 @@ export default [{
     name: "met",
     displayName: "Activity",
     type: "icon",
-    requiresAnswer: [],
     questionText: "Activity last 10-min?",
     questionSecondText: "",
+    answerDirectTo: {
+        9: {
+            next: "anyChange"
+        },
+        10: {
+            next: "anyChange"
+        },
+        11: {
+            next: "anyChange"
+        },
+        12: {
+            next: "anyChange"
+        }
+    },
     iconText: ["Resting", "Standing", "Sitting"],
     iconColors: ["#A7F3D5", "#6decb9", "#42dee1"],
     iconImages: [
@@ -85,9 +163,22 @@ export default [{
     name: "anyChange",
     displayName: "Any Changes",
     type: "icon",
-    requiresAnswer: [],
     questionText: "Any changes in clo, loc",
     questionSecondText: "or met past 10-m?",
+    answerDirectTo: {
+        9: {
+            next: "mood"
+        },
+        10: {
+            next: "mood"
+        },
+        11: {
+            next: "mood"
+        },
+        12: {
+            next: "mood"
+        }
+    },
     iconText: ["Yes", "No"],
     iconColors: ["fb-green", "fb-orange"],
     iconImages: [
@@ -98,9 +189,22 @@ export default [{
     name: "mood",
     displayName: "Mood",
     type: "icon",
-    requiresAnswer: [],
     questionText: "What mood are you in?",
     questionSecondText: "",
+    answerDirectTo: {
+        9: {
+            next: "noise"
+        },
+        10: {
+            next: "noise"
+        },
+        11: {
+            next: "noise"
+        },
+        12: {
+            next: "noise"
+        }
+    },
     iconText: ["Good", "Bad", "Neutral"],
     iconColors: ["fb-green", "fb-orange", "fb-cyan"],
     iconImages: [
@@ -112,9 +216,22 @@ export default [{
     name: "noise",
     displayName: "Noise",
     type: "icon",
-    requiresAnswer: [],
     questionText: "Sound preference",
     questionSecondText: "",
+    answerDirectTo: {
+        9: {
+            next: "light"
+        },
+        10: {
+            next: "light"
+        },
+        11: {
+            next: "light"
+        },
+        12: {
+            next: "light"
+        }
+    },
     iconText: ["Quiter", "Louder", "No Change"],
     iconColors: ["fb-orange", "fb-purple", "fb-green"],
     iconImages: [
@@ -126,9 +243,22 @@ export default [{
     name: "light",
     displayName: "Light",
     type: "icon",
-    requiresAnswer: [],
     questionText: "Light preference",
     questionSecondText: "",
+    answerDirectTo: {
+        9: {
+            next: "end"
+        },
+        10: {
+            next: "end"
+        },
+        11: {
+            next: "end"
+        },
+        12: {
+            next: "end"
+        }
+    },
     iconText: ["Dimmer", "Brighter", "No Change"],
     iconColors: ["fb-blue", "fb-peach", "fb-green"],
     iconImages: [
