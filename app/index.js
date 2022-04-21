@@ -42,7 +42,7 @@ import {
 import './clock'
 
 // import file containing question flow
-import totalFlow from "../resources/flows/fitness-flow";
+import totalFlow from "../resources/flows/main-flow";
 
 // question flow changes dynamically based on settings
 let questionsFlow = totalFlow
@@ -280,7 +280,6 @@ for (const button of buttons) {
                 viewHistory.pop();
             } else if (button.value === "flow_stop") {
                 // stop_flow button was pressed
-                console.log("Stopping Survey....");
                 endSurvey("StoppedSurvey");
             }
             //showFace();
@@ -567,7 +566,6 @@ setInterval(function() {
     const currentHour = currentDate.getHours();
 
     console.log("starting to evaluate whether the watch need to vibrate or not");
-
     try {
         const buzzSelection = parseInt(fs.readFileSync("buzzSelection.txt", "json").buzzSelection); // read user selection
         vibrationTimeArray = buzzOptions[buzzSelection];
@@ -596,7 +594,7 @@ setInterval(function() {
     if (!completedVibrationCycleDay) {
         // Ensure that the next vibration isn't passed
         let i = 0;
-        while (vibrationTimeArray[i] <= currentHour)
+        while (vibrationTimeArray[i] < currentHour)
         {
             const firstElement = vibrationTimeArray.shift();
             vibrationTimeArray.push(firstElement);
@@ -620,7 +618,7 @@ setInterval(function() {
             }
         }
     }
-}, 600000); // timeout for 10 minutes
+}, 300000); // timeout for 10 minutes
 
 function vibrate() {
     /**
