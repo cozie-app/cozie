@@ -42,7 +42,7 @@ import {
 import './clock'
 
 // import file containing question flow
-import totalFlow from "../resources/flows/main-flow";
+import totalFlow from "../resources/flows/fitness-flow";
 
 // question flow changes dynamically based on settings
 let questionsFlow = totalFlow

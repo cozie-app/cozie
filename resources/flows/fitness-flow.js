@@ -57,15 +57,12 @@ export default [{
         type: "icon",
         answerDirectTo: {
             9: {
-                next: "BOTH_LiftConvenientBecuause"
+                next: "Both_LiftConvenientBecuause"
             },
             10: {
                 next: "BothLiftAndStairs_WhyStairs"
             },
             11: {
-                next: "BothLiftAndStairs_WhyStairs"
-            },
-            12: {
                 next: "BothLiftAndStairs_WhyStairs"
             }
         },
@@ -290,7 +287,7 @@ export default [{
         ],
 
     }, {
-        name: "BOTH_LiftConvenientBecuause",
+        name: "Both_LiftConvenientBecuause",
         displayName: "If both, lift Convenient Because?",
         type: "icon",
         answerDirectTo: {
