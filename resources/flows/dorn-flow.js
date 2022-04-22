@@ -33,16 +33,10 @@ export default [{
     questionText: "Are you?",
     questionSecondText: "",
     answerDirectTo: {
-        9: {
-            next: "location"
-        },
         10: {
             next: "location"
         },
         11: {
-            next: "location"
-        },
-        12: {
             next: "location"
         }
     },
@@ -66,9 +60,6 @@ export default [{
             next: "clothing"
         },
         11: {
-            next: "clothing"
-        },
-        12: {
             next: "clothing"
         }
     },
@@ -94,9 +85,6 @@ export default [{
         },
         11: {
             next: "airSpeed"
-        },
-        12: {
-            next: "airSpeed"
         }
     },
     iconText: ["Light", "Heavy", "Medium"],
@@ -113,16 +101,10 @@ export default [{
     questionText: "Can you perceive air",
     questionSecondText: "movement around you?",
     answerDirectTo: {
-        9: {
-            next: "met"
-        },
         10: {
             next: "met"
         },
         11: {
-            next: "met"
-        },
-        12: {
             next: "met"
         }
     },
@@ -147,9 +129,6 @@ export default [{
         },
         11: {
             next: "anyChange"
-        },
-        12: {
-            next: "anyChange"
         }
     },
     iconText: ["Resting", "Standing", "Sitting"],
@@ -166,16 +145,10 @@ export default [{
     questionText: "Any changes in clo, loc",
     questionSecondText: "or met past 10-m?",
     answerDirectTo: {
-        9: {
-            next: "mood"
-        },
         10: {
             next: "mood"
         },
         11: {
-            next: "mood"
-        },
-        12: {
             next: "mood"
         }
     },
@@ -199,9 +172,6 @@ export default [{
             next: "noise"
         },
         11: {
-            next: "noise"
-        },
-        12: {
             next: "noise"
         }
     },
@@ -227,9 +197,6 @@ export default [{
         },
         11: {
             next: "light"
-        },
-        12: {
-            next: "light"
         }
     },
     iconText: ["Quiter", "Louder", "No Change"],
@@ -253,9 +220,6 @@ export default [{
             next: "end"
         },
         11: {
-            next: "end"
-        },
-        12: {
             next: "end"
         }
     },

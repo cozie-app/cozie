@@ -77,11 +77,11 @@ export default [{
         ],
     }, {
         name: "BothLiftAndStairs_WhyStairs",
-        displayName: "Both? Why staris?",
+        displayName: "Both? Why stairs?",
         type: "icon",
         answerDirectTo: {
             9: {
-                next: "BOTH_StairsConvenientBecuause"
+                next: "Both_LiftConvenientBecuause"
             },
             10: {
                 next: "workingNow"
@@ -115,9 +115,6 @@ export default [{
                 next: "workingNow"
             },
             11: {
-                next: "workingNow"
-            },
-            12: {
                 next: "workingNow"
             }
         },
@@ -175,8 +172,8 @@ export default [{
         },
         questionText: "What kind of workstation?",
         questionSecondText: "",
-        iconText: ["Standing", "Sitting", "adjustable"],
-        iconColors: ["fb-peach", "fb-peach", "fb-peach", "fb-peach"],
+        iconText: ["Standing", "Sitting", "Adjustable"],
+        iconColors: ["fb-peach", "fb-peach", "fb-peach"],
         iconImages: [
             "images/icons/fitness/standing.png",
             "images/icons/fitness/sitting.png",
@@ -237,7 +234,7 @@ export default [{
         ],
 
     }, {
-        name: "BOTH_StairsConvenientBecuause",
+        name: "Both_LiftConvenientBecuause",
         displayName: "If both, stairs Convenient Because?",
         type: "icon",
         answerDirectTo: {
@@ -263,7 +260,7 @@ export default [{
 
     }, {
         name: "LiftConvenientBecuause",
-        displayName: "Stairs Convenient Because?",
+        displayName: "Lift Convenient Because?",
         type: "icon",
         answerDirectTo: {
             9: {
