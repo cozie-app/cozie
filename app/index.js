@@ -564,6 +564,7 @@ setInterval(function() {
     const currentDate = new Date(); // get today's date
     const currentDay = currentDate.getDay(); // get today's day
     const currentHour = currentDate.getHours();
+    console.log("Current hour: " + currentHour);
 
     console.log("starting to evaluate whether the watch need to vibrate or not");
     try {
@@ -593,14 +594,17 @@ setInterval(function() {
 
     if (!completedVibrationCycleDay) {
         // Ensure that the next vibration isn't passed
-        let i = 0;
-        while (vibrationTimeArray[i] < currentHour)
+        let testedHoursNumber = 0;
+        while (vibrationTimeArray[0] < currentHour && testedHoursNumber < vibrationTimeArray.length)
         {
+            // this remove the first hour of the array and push it to the end
+            console.log("Hour tested: " + vibrationTimeArray[0]);
             const firstElement = vibrationTimeArray.shift();
             vibrationTimeArray.push(firstElement);
-            i++;
+            testedHoursNumber++;
         }
-        if (i != vibrationTimeArray.length)
+        // now hour_index equals the number of hours already passed
+        if (testedHoursNumber != vibrationTimeArray.length)
         {
             console.log("Next hour of vibration : " + vibrationTimeArray[0]);
             if (vibrationTimeArray[0] === currentHour && bodyPresence.present && getView() === 0) { // REMOVED : && today.adjusted.steps > 300 -- vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
@@ -618,7 +622,7 @@ setInterval(function() {
             }
         }
     }
-}, 300000); // timeout for 10 minutes
+}, 300000); // timeout for 5 minutes
 
 function vibrate() {
     /**
