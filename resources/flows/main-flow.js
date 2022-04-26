@@ -43,8 +43,8 @@ export default [{
     iconText: ["Indoor", "Outdoor"],
     iconColors: ["fb-peach", "fb-peach"],
     iconImages: [
-        "images/icons/outdoor.png",
         "images/icons/indoor.png",
+        "images/icons/outdoor.png",
     ],
 }, {
     name: "location",

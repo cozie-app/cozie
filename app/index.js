@@ -39,64 +39,53 @@ import {
 import {
     isProduction
 } from "./options";
-import './clock'
+import './clock';
 
-// import file containing question flow
 import totalFlow from "../resources/flows/main-flow";
 
-// question flow changes dynamically based on settings
+/* -----------------------------------------------------------------------------------------------
+                                    GLOBAL VARIABLES DECLARATION
+----------------------------------------------------------------------------------------------- */
+
+// Question flow's array
 let questionsFlow = totalFlow
 
-// Import views
+// Useful views
 const clockface = document.getElementById("clockface");
 const thankyou = document.getElementById("thankyou");
 const svg_stop_survey = document.getElementById("stopSurvey");
 const clockblock = document.getElementById("clockblock");
 
-// home screen buttons
+// Home screen buttons
 const comfy = document.getElementById("comfy");
 const notComfy = document.getElementById("not-comfy");
 
-// flow buttons
-const flow_back = document.getElementById("flow_back");
-const flow_stop = document.getElementById("flow_stop");
+// Navigation buttons
+const flowBack = document.getElementById("flow_back");
+const flowStop = document.getElementById("flow_stop");
 
-// flow buttons json
+// 2-answers' questions buttons
+let rightButton2 = document.getElementById("new-button-right2");
+let leftButton2 = document.getElementById("new-button-left2");
+
+// 3-answers' questions buttons
 let centerButton3 = document.getElementById("new-button-center3");
 let rightButton3 = document.getElementById("new-button-right3");
 let leftButton3 = document.getElementById("new-button-left3");
 
-
-// flow buttons json
-let rightButton2 = document.getElementById("new-button-right2");
-let leftButton2 = document.getElementById("new-button-left2");
-
-
-
-// flow buttons json
+// 4-answers' questions buttons
 let centerButton4 = document.getElementById("new-button-center4");
 let rightButton4 = document.getElementById("new-button-right4");
 let leftButton4 = document.getElementById("new-button-left4");
 let bottomButton4 = document.getElementById("new-button-bottom4");
 
+// Main view that shows the buttons in the flow
+const jsonFlow2 = document.getElementById("json-flow2"); // 2-answers' questions view
+const jsonFlow = document.getElementById("json-flow");   // 3-answers' questions view
+const jsonFlow4 = document.getElementById("json-flow4"); // 4-answers' questions view
 
-// main view that shows the buttons in the flow
-const jsonFlow = document.getElementById("json-flow");
-const jsonFlow2 = document.getElementById("json-flow2"); // 2 question flow
-const jsonFlow4 = document.getElementById("json-flow4"); // 4 question flow
-
-
-// Used to set all views to none when switching between screens
-const allViews = [clockface, thankyou, clockblock, svg_stop_survey, jsonFlow, jsonFlow2, jsonFlow4];
-
-let currentView = 0; //current view of flow
-let nextView = -99;
-let clickedButton = 0;
-let currentVeiwObject = {}
-let viewHistory = []
-let feedbackData; // Global variable for handling feedbackData
-
-let buttons = [{
+// Array containing all buttons
+let allButtons = [{
     value: 10,
     obj: comfy,
     attribute: "startSurvey",
@@ -104,14 +93,15 @@ let buttons = [{
     value: 9,
     obj: notComfy,
     attribute: "startSurvey",
+},
+{
+    value: "flowBack",
+    obj: flowBack,
+    attribute: "flowControl",
 }, {
-    value: "flow_back",
-    obj: flow_back,
-    attribute: "flow_control",
-}, {
-    value: "flow_stop",
-    obj: flow_stop,
-    attribute: "flow_control",
+    value: "flowStop",
+    obj: flowStop,
+    attribute: "flowControl",
 }, {
     value: 9,
     obj: centerButton3,
@@ -150,395 +140,378 @@ let buttons = [{
     attribute: "question",
 }, ];
 
-// show thank you message at the end of survey, add more info to message to be sent and send message
-function endSurvey(reasonEnd) {
-    // hiding all views to just show the clock
-    allViews.map((v) => (v.style.display = "none"));
-    clockface.style.display = "inline";
+// Array containing all the views
+let viewsArray = [{
+    viewAttribute: "clockface",
+    viewObj: clockface,
+    viewQuestion: null
+},
+{
+    viewAttribute: "thankyou",
+    viewObj: thankyou,
+    viewQuestion: null
+},
+{
+    viewAttribute: "clockblock",
+    viewObj: clockblock,
+    viewQuestion: null
+},
+{
+    viewAttribute: "svg_stop_survey",
+    viewObj: svg_stop_survey,
+    viewQuestion: null
+}];
 
-    //Find out how many seconds has passed to give response
+for (let index = 0; index < questionsFlow.length; index++)
+{
+    viewsArray.push(jsonQuestionToView(questionsFlow, index));
+}
+
+let feedbackData;                        // Global variable gathering all data to feed back
+let nextView;                            // Temp for the next view to be shown
+let viewsStack = [];                     // Initialization of the stack
+viewsStack = initStack(viewsStack);
+
+/* -----------------------------------------------------------------------------------------------
+                                          MAIN PROCESS
+----------------------------------------------------------------------------------------------- */
+
+// Show clockface
+viewDisplay(viewsArray[0]);
+
+// Assign action on every button, taking into account the state of the stack and the button's attribute
+for (const button of allButtons)
+{
+    button.obj.addEventListener('mousedown', () => {
+        console.log('Button clicked: ' + button.attribute);
+        switch (button.attribute)
+        {
+            case 'startSurvey':
+                getDataFromSensors();
+                viewsStack.push(viewsArray[4]); // Start the survey by the first question
+                break;
+            case 'flowControl':
+                if (button.value === 'flowBack' && viewsStack.length > 2)
+                    viewsStack.pop(); // Go back to the last view
+                else
+                {
+                    viewsStack = initStack(viewsStack); // Go back to the clockface after stopping the survey
+                    feedbackData = {};
+                }
+                break;
+            case 'question':
+                feedbackData[viewsStack[viewsStack.length - 1].viewQuestion.name] = button.value; // Pushing the answer in the feedback data object
+                nextView = getNextview(button, viewsStack[viewsStack.length - 1], viewsArray);    // Get the next question
+                if (nextView.viewAttribute === 'thankyou')
+                {
+                    getDataEndSurvey();
+                    sendEventIfReady(feedbackData);
+                    feedbackData = {};
+                }
+                viewsStack.push(nextView);
+                break;
+            default:
+                break;
+        }
+        // Display the top view of the stack
+        viewDisplay(viewsStack[viewsStack.length - 1]);
+    });
+}
+
+/* -------------------------------------------------------------------------------------
+    Name        : initStack
+    Description : initialize the stack of views.
+    Parameters  :
+        - stack     : stack to initialize
+    Return      : initialized stack.
+------------------------------------------------------------------------------------- */
+
+function initStack(stack)
+{
+    stack = [];
+    stack.push(viewsArray[0]);
+    stack.push(viewsArray[3]);
+    return stack;
+}
+
+/* -------------------------------------------------------------------------------------
+    Name        : jsonQuestionToView
+    Description : convert the <indexView>th question from the question flow to a view
+                  object.
+    Parameters  :
+        - flow      : question flow
+        - indexView : index of the question
+    Return      : view created thanks to a question in the question flow.
+------------------------------------------------------------------------------------- */
+
+function jsonQuestionToView(flow, indexView)
+{
+    let returnedView = {
+        viewAttribute: "question",
+        viewObj: null,
+        viewQuestion: flow[indexView]
+    }
+    switch (flow[indexView].iconText.length)
+    {
+        case 2:
+            returnedView.viewObj = jsonFlow2;
+            break;
+        case 3:
+            returnedView.viewObj = jsonFlow;
+            break;
+        case 4:
+            returnedView.viewObj = jsonFlow4;
+            break;
+        default:
+            break;
+    }
+    return returnedView;
+}
+
+/* -------------------------------------------------------------------------------------
+    Name        : getNextview
+    Description : get the next view to be shown after <button> has been pressed.
+    Parameters  :
+        - button      : button pressed
+        - view        : view including the button that has been pressed
+        - views       : array gathering all views of the question flow
+    Return      : view corresponding to the next view that has to be shown. If it is
+                  the end of the question flow, view will correspond to the thankyou
+                  view.
+------------------------------------------------------------------------------------- */
+
+function getNextview(button, view, views)
+{
+    let returned_view = views[1];
+    let index = 4;
+    while (index < views.length && view.viewQuestion.answerDirectTo[button.value].next !== views[index].viewQuestion.name)
+    {
+        index++;
+    }
+    if (index != views.length)
+        returned_view = views[index];
+    return returned_view;
+}
+
+/* -------------------------------------------------------------------------------------
+    Name        : getDataFromSensors
+    Description : get data from the sensors at the beginning of the survey
+    Parameters  :
+        none
+    Return      : none
+------------------------------------------------------------------------------------- */
+
+function getDataFromSensors() {
+    feedbackData = {
+        startFeedback: new Date().toISOString(),
+        heartRate: hrm.heartRate,
+    };
+    // Body presence
+    if (BodyPresenceSensor) {
+        try {
+            feedbackData['bodyPresence'] = bodyPresence.present;
+        } catch (e) {
+            console.log("No body presence data");
+        }
+    }
+    // Heart rate
+    try {
+        feedbackData['restingHR'] = user.restingHeartRate;
+    } catch (e) {
+        console.log("No resting heart rate data available");
+    }
+    // Basal metabolic rate
+    try {
+        feedbackData['BMR'] = user.bmr;
+    } catch (e) {
+        console.log("No resting basal metabolic rate data available");
+    }
+}
+
+/* -------------------------------------------------------------------------------------
+    Name        : getDataEndSurvey
+    Description : get data from the sensors at the end of the survey and compute the
+                  survey duration.
+    Parameters  :
+        none
+    Return      : none
+------------------------------------------------------------------------------------- */
+
+function getDataEndSurvey() {
     const endFeedback = new Date();
     const startFeedback = new Date(feedbackData['startFeedback']);
     feedbackData['responseSpeed'] = (endFeedback - startFeedback) / 1000.0;
     feedbackData['endFeedback'] = endFeedback.toISOString();
-
-    if (reasonEnd === 'EndSurvey') {
-        thankyou.style.display = "inline";
-
-        //reset the view history
-        viewHistory = [0]
-        currentView = 0
-
-        // send feedback to companion
-        sendEventIfReady(feedbackData);
-    } else {
-        console.log("Survey has been stopped !");
-        svg_stop_survey.style.display = "inline";
-    }
-
-    feedbackData = {};
-
-    setTimeout(() => {
-        allViews.map(v => v.style.display = "none");
-        clockface.style.display = "inline";
-        currentView = 0
-    }, 2000);
-
 }
 
-
-
-function getquestionIndex(q_name, questionsFlow) {
-    // returns the question index by the question name .. 
-    //TODO, use the index directly instead of the name in the question-flow json. 
-    for (let index = 0; index < questionsFlow.length; index++) {
-        const element = questionsFlow[index];
-        try {
-            if (element.name === q_name) {
-                console.log(`${index} is the required index`)
-                return index;
-            }
-        } catch {
-            return -99;
-        }
-    }
-}
-
-for (const button of buttons) {
-    button.obj.addEventListener("mousedown", () => {
-        /** Constantly monitors if any buttons have been pressed */
-
-        console.log(`${button.value} clicked`);
-        // clickedButton = button.value;
-
-
-        // try {
-        //     console.log(`DIRECTS TO  ::: ${JSON.stringify(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"])}`)
-        //     if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] != undefined) {
-
-        //         if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] == "end") {
-        //             endSurvey("EndSurvey");
-        //             console.log("lets see what happens")
-
-        //         } else {
-        //             nextView = parseInt(getquestionIndex(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"], questionsFlow));
-        //             currentView = nextView;
-        //             console.log(` --------------> ${currentView === none}`);
-        //         }
-        //     } else {
-        //         nextView == -99;
-        //     }
-        // } catch {
-        //     nextView == -99;
-        //     // currentView++;
-        //     console.log(`DIRECTS TO  ::: NOTHING -----`)
-        // }
-
-
-        // if any of the two buttons in the main view have been pressed initiate the loop through the selected
-        if (button.attribute === 'startSurvey') {
-            currentVeiwObject = 0;
-
-            // Initiate feedbackData object
-            feedbackData = {
-                startFeedback: new Date().toISOString(),
-                heartRate: hrm.heartRate,
-            };
-
-            if (BodyPresenceSensor) {
-                try {
-                    feedbackData['bodyPresence'] = bodyPresence.present;
-                } catch (e) {
-                    console.log("No body presence data");
-                }
-            }
-
-            try {
-                feedbackData['restingHR'] = user.restingHeartRate;
-            } catch (e) {
-                console.log("No resting heart rate data available");
-            }
-
-            try {
-                feedbackData['BMR'] = user.bmr;
-            } catch (e) {
-                console.log("No resting basal metabolic rate data available");
-            }
-            showFace();
-        } else if (button.attribute === 'flow_control') { // if any of the two buttons (back arrow or cross) have been selected
-            if (button.value === "flow_back") {
-                // decrease the value of currentView by 2 to go to previous view
-                nextView = viewHistory[(viewHistory.length) - 1];
-                console.log(`Len viewHistory : ${viewHistory.length} viewHistory : ${viewHistory}, nextView : ${nextView}`)
-                if (viewHistory.length <= 0) {
-                    // if user pressed back button in first question survey
-                    endSurvey("StoppedSurvey");
-                } else {
-                    showFace(true);
-                }
-                showFace();
-                viewHistory.pop();
-            } else if (button.value === "flow_stop") {
-                // stop_flow button was pressed
-                endSurvey("StoppedSurvey");
-            }
-            //showFace();
-        } else if (button.attribute !== "flow_control") {
-            console.log(`CURRENT VIEW : ${currentView}`);
-            //need to associate it to the previous view
-
-            console.log(`FEEDBACK DATA (clicked button) : ${JSON.stringify(feedbackData)}`);
-
-            console.log(`Question flow lenght = ${questionsFlow.length} However, current view is ${currentView}`)
-            if (questionsFlow.length === currentView) {
-                // if all the views have already been shown
-                endSurvey("EndSurvey");
-            } else {
-                viewHistory.push(currentView)
-
-                try {
-                    console.log(`viewHistory ${JSON.stringify(viewHistory)},
-                    viewHistory.length : ${viewHistory.length},
-                    button value : ${button.value},
-                    questionsFlow[(viewHistory.length) - 1]] : ${JSON.stringify(questionsFlow[(viewHistory.length) - 1])}`);
-                    feedbackData[questionsFlow[viewHistory[(viewHistory.length) - 1]].name] = button.value;
-                    console.log(JSON.stringify(feedbackData));
-                } catch (error) {
-                    console.error(error);
-                }
-
-                clickedButton = button.value;
-                console.log("Next question : " + currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"]);
-                try {
-                    if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] != undefined) {
-                        console.log(`DIRECTS TO  ::: ${JSON.stringify(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"])}`);
-                        if (currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"] == "end") {
-                            endSurvey("EndSurvey");
-                        } else {
-                            nextView = parseInt(getquestionIndex(currentVeiwObject["answerDirectTo"][clickedButton.toString()]["next"], questionsFlow));
-                            console.log("Next view : " + nextView);
-                            currentView = nextView;
-                            console.log(` --------------> ${currentView === none}`);
-                            showFace();
-                        }
-
-                    } else {
-                        nextView == -99;
-                    }
-                } catch {
-                    nextView == -99;
-                    // currentView++;
-                    console.log(`DIRECTS TO  ::: NOTHING -----`)
-                    showFace();
-                }
-
-            }
-        }
-    });
-}
+/* -------------------------------------------------------------------------------------
+    Name        : returnButtonLocations
+    Description : get the location of the buttons according to the number of answers 
+                  in a question.
+    Parameters  :
+        - len_buttons      : number of answers in a question
+    Return      : object gathering the position of each button on the screen
+------------------------------------------------------------------------------------- */
 
 function returnButtonLocations(len_buttons) {
-    // This funciton returns the locations of each butotn based on the number of buttons 
-    // cx, cy for each button.
-    // The length of the buttons is triggered by the class id. 
-    if (len_buttons === 2) {
-        return {
-            "left": {
-                "cx": "25%",
-                "cy": "70%"
-            },
-            "right": {
-                "cx": "75%",
-                "cy": "70%"
+    switch (len_buttons)
+    {
+        case 2:
+            return {
+                "left": {
+                    "cx": "25%",
+                    "cy": "70%"
+                },
+                "right": {
+                    "cx": "75%",
+                    "cy": "70%"
+                }
             }
-        }
-
-    } else if (len_buttons === 3) {
-        return {
-            "left": {
-                "cx": "30%",
-                "cy": "70%"
-            },
-            "right": {
-                "cx": "75%",
-                "cy": "70%"
-            },
-            "center": {
-                "cx": "50%",
-                "cy": "36%"
+            break;
+        case 3:
+            return {
+                "left": {
+                    "cx": "30%",
+                    "cy": "70%"
+                },
+                "right": {
+                    "cx": "75%",
+                    "cy": "70%"
+                },
+                "center": {
+                    "cx": "50%",
+                    "cy": "36%"
+                }
             }
-        }
-
-    } else if (len_buttons == 4) {
-        return {
-            "left": {
-                "cx": "25%",
-                "cy": "50%"
-            },
-            "right": {
-                "cx": "75%",
-                "cy": "50%"
-            },
-            "center": {
-                "cx": "50%",
-                "cy": "30%"
-            },
-            "bottom": {
-                "cx": "50%",
-                "cy": "60%"
-            },
-
-        }
+            break;
+        case 4:
+            return {
+                "left": {
+                    "cx": "25%",
+                    "cy": "50%"
+                },
+                "right": {
+                    "cx": "75%",
+                    "cy": "50%"
+                },
+                "center": {
+                    "cx": "50%",
+                    "cy": "30%"
+                },
+                "bottom": {
+                    "cx": "50%",
+                    "cy": "60%"
+                },
+    
+            }
+            break;
+        default:
+            break;
     }
-
 }
 
+/* -------------------------------------------------------------------------------------
+    Name        : hideAllButtons
+    Description : hide all buttons.
+    Parameters  :
+        none
+    Return      : none
+------------------------------------------------------------------------------------- */
 
-
-function showFace(flowback = false, isFirst = false) {
-
-    let allButtonLocations = ["left", "right", "center", "bottom"];
-    let skipQuestion = false;
-
-    if (isFirst) {
-        currentView = 0;
+function hideAllButtons() {
+    for (const button of allButtons)
+    {
+        if (button.attribute === 'question')
+            button.obj.style.display = 'none';
     }
+}
 
-    // go through all views and set to none
-    allViews.map((v) => {
-        v.style.display = "none";
-    });
+/* -------------------------------------------------------------------------------------
+    Name        : hideAllViews
+    Description : hide all views.
+    Parameters  :
+        none
+    Return      : none
+------------------------------------------------------------------------------------- */
 
-    // console.log(`CURRENT VIEW : ${currentView}`)
-
-    // get the length of the question and extract the corresponding location data cx, cy
-    try {
-        var question_length = questionsFlow[currentView]["iconText"].length;
-    } catch {
-        var question_length = 3;
+function hideAllViews() {
+    for (const view of viewsArray)
+    {
+        view.viewObj.style.display = 'none';
     }
+}
 
-    if (question_length === 2) {
-        jsonFlow2.style.display = "inline";
-        allButtonLocations = ["left", "right"];
-    } else if (question_length === 3) {
-        jsonFlow.style.display = "inline";
-        allButtonLocations = ["left", "right", "center"];
-    } else if (question_length === 4) {
-        jsonFlow4.style.display = "inline";
-        allButtonLocations = ["left", "right", "center", "bottom"];
+/* -------------------------------------------------------------------------------------
+    Name        : viewDisplay
+    Description : display all the objects that must be shown if we want to display
+                  the view <view>. This function takes into account the type of the
+                  view.
+    Parameters  :
+        - view      : view that has to be shown
+    Return      : none
+------------------------------------------------------------------------------------- */
+
+function viewDisplay(view)
+{
+    hideAllViews();
+
+    switch (view.viewAttribute)
+    {
+        case 'clockface':
+            viewsArray[0].viewObj.style.display = 'inline';
+            console.log("---> Displayed clockface");
+            break;
+        case 'thankyou':
+            // Display thank you for 2s
+            viewsArray[0].viewObj.style.display = 'inline';
+            viewsArray[1].viewObj.style.display = 'inline';
+            console.log("---> Displayed thank you");
+            // Display clockface
+            setTimeout( () => {
+                viewDisplay(viewsArray[0]);
+            }, 2000);
+            break;
+        case 'svg_stop_survey':
+            // Display stop survey for 2s
+            viewsArray[0].viewObj.style.display = 'inline';
+            viewsArray[3].viewObj.style.display = 'inline';
+            console.log("---> Displayed survey stopped");
+            // Display clockface
+            setTimeout( () => {
+                viewDisplay(viewsArray[0]);
+            }, 2000);
+            break;
+        case 'question':
+            const questionLength = view.viewQuestion.iconText.length;
+            let allButtonLocations = ["left", "right", "center", "bottom"];
+
+            view.viewObj.style.display = "inline";
+            document.getElementById("question-text" + questionLength.toString()).text = view.viewQuestion.questionText;
+            document.getElementById("question-second-text" + questionLength.toString()).text = view.viewQuestion.questionSecondText;
+            console.log("---> Displayed text question");
+            
+            const objectsLocation = returnButtonLocations(questionLength);
+            const buttonsLocations = Object.keys(objectsLocation);
+            // Hide all buttons
+            hideAllButtons();
+            console.log("---> Hidden all buttons");
+            // Display needed buttons
+            view.viewQuestion.iconText.forEach((text, index) => {
+                // Show button
+                document.getElementById("new-button-" + buttonsLocations[index] + questionLength.toString()).style.display = "inline";
+                // Show circle
+                document.getElementById("circle-" + buttonsLocations[index] + questionLength.toString()).style.fill = view.viewQuestion.iconColors[index];
+                // Show image
+                document.getElementById("image-" + buttonsLocations[index] + questionLength.toString()).href = view.viewQuestion.iconImages[index];
+                // Show text
+                document.getElementById("button-text-" + buttonsLocations[index] + questionLength.toString()).text = view.viewQuestion.iconText[index];
+            });
+            console.log("---> Displayed needed buttons");
+            break;
+        default:
+            break;
     }
-
-    //Does the current answer refer to 
-    currentVeiwObject = questionsFlow[currentView];
-    //Does current flow have any requirements?
-    /*if (questionsFlow[currentView].requiresAnswer.length !== 0 && questionsFlow[currentView]["name"] !== questionsFlow[currentView + 1]["name"]) {
-        console.log(`CURRENT VIEW :${[currentView]} ----> ${JSON.stringify(questionsFlow[currentView])}`);
-        //if so, see if the current feedback meets those requirements
-        questionsFlow[currentView].requiresAnswer.map((req) => {
-            if (feedbackData[req.question] !== req.value) {
-                //requirements not met, skipping question
-                skipQuestion = true;
-            }
-        });
-    }*/
-
-    if (skipQuestion === false) {
-        // Set title of question
-        document.getElementById("question-text" + question_length.toString()).text = questionsFlow[currentView].questionText;
-        document.getElementById("question-second-text" + question_length.toString()).text = questionsFlow[currentView].questionSecondText;
-        if (questionsFlow[currentView].name.indexOf("confirm") !== -1) {
-            document.getElementById("question-text" + question_length.toString()).text = questionsFlow[currentView].questionText.replace("xxxx", feedbackData[questionsFlow[currentView - 1].name]);
-        }
-        // set buttons -- repalced
-
-
-        // return each button and its location 
-        //example {"left":{"cx":"25%","cy":"10%"},"right":{"cx":"25%","cy":"10%"},"middle":{"cx":"25%","cy":"12%"}}
-        var object_lcations = returnButtonLocations(question_length)
-
-
-        // set buttons . eg : ["left", "right", "center"]
-        const buttonLocations = Object.keys(object_lcations); //["left", "right", "center"];
-
-        // for (const location in object_lcations) {
-        //     if (object_lcations.hasOwnProperty.call(object_lcations, location)) {
-        //         const element = object_lcations[location];
-        //         console.log(location + " --> " + JSON.stringify(element))
-        //     }
-        // }
-
-        // hide all buttons
-        //TODO : remove this and dynamic initate only the required buttons
-        allButtonLocations.forEach((location) => {
-            try {
-                document.getElementById("new-button-" + location + "3").style.display =
-                    "none";
-
-                document.getElementById("new-button-" + location + "2").style.display =
-                    "none";
-
-                document.getElementById("new-button-" + location + "4").style.display =
-                    "none";
-            } catch {
-
-            }
-
-        });
-
-        // map through each text element in flow and map to button
-        questionsFlow[currentView].iconText.forEach((text, ii) => {
-
-            // first show the button
-            document.getElementById(
-                "new-button-" + buttonLocations[ii] + question_length.toString()
-            ).style.display = "inline";
-
-            // then map the circle color, image, and text
-
-
-            // then map the circle color, image, and text
-            document.getElementById(
-                "circle-" + buttonLocations[ii] + question_length.toString()
-            ).style.fill = questionsFlow[currentView].iconColors[ii];
-
-            document.getElementById("image-" + buttonLocations[ii] + question_length.toString()).href =
-                questionsFlow[currentView].iconImages[ii];
-
-            document.getElementById("button-text-" + buttonLocations[ii] + question_length.toString()).text =
-                questionsFlow[currentView].iconText[ii];
-
-        });
-        // move onto next flow
-        if (nextView === -99) {
-            console.log("-99")
-        } else {
-            currentView = nextView;
-        }
-
-    }
-
-    // skipping question
-    else if (skipQuestion === true) {
-        // if we arrived here through the back button, then skip backwards
-        if (flowback === true) {
-            viewHistory.pop();
-            viewHistory.pop();
-            console.log(viewHistory)
-            currentView = viewHistory[(viewHistory.length) - 1];
-            showFace(true);
-            // if we arrived here through the normal flow, skip forwards
-        } else {
-            currentView++;
-            showFace();
-        }
-    }
-
     vibration.start("bump");
-}
-
-function getView() {
-    return currentView;
 }
 
 // ------- BUZZ SELECTOR -------------------
@@ -607,7 +580,7 @@ setInterval(function() {
         if (testedHoursNumber != vibrationTimeArray.length)
         {
             console.log("Next hour of vibration : " + vibrationTimeArray[0]);
-            if (vibrationTimeArray[0] === currentHour && bodyPresence.present && getView() === 0) { // REMOVED : && today.adjusted.steps > 300 -- vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+            if (vibrationTimeArray[0] == currentHour && bodyPresence.present) { // REMOVED : && today.adjusted.steps > 300 -- vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
                 // this ensures that the watch does not vibrate if the user is still sleeping
                 console.log("The watch should vibrate");
                 vibrate();
@@ -624,17 +597,18 @@ setInterval(function() {
     }
 }, 300000); // timeout for 5 minutes
 
+/* -------------------------------------------------------------------------------------
+    Name        : vibrate
+    Description : trigger a 2 seconds vibration on the watch and switch on the screen.
+    Parameters  :
+        none
+    Return      : none
+------------------------------------------------------------------------------------- */
+
 function vibrate() {
-    /**
-     * Causes the watch to vibrate, and forces the start of the feedback.
-     *
-     * If there are no questions selected then it blocks the time until a response is given.
-     * If there are questions in the flow, then it starts the flow
-     */
-
     vibration.start("alert");
-    showFace(false, true);
-
+    viewDisplay(viewsArray[0]);
+    viewsStack = initStack(viewsStack);
     //Stop vibration after 2 seconds
     setTimeout(function() {
         vibration.stop()

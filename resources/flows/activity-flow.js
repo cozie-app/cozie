@@ -6,16 +6,16 @@ export default [
 		questionText: "Would you prefer to be?",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "air"
-            },
-            10: {
-                next: "air"
-            },
-            11: {
-                next: "air"
-            }
-        },
+			9: {
+				next: "air"
+			},
+			10: {
+				next: "air"
+			},
+			11: {
+				next: "air"
+			}
+		},
 		iconText: ["Cooler", "Warmer", "No change"],
 		iconColors: ["fb-cyan", "fb-orange", "fb-green"],
 		iconImages: [
@@ -31,16 +31,16 @@ export default [
 		questionText: "Would you prefer to be?",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "freshair"
-            },
-            10: {
-                next: "freshair"
-            },
-            11: {
-                next: "freshair"
-            }
-        },
+			9: {
+				next: "freshair"
+			},
+			10: {
+				next: "freshair"
+			},
+			11: {
+				next: "freshair"
+			}
+		},
 		iconText: ["More air", "Less air", "No change"],
 		iconColors: ["fb-cyan", "fb-orange", "fb-green"],
 		iconImages: [
@@ -56,16 +56,13 @@ export default [
 		questionText: "Would you prefer to be?",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "light"
-            },
-            10: {
-                next: "light"
-            },
-            11: {
-                next: "light"
-            }
-        },
+			10: {
+				next: "light"
+			},
+			11: {
+				next: "light"
+			}
+		},
 		iconText: ["Fresh air", "No change", " "],
 		iconColors: ["fb-cyan", "fb-green", "fb-black"],
 		iconImages: [
@@ -81,16 +78,16 @@ export default [
 		questionText: "Light preference",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "noise"
-            },
-            10: {
-                next: "noise"
-            },
-            11: {
-                next: "noise"
-            }
-        },
+			9: {
+				next: "noise"
+			},
+			10: {
+				next: "noise"
+			},
+			11: {
+				next: "noise"
+			}
+		},
 		iconText: ["Dimmer", "Brighter", "No Change"],
 		iconColors: ["fb-blue", "fb-peach", "fb-green"],
 		iconImages: [
@@ -105,16 +102,16 @@ export default [
 		requiresAnswer: [],
 		questionText: "Sound preference",
 		answerDirectTo: {
-            9: {
-                next: "clothing"
-            },
-            10: {
-                next: "clothing"
-            },
-            11: {
-                next: "clothing"
-            }
-        },
+			9: {
+				next: "clothing"
+			},
+			10: {
+				next: "clothing"
+			},
+			11: {
+				next: "clothing"
+			}
+		},
 		questionSecondText: "",
 		iconText: ["Quiter", "Louder", "No Change"],
 		iconColors: ["fb-orange", "fb-purple", "fb-green"],
@@ -131,16 +128,16 @@ export default [
 		questionText: "What are you wearing?",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "indoorOutdoor"
-            },
-            10: {
-                next: "indoorOutdoor"
-            },
-            11: {
-                next: "indoorOutdoor"
-            }
-        },
+			9: {
+				next: "indoorOutdoor"
+			},
+			10: {
+				next: "indoorOutdoor"
+			},
+			11: {
+				next: "indoorOutdoor"
+			}
+		},
 		iconText: ["Medium", "Heavy", "Light"],
 		iconColors: ["fb-peach", "fb-peach", "fb-peach"],
 		iconImages: [
@@ -156,13 +153,13 @@ export default [
 		questionText: "Are you?",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "location"
-            },
-            10: {
-                next: "location"
-            }
-        },
+			10: {
+				next: "location"
+			},
+			11: {
+				next: "posture"
+			}
+		},
 		iconText: ["Outdoor", "Indoor"],
 		iconColors: ["fb-peach", "fb-peach"],
 		iconImages: [
@@ -177,16 +174,16 @@ export default [
 		questionText: "Where are you?",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "activityType"
-            },
-            10: {
-                next: "activityType"
-            },
-            11: {
-                next: "activityType"
-            }
-        },
+			9: {
+				next: "activityType"
+			},
+			10: {
+				next: "activityType"
+			},
+			11: {
+				next: "activityType"
+			}
+		},
 		iconText: ["MeetingR", "Office", "Cafeteria"],
 		iconColors: ["fb-peach", "fb-peach", "fb-peach"],
 		iconImages: [
@@ -202,16 +199,16 @@ export default [
 		questionText: "Which activity are you doing?",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "posture"
-            },
-            10: {
-                next: "posture"
-            },
-            11: {
-                next: "posture"
-            }
-        },
+			9: {
+				next: "posture"
+			},
+			10: {
+				next: "posture"
+			},
+			11: {
+				next: "posture"
+			}
+		},
 		iconText: ["Call", "Work(focus)", "Coffee/Lunch"],
 		iconColors: ["fb-peach", "fb-peach", "fb-peach"],
 		iconImages: [
@@ -227,18 +224,18 @@ export default [
 		questionText: "Are you?",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "activityIntensity"
-            },
-            10: {
-                next: "activityIntensity"
-            }
-        },
+			10: {
+				next: "activityIntensity"
+			},
+			11: {
+				next: "activityIntensity"
+			}
+		},
 		iconText: ["Standing", "Sitting"],
 		iconColors: ["fb-peach", "fb-peach"],
 		iconImages: [
 			"images/icons/posture/standing.png",
-			"images/icons/posture/sitting.png", 
+			"images/icons/posture/sitting.png",
 		],
 	},
 	{
@@ -248,16 +245,16 @@ export default [
 		questionText: "Which activity intensity?",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "numberPeople"
-            },
-            10: {
-                next: "numberPeople"
-            },
-            11: {
-                next: "numberPeople"
-            }
-        },
+			9: {
+				next: "numberPeople"
+			},
+			10: {
+				next: "numberPeople"
+			},
+			11: {
+				next: "numberPeople"
+			}
+		},
 		iconText: ["Middle", "High", "Low"],
 		iconColors: ["fb-peach", "fb-peach", "fb-peach"],
 		iconImages: [
@@ -273,16 +270,16 @@ export default [
 		questionText: "Currently, you are (with)",
 		questionSecondText: "",
 		answerDirectTo: {
-            9: {
-                next: "anyChange"
-            },
-            10: {
-                next: "anyChange"
-            },
-            11: {
-                next: "anyChange"
-            }
-        },
+			9: {
+				next: "anyChange"
+			},
+			10: {
+				next: "anyChange"
+			},
+			11: {
+				next: "anyChange"
+			}
+		},
 		iconText: ["<=3 people", ">3 people", "Alone"],
 		iconColors: ["fb-peach", "fb-peach", "fb-peach"],
 		iconImages: [
@@ -298,13 +295,13 @@ export default [
 		questionText: "Any changes in activity,",
 		questionSecondText: "clo, loc in past 10m?",
 		answerDirectTo: {
-            9: {
-                next: "end"
-            },
-            10: {
-                next: "end"
-            }
-        },
+			10: {
+				next: "end"
+			},
+			11: {
+				next: "end"
+			}
+		},
 		iconText: ["Yes", "No"],
 		iconColors: ["fb-peach", "fb-peach"],
 		iconImages: [
