@@ -537,7 +537,6 @@ setInterval(function() {
     const currentDate = new Date(); // get today's date
     const currentDay = currentDate.getDay(); // get today's day
     const currentHour = currentDate.getHours();
-    console.log("Current hour: " + currentHour);
 
     console.log("starting to evaluate whether the watch need to vibrate or not");
     try {
@@ -563,7 +562,6 @@ setInterval(function() {
     } else {
         const maxHour = 0
     }
-
 
     if (!completedVibrationCycleDay) {
         // Ensure that the next vibration isn't passed
