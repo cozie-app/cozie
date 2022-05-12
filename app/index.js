@@ -522,23 +522,34 @@ const bodyErrorLabel = errorLabel.getElementById("copy");
 // define what at what hour of the day each buzz option would buzz at
 const buzzOptions = {
     0: [],
-    1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-    2: [9, 11, 13, 15, 17, 19, 21],
-    3: [9, 12, 15, 18, 21]
+    1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+    2: [9, 11, 13, 15, 17, 19],
+    3: [9, 12, 15, 18]
 };
 
-let buzzSelection = 2; // default value
+let buzzSelection = 1; // default value
 let vibrationTimeArray = buzzOptions[buzzSelection];
 let completedVibrationCycleDay = false; // keeps in memory weather the watch has vibrated at all hours
-let startDay = new Date().getDay(); // get the day when the app started for the first time
 
-// this function runs every ten minutes to ensure that the Fitbit buzzes when selected
+// Shift the array to the next vibration hour
+const currentDate = new Date();
+const currentHour = currentDate.getHours();
+let testedHoursNumber = 0;
+while (vibrationTimeArray[0] <= currentHour && testedHoursNumber < vibrationTimeArray.length)
+{
+    // this remove the first hour of the array and push it to the end
+    console.log("Hour tested: " + vibrationTimeArray[0]);
+    const firstElement = vibrationTimeArray.shift();
+    vibrationTimeArray.push(firstElement);
+    testedHoursNumber++;
+}
+
+// Reminder test (this function runs every 5 min)
 setInterval(function() {
     const currentDate = new Date(); // get today's date
-    const currentDay = currentDate.getDay(); // get today's day
     const currentHour = currentDate.getHours();
 
-    console.log("starting to evaluate whether the watch need to vibrate or not");
+    console.log("Starting to evaluate whether the watch need to vibrate or not");
     try {
         const buzzSelection = parseInt(fs.readFileSync("buzzSelection.txt", "json").buzzSelection); // read user selection
         vibrationTimeArray = buzzOptions[buzzSelection];
@@ -550,11 +561,6 @@ setInterval(function() {
         }
     }
 
-    if (currentDay !== startDay) { // if it is a new day check user
-        startDay = currentDay;
-        completedVibrationCycleDay = false;
-    }
-
     if (vibrationTimeArray.length != 0) {
         const maxHour = vibrationTimeArray.reduce(function(a, b) {
             return Math.max(a, b);
@@ -563,18 +569,7 @@ setInterval(function() {
         const maxHour = 0
     }
 
-    if (!completedVibrationCycleDay) {
-        // Ensure that the next vibration isn't passed
-        let testedHoursNumber = 0;
-        while (vibrationTimeArray[0] < currentHour && testedHoursNumber < vibrationTimeArray.length)
-        {
-            // this remove the first hour of the array and push it to the end
-            console.log("Hour tested: " + vibrationTimeArray[0]);
-            const firstElement = vibrationTimeArray.shift();
-            vibrationTimeArray.push(firstElement);
-            testedHoursNumber++;
-        }
-        // now hour_index equals the number of hours already passed
+    if (currentHour <= maxHour) {
         if (testedHoursNumber != vibrationTimeArray.length)
         {
             console.log("Next hour of vibration : " + vibrationTimeArray[0]);
@@ -584,16 +579,12 @@ setInterval(function() {
                 vibrate();
                 const firstElement = vibrationTimeArray.shift();
                 vibrationTimeArray.push(firstElement);
-                if (currentHour === maxHour) {
-                    completedVibrationCycleDay = true;
-                }
-            } else if (vibrationTimeArray[0] < currentHour) { // the vector is shifted by one since the that hour is already passed
-                const firstElement = vibrationTimeArray.shift();
-                vibrationTimeArray.push(firstElement);
             }
         }
     }
+    console.log("Buzz variables: currentHour = " + currentHour + ", vibrationTimeArray[0] = " + vibrationTimeArray[0] + ", testedHoursNumber = " + testedHoursNumber);
 }, 300000); // timeout for 5 minutes
+
 
 /* -------------------------------------------------------------------------------------
     Name        : vibrate
