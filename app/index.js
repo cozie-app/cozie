@@ -523,8 +523,8 @@ const bodyErrorLabel = errorLabel.getElementById("copy");
 const buzzOptions = {
     0: [],
     1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-    2: [9, 11, 13, 15, 17, 19],
-    3: [9, 12, 15, 18]
+    2: [9, 11, 13, 15, 17, 19, 21],
+    3: [9, 12, 15, 18, 21]
 };
 
 let buzzSelection = 1; // default value
@@ -569,17 +569,17 @@ setInterval(function() {
         const maxHour = 0
     }
 
-    if (currentHour <= maxHour) {
-        if (testedHoursNumber != vibrationTimeArray.length)
-        {
-            console.log("Next hour of vibration : " + vibrationTimeArray[0]);
-            if (vibrationTimeArray[0] == currentHour && bodyPresence.present) { // REMOVED : && today.adjusted.steps > 300 -- vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+    if (testedHoursNumber != vibrationTimeArray.length)
+    {
+        console.log("Next hour of vibration : " + vibrationTimeArray[0]);
+        if (vibrationTimeArray[0] == currentHour) {
+            if (bodyPresence.present) { // REMOVED : && today.adjusted.steps > 300 -- vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
                 // this ensures that the watch does not vibrate if the user is still sleeping
                 console.log("The watch should vibrate");
                 vibrate();
-                const firstElement = vibrationTimeArray.shift();
-                vibrationTimeArray.push(firstElement);
             }
+            const firstElement = vibrationTimeArray.shift();
+            vibrationTimeArray.push(firstElement);
         }
     }
     console.log("Buzz variables: currentHour = " + currentHour + ", vibrationTimeArray[0] = " + vibrationTimeArray[0] + ", testedHoursNumber = " + testedHoursNumber);
