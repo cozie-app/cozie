@@ -18,7 +18,7 @@ export default [{
             next: "indoorOutdoor"
         }
     },
-    iconText: ["Cooler", "Warmer", "No change", "somethingElse"],
+    iconText: ["Cooler", "Warmer", "No change", "Something else"],
     iconColors: ["fb-cyan", "fb-orange", "fb-green", "fb-yellow"],
     iconImages: [
         "images/icons/prefer_cold.png",

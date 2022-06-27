@@ -27,9 +27,6 @@ const iconList = {
     light: icon_light,
 }
 
-
-
-
 function mySettings(props) {
     return (
         <Page>
@@ -62,6 +59,92 @@ function mySettings(props) {
                     }
                 />
             </Section>
+
+            
+
+            {/* -------------------------------------------------------------------------------------------------------------------------------------
+            Description        :   optional section to allow users to select questions he wants to display
+            Question flow type :   main question flow, or any question flow which does not use different "answersDirectTo" property per question.
+            
+            See documentation  :   https://cozie.app/docs/change-settings
+            ------------------------------------------------------------------------------------------------------------------------------------- */}
+
+            {/* <Section>
+                <Select
+                    label={`Select Questions`}
+                    multiple
+                    settingsKey="flow_index"
+                    options={[
+                        {
+                            name: "Thermal preference",
+                            value: "showThermal",
+                            subLabel: "Cooler, No change, Warmer",
+                            img: iconList.thermal
+                        },
+                        {
+                            name: "Light preference",
+                            value: "showLight",
+                            subLabel: "Dimmer, No change, Brighter",
+                            img: iconList.light
+                        },
+                        {
+                            name: "Noise preference",
+                            value: "showNoise",
+                            subLabel: "Quieter, No change, Louder",
+                            img: iconList.noise
+                        },
+                        {
+                            name: "Indoor or outdoor",
+                            value: "showIndoor",
+                            subLabel: "Indoor, Outdoor",
+                            img: iconList.indoorOutdoor
+                        },
+                        {
+                            name: "Where are you?",
+                            value: "showInOffice",
+                            subLabel: "Home, Office, Other",
+                            img: iconList.location
+                        },
+                        {
+                            name: "Mood",
+                            value: "showMood",
+                            subLabel: "Good, Bad or Neither",
+                            img: iconList.mood
+                        },
+                        {
+                            name: "Clothing",
+                            value: "showClothing",
+                            subLabel: "Very light, Light, Medium, Heavy",
+                            img: iconList.clothing
+                        },
+                        {
+                            name: "Perceived air movement",
+                            value: "showVelocity",
+                            subLabel: "Perceived, Not perceived",
+                            img: iconList.icon_velocity
+                        },
+                        {
+                            name: "Activity previous 10 minutes",
+                            value: "showMet",
+                            subLabel: "Resting, Sitting, Standing, Exercising",
+                            img: iconList.icon_met
+                        },
+                        {
+                            name: "Any changes location/activity",
+                            value: "showMet",
+                            subLabel: "No, Yes",
+                            img: iconList.icon_change
+                        }
+                    ]}
+                    renderItem={option => (
+                        <TextImageRow
+                            label={option.name}
+                            sublabel={option.subLabel}
+                            icon={option.img}
+                        />
+                    )}
+                />
+            </Section> */}
 
             <Section>
                 <Select

@@ -38,6 +38,7 @@ const sidebars = {
         "installation",
         "intro-fitbit-sdk",
         "change-questions",
+        "change-settings",
         "uploading-to-appstore",
         "datatransfer-between-phone-and-fitbit",
         "interacting-with-gui-elements",

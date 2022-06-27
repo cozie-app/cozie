@@ -8,8 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Cozie, a Fitbit Clockface for IEQ and physiological data collection',
   tagline: 'Allows building occupants to provide feedback in real time',
-  url: 'https://cozie-with-website.netlify.app',
-  baseUrl: '/',
+  url: 'https://thepebblesfr.github.io',
+  baseUrl: '/cozie/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
@@ -17,7 +17,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'ThePebblesFr', // Usually your GitHub org/user name.
-  projectName: 'cozie-website', // Usually your repo name.
+  projectName: 'cozie', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -77,7 +77,7 @@ const config = {
             items: [
               {
                 label: 'Introduction to cozie',
-                to: '/docs/intro',
+                to: '/docs/home',
               },
             ],
           },

@@ -67,13 +67,6 @@ const contributors = [
     link: "https://federicotartarini.github.io",
   },
   {
-    name: <>Pierre Garreau</>,
-    imageUrl: "img/pierregarreau.png",
-    role: <>Developer</>,
-    profession: <>Engineering Student at Mines Saint-Etienne, France</>,
-    link: "https://www.linkedin.com/in/pierre-garreau/",
-  },
-  {
     name: <>Kairat Talantbekov</>,
     imageUrl: "img/kairat.jpeg",
     role: <>Front End</>,

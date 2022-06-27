@@ -162,6 +162,11 @@ let viewsArray = [{
     viewQuestion: null
 }];
 
+/* -----------------------------------------------------------------------------------------------
+                                        INITIALIZATIONS
+----------------------------------------------------------------------------------------------- */
+console.log('------ Initialization started ------');
+
 for (let index = 0; index < questionsFlow.length; index++)
 {
     viewsArray.push(jsonQuestionToView(questionsFlow, index));
@@ -172,9 +177,11 @@ let nextView;                            // Temp for the next view to be shown
 let viewsStack = [];                     // Initialization of the stack
 viewsStack = initStack(viewsStack);
 
+console.log('------ Initialization ended ------');
 /* -----------------------------------------------------------------------------------------------
                                           MAIN PROCESS
 ----------------------------------------------------------------------------------------------- */
+console.log('------ Main process started ------');
 
 // Show clockface
 viewDisplay(viewsArray[0]);
@@ -183,7 +190,6 @@ viewDisplay(viewsArray[0]);
 for (const button of allButtons)
 {
     button.obj.addEventListener('mousedown', () => {
-        console.log('Button clicked: ' + button.attribute);
         switch (button.attribute)
         {
             case 'startSurvey':
@@ -218,9 +224,10 @@ for (const button of allButtons)
     });
 }
 
+console.log('------ Main process ended ------');
 /* -------------------------------------------------------------------------------------
     Name        : initStack
-    Description : initialize the stack of views.
+    Description : initialize the stack of views with the clockface and the clockblock.
     Parameters  :
         - stack     : stack to initialize
     Return      : initialized stack.
@@ -514,6 +521,41 @@ function viewDisplay(view)
     vibration.start("bump");
 }
 
+/* -------------------------------------------------------------------------------------
+    Name        : refreshViews
+    Description : refresh the views to be shown according to the settings (Depending on
+                  the version of your cozie and your question flow, this function might
+                  not be used).
+    Parameters  :
+        none
+    Return      : none
+------------------------------------------------------------------------------------- */
+
+function refreshViews() {
+    let settingsStored = false;
+    try
+    {
+        flowFileRead = fs.readFileSync("flow.txt", "json");
+        flowSelector = flowFileRead.flowSelector;
+        settingsStored = true;
+    }
+    catch (e)
+    {
+        console.log('/!\\ ERROR:' + e);
+        settingsStored = false;
+    }
+
+    viewsArray = [];
+    for (let index = 0; index < questionsFlow.length; index++)
+    {
+        console.log('Flow selector value :' + flowSelector[index]);
+        if (flowSelector[index])
+        {
+            viewsArray.push(jsonQuestionToView(questionsFlow, index));
+        }
+    }
+}
+
 // ------- BUZZ SELECTOR -------------------
 
 const errorLabel = document.getElementById("errorLabel");
@@ -523,13 +565,12 @@ const bodyErrorLabel = errorLabel.getElementById("copy");
 const buzzOptions = {
     0: [],
     1: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-    2: [9, 11, 13, 15, 17, 19, 21],
-    3: [9, 12, 15, 18, 21]
+    2: [9, 11, 13, 15, 17, 19],
+    3: [9, 12, 15, 18]
 };
 
 let buzzSelection = 1; // default value
 let vibrationTimeArray = buzzOptions[buzzSelection];
-let completedVibrationCycleDay = false; // keeps in memory weather the watch has vibrated at all hours
 
 // Shift the array to the next vibration hour
 const currentDate = new Date();
@@ -622,7 +663,6 @@ function mapFlows(flowSelector) {
             questionsFlow.push(totalFlow[index]);
         })
     }
-    // console.log(JSON.stringify(questionsFlow))
 }
 
 // retain selection incase the watch runs out of battery or crashes
@@ -647,6 +687,13 @@ try {
 messaging.peerSocket.onmessage = function(evt) {
     console.log("settings received on device");
     console.log(JSON.stringify(evt));
+
+    /* ------------------------------------------------------------------------------------------------------------
+        The next line must be commented out if you are note using the flow_index section in the settings.jsx file
+
+        See documentation  :   https://cozie.app/docs/change-settings
+    ------------------------------------------------------------------------------------------------------------ */
+    //refreshViews();
 
     if (evt.data.key === 'flow_index') {
         flowSelector = evt.data.data;
@@ -691,6 +738,13 @@ function processAllFiles() {
         if (fileData.time > flowSelectorUpdateTime) {
             flowSelectorUpdateTime = fileData.time;
             if (fileData.key === 'flow_index') {
+                /* ------------------------------------------------------------------------------------------------------------
+                    The next line must be commented out if you are note using the flow_index section in the settings.jsx file
+
+                    See documentation  :   https://cozie.app/docs/change-settings
+                ------------------------------------------------------------------------------------------------------------ */
+                // refreshViews();
+
                 flowSelector = fileData.data;
                 mapFlows(flowSelector);
                 console.log("settings updated via file transfer");
