@@ -106,7 +106,13 @@ const contributors = [
     profession: <>Assistant Professor at NUS</>,
     link: "https://www.linkedin.com/in/claytonmiller/",
   },
-  
+  {
+    name: <>Pierre Garreau</>,
+    imageUrl: "img/pierregarreau.png",
+    role: <>UI/IX Developer</>,
+    profession: <>Engineering student at Mines, France</>,
+    link: "https://www.linkedin.com/in/pierregarreau/",
+  },
 ];
 
 function Contributor({ imageUrl, name, profession, role, link }) {
