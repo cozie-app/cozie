@@ -8,7 +8,7 @@ import styles from './index.module.css';
 const features = [
   {
     title: <>Free and Easy to Use</>,
-    imageUrl: "img/undraw_watch_application.svg",
+    imageUrl: "img/undraw_watch_application.png",
     description: (
       <>
         Building occupants can complete a right-here-right-now survey directly
@@ -19,7 +19,7 @@ const features = [
   },
   {
     title: <>Open Source</>,
-    imageUrl: "img/undraw_dev_productivity_umsq.svg",
+    imageUrl: "img/undraw_dev_productivity_umsq.png",
     description: (
       <>
         Cozie is an Open Source project and together with{" "}
@@ -29,6 +29,18 @@ const features = [
       </>
     ),
   },
+  // {
+  //   title: <>Open Source</>,
+  //   imageUrl: "img/undraw_dev_productivity_umsq.png",
+  //   description: (
+  //     <>
+  //       Cozie is an Open Source project and together with{" "}
+  //       <a href={"https://cozie-apple.app"}>Cozie Apple</a>, allows researchers to
+  //       focus on the data collection. We have taken care of all the programming
+  //       for you!
+  //     </>
+  //   ),
+  // }
 ];
 
 function Feature({ imageUrl, title, description }) {

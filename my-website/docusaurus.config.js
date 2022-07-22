@@ -8,15 +8,15 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Cozie, a Fitbit Clockface for IEQ and physiological data collection',
   tagline: 'Allows building occupants to provide feedback in real time',
-  url: 'https://thepebblesfr.github.io',
-  baseUrl: '/cozie/',
+  url: 'https://cozie.app',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'ThePebblesFr', // Usually your GitHub org/user name.
+  organizationName: 'cozie-app', // Usually your GitHub org/user name.
   projectName: 'cozie', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
