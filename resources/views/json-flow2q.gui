@@ -1,0 +1,26 @@
+<!-- 2 QUESTION FLOW  -->
+<svg id="json-flow2" display="none">
+
+<g id="main-question">
+    <text id="question-text2" x="50%" y="11%" class="comfyLabel"></text>
+    <text id="question-second-text2" x="50%" y="21%" class="comfyLabel"></text>
+</g>
+
+<g id="new-button-right2" pointer-events="visible" display="none">
+    <circle id="circle-right2" cx="75%" cy="50%" r="35" fill="red" />
+    <circle id="circle-push-right2" cx="75%" cy="50%" r="50" opacity="0" fill="red"/>
+    <image id="image-right2" x="75%-30" y="50%-30" width="60" height="60" href="images/icons/neutral.png" load="sync" />
+    <text id= "button-text-right2" x="75%" y="50%+60" class= "comfyLabel">Lower</text>
+    <text id= "button-second-text-right2" x="75%" y="50%+80" class= "comfyLabel">  </text>
+</g>
+
+<g id="new-button-left2" pointer-events="visible" display="none">
+    <circle id="circle-left2" cx="25%" cy="50%" r="35" fill="red" />
+    <circle id="circle-push-left2" cx="25%" cy="50%" r="50" opacity="0" fill="red"/>
+    <image id="image-left2" x="25%-30" y="50%-30" width="60" height="60" href="images/icons/neutral.png" load="sync" />
+    <text id= "button-text-left2" x="25%" y="50%+60" class= "comfyLabel">Lower</text>
+    <text id= "button-second-text-left2" x="25%" y="50%+80" class= "comfyLabel">  </text>
+</g>
+
+</svg>
+

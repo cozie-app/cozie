@@ -41,6 +41,7 @@ Copyright © 2018-2020, BUDS Lab
  
  1. `npx fitbit-build` will build the project
  2. `npx fitbit` opens the browser, and logs into your fitbit account. From here you can connect to devices and install the app
+ 3. `bi` to building and install the application
 
  ### Document structure sent by Cozie
  ```python

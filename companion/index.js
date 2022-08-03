@@ -1,4 +1,4 @@
-import * as messaging from "messaging";
+import {peerSocket} from "messaging";
 import {settingsStorage} from "settings";
 import {me} from "companion";
 import * as cbor from "cbor";
@@ -16,7 +16,7 @@ settingsStorage.onchange = function (evt) {
 
 //Fire via event listener of settings storage
 settingsStorage.addEventListener("change", function () {
-    console.log("settings storage via addEventListner fired (route 2 - disabled). No code here")
+    console.log("settings storage via addEventListener fired (route 2 - disabled). No code here")
     //nothing for now, however this could be another method
 });
 
@@ -47,9 +47,9 @@ function sendValue(key, val) {
 //Fire via both peer socket artillery cannon, and outbox guided missile
 function sendSettingData(data) {
     // If we have a MessageSocket, send the data to the device
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-        console.log(data);
-        messaging.peerSocket.send({data: data.value.selected, time: data.time, key: data.key});
+    if (peerSocket.readyState === peerSocket.OPEN) {
+        // console.log(data);
+        peerSocket.send({data: data.value.selected, time: data.time, key: data.key});
         console.log("data sent from companion")
     } else {
         // Note that the index.js is checking the time, and will only update via file transfer if the time made in data.time is greater
@@ -71,10 +71,11 @@ function sendSettingData(data) {
 //-------- READING DATA FROM WATCH -----------
 
 //Listen for peer socket from fitbit to send data to Influx
-messaging.peerSocket.addEventListener("message", (evt) => {
+peerSocket.addEventListener("message", (evt) => {
     //get user id
     if (evt.data) {
         // AWS API gateway link, triggers lambda function
+        console.log('data recieved at companion, preparing to send to influx')
         sendDataToInflux(evt.data)
     } else {
         console.log("Error! Can not send request to server.")
@@ -128,6 +129,11 @@ function sendDataToInflux(data) {
         if (error instanceof TypeError) {
             experiment_id = "undefined"
         }}
+
+    try {api_key = JSON.parse(settingsStorage.getItem('api_key')).name}
+    catch (error) {
+        api_key = "UBQpWptj9HaBJVAVEDOZ14aQoNh7EpTK9zccvBTa"
+    }
 
     try {api_key = JSON.parse(settingsStorage.getItem('api_key')).name}
     catch (error) {

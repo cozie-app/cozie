@@ -1,96 +1,96 @@
 #timeLabel {
-  font-size: 68;
-  font-family: Seville-Book;
-  text-length: 32;
-  text-anchor: middle;
-  x: 50%-10;
-  y: 30%;
-  fill: #ffffff;
+    font-size: 68;
+    font-family: Seville-Book;
+    text-length: 32;
+    text-anchor: middle;
+    x: 50%-10;
+    y: 30%;
+    fill: #ffffff;
 }
 
 #secLabel {
-  font-size: 30;
-  font-family: Seville-Book;
-  text-length: 32;
-  text-anchor: start;
-  x: 70%;
-  y: 30%;
-  fill: #a0a0a0;
+    font-size: 30;
+    font-family: Seville-Book;
+    text-length: 32;
+    text-anchor: start;
+    x: 70%;
+    y: 30%;
+    fill: #a0a0a0;
 }
 
 #hrm {
-  font-size: 30;
-  font-family: Seville-Book;
-  text-length: 32;
-  text-anchor: start;
-  x: 300;
-  y: 12%;
-  fill: #a0a0a0;
-  /*fill: #38f8df;*/
+    font-size: 30;
+    font-family: Seville-Book;
+    text-length: 32;
+    text-anchor: start;
+    x: 300;
+    y: 12%;
+    fill: #a0a0a0;
+    /*fill: #38f8df;*/
 }
 
 #steps {
-  font-size: 30;
-  font-family: Seville-Book;
-  text-length: 32;
-  text-anchor: start;
-  x: 35;
-  y: 12%;
-  fill: #a0a0a0;
-  /*x: 260;
+    font-size: 30;
+    font-family: Seville-Book;
+    text-length: 32;
+    text-anchor: start;
+    x: 35;
+    y: 12%;
+    fill: #a0a0a0;
+    /*x: 260;
   y: 15%; */
-   /*  fill: #38f8df; */
+    /*  fill: #38f8df; */
 }
 
 #hrmIcon {
-  x: 270;
-  y: 4%;
-  width: 22;
-  height: 22;
-  fill: #a0a0a0;
+    x: 270;
+    y: 4%;
+    width: 22;
+    height: 22;
+    fill: #a0a0a0;
 }
 
 #stepIcon {
-  x: 7;
-  y: 4%;
-  width: 22;
-  height: 22;
-  fill: #a0a0a0;
+    x: 7;
+    y: 4%;
+    width: 22;
+    height: 22;
+    fill: #a0a0a0;
 }
 
 #dateLabel {
-  font-size: 25;
-  font-family: Colfax;
-  text-length: 32;
-  text-anchor: middle;
-  x: 50%;
-  y: 40%;
-  fill: #a0a0a0;
+    font-size: 25;
+    font-family: Colfax;
+    text-length: 32;
+    text-anchor: middle;
+    x: 50%;
+    y: 40%;
+    fill: #a0a0a0;
 }
 
 #voteLogLabel {
-  font-size: 25;
-  font-family: Colfax;
-  text-length: 32;
-  text-anchor: middle;
-  x: 50%;
-  y: 10%;
-  fill: #a0a0a0;
+    font-size: 25;
+    font-family: Colfax;
+    text-length: 32;
+    text-anchor: middle;
+    x: 50%;
+    y: 10%;
+    fill: #a0a0a0;
 }
 
 #errorLabel {
-  font-size: 10;
-  font-family: Colfax;
-  y: 5%;
-  fill: #a0a0a0;
+    font-size: 10;
+    font-family: Colfax;
+    y: 5%;
+    fill: #a0a0a0;
 }
 
 .comfyLabel {
-  font-size: 25;
-  font-family: Colfax;
-  text-length: 32;
-  text-anchor: middle;
-  fill: #a0a0a0;
+    font-size: 25;
+    font-family: Colfax;
+    text-length: 32;
+    text-anchor: middle;
+    fill: #a0a0a0;
 }
 
 .circle_comfy {
@@ -99,13 +99,28 @@
 }
 
 #storageLabel {
-  font-size: 20;
-  font-family: Seville-Book;
-  text-length: 32;
-  text-anchor: start;
-  x: 25;
-  y: 98%;
-  fill: #a0a0a0;
+    font-size: 20;
+    font-family: Seville-Book;
+    text-length: 32;
+    text-anchor: start;
+    x: 25;
+    y: 98%;
+    fill: #a0a0a0;
 }
+
+.tile-list-item {
+    height: 53;
+}
+
+.tile-list-item text {
+    height: 32;
+    font-family: System-Regular;
+    fill: "white";
+}
+
+.button-left {
+    fill: blueviolet;
+}
+
 
 /* 348x250 */

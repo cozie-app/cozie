@@ -1,67 +1,11 @@
 <svg class="background">
   <link rel="import" href="components/buttons.gui" />
   <link rel="import" href="views/clockface.gui" />
-  <link rel="import" href="views/indoor-outdoor.gui" />
-  <link rel="import" href="views/warm-cold.gui" />
-  <link rel="import" href="views/bright-dim.gui" />
-  <link rel="import" href="views/loud-quite.gui" />
-  <link rel="import" href="views/happy-sad.gui" />
-  <link rel="import" href="views/in-office.gui" />
-  <link rel="import" href="views/clothing.gui" />
   <link rel="import" href="views/thankyou.gui" />
   <link rel="import" href="views/gui_stop_survey.gui" />
   <link rel="import" href="views/clockblock.gui" />
-  <link rel="import" href="views/gui_air_vel.gui" />
-  <link rel="import" href="views/metabolic_rate.gui" />
-  <link rel="import" href="views/any_change.gui" />
-
-  <g id="small-any-change" opacity="0.2">
-    <circle cx="85" cy="240" r="6" fill="fb-red"  />
-  </g>
-
-  <g id="small-velocity" opacity="0.2">
-    <circle cx="105" cy="240" r="6" fill="#61C3FF"  />
-    <image id="image" x="100" y="235" width="10" height="10" href="images/icons/air_vel_low.png" load="sync" />
-  </g>
-
-  <g id="small-thermal" opacity="0.2">
-    <circle cx="125" cy="240" r="6" fill="orange"  />
-    <image id="image" x="120" y="235" width="10" height="10" href="images/icons/prefer_warmer.png" load="sync" />
-  </g>
-
-  <g id="small-light" opacity="0.2">
-    <circle  cx="145" cy="240" r="6" fill="fb-peach"  />
-    <image id="image" x="140" y="235" width="10" height="10" href="images/icons/prefer_brighter.png" load="sync" />
-  </g>
-
-  <g id="small-noise" opacity="0.2">
-    <circle  cx="165" cy="240" r="6" fill="#FF6347"  />
-    <image id="image" x="160" y="235" width="10" height="10" href="images/icons/prefer_louder.png" load="sync" />
-  </g>
-
-  <g id="small-indoor" opacity="0.2">
-    <circle cx="185" cy="240" r="6" fill="#FFCC33"  />
-    <image id="image" x="180" y="235" width="10" height="10" href="images/icons/outdoor.png" load="sync" />
-  </g>
-
-  <g id="small-office" opacity="0.2">
-    <circle cx="205" cy="240" r="6" fill="#7090B5"  />
-    <image id="image" x="200" y="235" width="10" height="10" href="images/icons/home.png" load="sync" />
-  </g>
-
-  <g id="small-mood" opacity="0.2">
-    <circle cx="225" cy="240" r="6" fill="#20B2AA"  />
-    <image id="image" x="220" y="235" width="10" height="10" href="images/icons/happy.png" load="sync" />
-  </g>
-
-  <g id="small-clothing" opacity="0.2">
-    <circle cx="245" cy="240" r="6" fill="#61C3FF"  />
-    <image id="image" x="240" y="235" width="10" height="10" href="images/icons/light_clothes.png" load="sync" />
-  </g>
-
-  <g id="small-met" opacity="0.2">
-    <circle cx="265" cy="240" r="6" fill="#7090B5"  />
-    <image id="image" x="260" y="235" width="10" height="10" href="images/icons/met_exercising.png" load="sync" />
-  </g>
+  <link rel="import" href="views/json-flow.gui" />
+  <link rel="import" href="views/json-flow2q.gui" />
+  <link rel="import" href="views/json-flow4q.gui" />
 </svg>
 

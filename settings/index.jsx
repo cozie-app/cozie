@@ -1,15 +1,31 @@
-import thermal from '../resources/images/icons/prefer_warmer.png';
-import light from '../resources/images/icons/prefer_brighter.png';
-import noise from '../resources/images/icons/prefer_louder.png';
-import indoorOutdoor from '../resources/images/icons/out_in.png';
-import location from '../resources/images/icons/home.png';
-import mood from '../resources/images/icons/not-comfy.png';
-import clothing from '../resources/images/icons/light_clothes.png';
+import noSound from '../resources/images/icons/prefer_quieter.png';
+import sound from '../resources/images/icons/prefer_louder.png';
+
+import icon_thermal from '../resources/images/icons/prefer_warmer.png';
+import icon_light from '../resources/images/icons/prefer_brighter.png';
+import icon_noise from '../resources/images/icons/prefer_louder.png';
+import icon_indoorOutdoor from '../resources/images/icons/outdoor.png';
+import icon_location from '../resources/images/icons/home.png';
+import icon_mood from '../resources/images/icons/not-comfy.png';
+import icon_clothing from '../resources/images/icons/light_clothes.png';
 import icon_velocity from '../resources/images/icons/air_vel_high.png';
 import icon_met from '../resources/images/icons/met_exercising.png';
 import icon_change from '../resources/images/icons/outdoor.png';
-import noSound from '../resources/images/icons/prefer_quieter.png';
-import sound from '../resources/images/icons/prefer_louder.png';
+
+// map names of the json-flow to imported icons
+// TODO: There is probably a better way to do this with the URL
+const iconList = {
+    thermal: icon_thermal,
+    indoorOutdoor: icon_indoorOutdoor,
+    location: icon_location,
+    clothing: icon_clothing,
+    airSpeed: icon_velocity,
+    met: icon_met,
+    anyChange: icon_change,
+    mood: icon_mood,
+    noise: icon_noise,
+    light: icon_light,
+}
 
 function mySettings(props) {
     return (
@@ -35,6 +51,25 @@ function mySettings(props) {
             </Section>
 
             <Section>
+                <TextInput
+                    label="API key (required)"
+                    settingsKey="api_key"
+                    oninput={selection =>
+                        props.settingsStorage.setItem("api_key", selection)
+                    }
+                />
+            </Section>
+
+            
+
+            {/* -------------------------------------------------------------------------------------------------------------------------------------
+            Description        :   optional section to allow users to select questions he wants to display
+            Question flow type :   main question flow, or any question flow which does not use different "answersDirectTo" property per question.
+            
+            See documentation  :   https://cozie.app/docs/change-settings
+            ------------------------------------------------------------------------------------------------------------------------------------- */}
+
+            {/* <Section>
                 <Select
                     label={`Select Questions`}
                     multiple
@@ -44,61 +79,61 @@ function mySettings(props) {
                             name: "Thermal preference",
                             value: "showThermal",
                             subLabel: "Cooler, No change, Warmer",
-                            img: thermal
+                            img: iconList.thermal
                         },
                         {
                             name: "Light preference",
                             value: "showLight",
                             subLabel: "Dimmer, No change, Brighter",
-                            img: light
+                            img: iconList.light
                         },
                         {
                             name: "Noise preference",
                             value: "showNoise",
                             subLabel: "Quieter, No change, Louder",
-                            img: noise
+                            img: iconList.noise
                         },
                         {
                             name: "Indoor or outdoor",
                             value: "showIndoor",
                             subLabel: "Indoor, Outdoor",
-                            img: indoorOutdoor
+                            img: iconList.indoorOutdoor
                         },
                         {
                             name: "Where are you?",
                             value: "showInOffice",
                             subLabel: "Home, Office, Other",
-                            img: location
+                            img: iconList.location
                         },
                         {
                             name: "Mood",
                             value: "showMood",
                             subLabel: "Good, Bad or Neither",
-                            img: mood
+                            img: iconList.mood
                         },
                         {
                             name: "Clothing",
                             value: "showClothing",
                             subLabel: "Very light, Light, Medium, Heavy",
-                            img: clothing
+                            img: iconList.clothing
                         },
                         {
                             name: "Perceived air movement",
                             value: "showVelocity",
                             subLabel: "Perceived, Not perceived",
-                            img: icon_velocity
+                            img: iconList.icon_velocity
                         },
                         {
                             name: "Activity previous 10 minutes",
                             value: "showMet",
                             subLabel: "Resting, Sitting, Standing, Exercising",
-                            img: icon_met
+                            img: iconList.icon_met
                         },
                         {
                             name: "Any changes location/activity",
                             value: "showMet",
                             subLabel: "No, Yes",
-                            img: icon_change
+                            img: iconList.icon_change
                         }
                     ]}
                     renderItem={option => (
@@ -109,7 +144,7 @@ function mySettings(props) {
                         />
                     )}
                 />
-            </Section>
+            </Section> */}
 
             <Section>
                 <Select

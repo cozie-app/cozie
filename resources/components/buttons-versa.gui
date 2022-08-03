@@ -23,7 +23,7 @@
 <symbol id="left-button">
    	<circle id="circle" cx="25%" cy="66%" r="35" fill="red" />
     <circle id="circle_push" cx="25%" cy="66%" r="50" opacity="0" fill="red"/>
-   	<image id="image" x="25%-35" y="66%-35" width="70" height="70" href="images/icons/nuetral.png" load="sync" />
+   	<image id="image" x="25%-35" y="66%-35" width="70" height="70" href="images/icons/neutral.png" load="sync" />
    	<text id= "text" x="25%" y="66%+60" class= "comfyLabel">Lower</text>
    	<text id= "second-text" x="25%" y="66%+80" class= "comfyLabel">  </text>
 </symbol>
@@ -31,7 +31,7 @@
 <symbol id="right-button">
    	<circle id="circle" cx="75%" cy="66%" r="35" fill="red" />
     <circle id="circle_push" cx="75%" cy="66%" r="50" opacity="0" fill="red"/>
-   	<image id="image" x="75%-35" y="66%-35" width="70" height="70" href="images/icons/nuetral.png" load="sync" />
+   	<image id="image" x="75%-35" y="66%-35" width="70" height="70" href="images/icons/neutral.png" load="sync" />
    	<text id= "text" x="75%" y="66%+60" class= "comfyLabel">Lower</text>
    	<text id= "second-text" x="75%" y="66%+80" class= "comfyLabel">  </text>
 </symbol>
