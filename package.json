@@ -1,37 +1,36 @@
 {
+  "name": "cozie-researcher-sense",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@fitbit/sdk": "~6.1.0",
+    "@fitbit/sdk-cli": "^1.7.3"
+  },
   "fitbit": {
+    "appUUID": "e5f78e75-60f1-4900-b972-c46fb1e2dc7f",
     "appType": "clockface",
-    "appDisplayName": "cozie",
+    "appDisplayName": "test",
     "iconFile": "resources/icon.png",
-    "wipeColor": "",
+    "wipeColor": "#ffffff",
     "requestedPermissions": [
       "access_activity",
       "access_exercise",
       "access_heart_rate",
       "access_internet",
       "access_location",
-      "run_background",
-      "access_user_profile"
+      "access_user_profile",
+      "run_background"
     ],
     "buildTargets": [
-      "higgs",
-      "meson",
-      "gemini",
-      "mira"
+      "atlas",
+      "vulcan"
     ],
-    "i18n": {
-      "en": {
-        "name": "cozie"
-      }
-    },
-    "defaultLanguage": "en-US",
-    "appUUID": "f56edc3c-53b0-4699-b256-76c78a74f7ec"
-  },
-  "dependencies": {
-    "@fitbit/sdk": "~4.1.0",
-    "@fitbit/sdk-cli": "^1.7.3"
+    "i18n": {},
+    "defaultLanguage": "en-US"
   },
   "scripts": {
-    "build": "fitbit-build"
+    "build": "fitbit-build",
+    "debug": "fitbit"
   }
 }

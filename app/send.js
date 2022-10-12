@@ -2,7 +2,7 @@
 This code sends the survey completed by the user to the companion app.
 */
 
-import fs from "fs";
+import * as fs from "fs";
 import document from "document";
 import {
     geolocation

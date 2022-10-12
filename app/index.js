@@ -162,11 +162,6 @@ let viewsArray = [{
     viewQuestion: null
 }];
 
-/* -----------------------------------------------------------------------------------------------
-                                        INITIALIZATIONS
------------------------------------------------------------------------------------------------ */
-console.log('------ Initialization started ------');
-
 for (let index = 0; index < questionsFlow.length; index++)
 {
     viewsArray.push(jsonQuestionToView(questionsFlow, index));
@@ -177,11 +172,9 @@ let nextView;                            // Temp for the next view to be shown
 let viewsStack = [];                     // Initialization of the stack
 viewsStack = initStack(viewsStack);
 
-console.log('------ Initialization ended ------');
 /* -----------------------------------------------------------------------------------------------
                                           MAIN PROCESS
 ----------------------------------------------------------------------------------------------- */
-console.log('------ Main process started ------');
 
 // Show clockface
 viewDisplay(viewsArray[0]);
@@ -224,10 +217,9 @@ for (const button of allButtons)
     });
 }
 
-console.log('------ Main process ended ------');
 /* -------------------------------------------------------------------------------------
     Name        : initStack
-    Description : initialize the stack of views with the clockface and the clockblock.
+    Description : initialize the stack of views.
     Parameters  :
         - stack     : stack to initialize
     Return      : initialized stack.
@@ -521,41 +513,6 @@ function viewDisplay(view)
     vibration.start("bump");
 }
 
-/* -------------------------------------------------------------------------------------
-    Name        : refreshViews
-    Description : refresh the views to be shown according to the settings (Depending on
-                  the version of your cozie and your question flow, this function might
-                  not be used).
-    Parameters  :
-        none
-    Return      : none
-------------------------------------------------------------------------------------- */
-
-function refreshViews() {
-    let settingsStored = false;
-    try
-    {
-        flowFileRead = fs.readFileSync("flow.txt", "json");
-        flowSelector = flowFileRead.flowSelector;
-        settingsStored = true;
-    }
-    catch (e)
-    {
-        console.log('/!\\ ERROR:' + e);
-        settingsStored = false;
-    }
-
-    viewsArray = [];
-    for (let index = 0; index < questionsFlow.length; index++)
-    {
-        console.log('Flow selector value :' + flowSelector[index]);
-        if (flowSelector[index])
-        {
-            viewsArray.push(jsonQuestionToView(questionsFlow, index));
-        }
-    }
-}
-
 // ------- BUZZ SELECTOR -------------------
 
 const errorLabel = document.getElementById("errorLabel");
@@ -571,6 +528,8 @@ const buzzOptions = {
 
 let buzzSelection = 1; // default value
 let vibrationTimeArray = buzzOptions[buzzSelection];
+// let testHours = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 8, 9, 10, 11];
+// let i = 0;
 
 // Shift the array to the next vibration hour
 const currentDate = new Date();
@@ -585,10 +544,18 @@ while (vibrationTimeArray[0] <= currentHour && testedHoursNumber < vibrationTime
     testedHoursNumber++;
 }
 
+if (vibrationTimeArray.length != 0) {
+    const maxHour = vibrationTimeArray.reduce(function(a, b) {
+        return Math.max(a, b);
+    });
+} else {
+    const maxHour = 0
+}
+
 // Reminder test (this function runs every 5 min)
 setInterval(function() {
     const currentDate = new Date(); // get today's date
-    const currentHour = currentDate.getHours();
+    const currentHour = currentDate.getHours(); // testHours[i];
 
     console.log("Starting to evaluate whether the watch need to vibrate or not");
     try {
@@ -602,30 +569,22 @@ setInterval(function() {
         }
     }
 
-    if (vibrationTimeArray.length != 0) {
-        const maxHour = vibrationTimeArray.reduce(function(a, b) {
-            return Math.max(a, b);
-        });
-    } else {
-        const maxHour = 0
-    }
-
-    if (testedHoursNumber != vibrationTimeArray.length)
-    {
-        console.log("Next hour of vibration : " + vibrationTimeArray[0]);
-        if (vibrationTimeArray[0] == currentHour) {
-            if (bodyPresence.present) { // REMOVED : && today.adjusted.steps > 300 -- vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
+    if (currentHour <= maxHour) {
+        if (testedHoursNumber != vibrationTimeArray.length)
+        {
+            console.log("Next hour of vibration : " + vibrationTimeArray[0]);
+            if (vibrationTimeArray[0] == currentHour && bodyPresence.present) { // REMOVED : && today.adjusted.steps > 300 -- vibrate only if the time is right and the user has walked at least 300 steps and the watch is worn
                 // this ensures that the watch does not vibrate if the user is still sleeping
-                console.log("The watch should vibrate");
+                console.log("----> The watch should vibrate <----");
                 vibrate();
+                const firstElement = vibrationTimeArray.shift();
+                vibrationTimeArray.push(firstElement);
             }
-            const firstElement = vibrationTimeArray.shift();
-            vibrationTimeArray.push(firstElement);
         }
     }
     console.log("Buzz variables: currentHour = " + currentHour + ", vibrationTimeArray[0] = " + vibrationTimeArray[0] + ", testedHoursNumber = " + testedHoursNumber);
-}, 300000); // timeout for 5 minutes
-
+    //i++;
+}, 10000); // timeout for 5 minutes
 
 /* -------------------------------------------------------------------------------------
     Name        : vibrate
@@ -663,6 +622,7 @@ function mapFlows(flowSelector) {
             questionsFlow.push(totalFlow[index]);
         })
     }
+    // console.log(JSON.stringify(questionsFlow))
 }
 
 // retain selection incase the watch runs out of battery or crashes
@@ -687,13 +647,6 @@ try {
 messaging.peerSocket.onmessage = function(evt) {
     console.log("settings received on device");
     console.log(JSON.stringify(evt));
-
-    /* ------------------------------------------------------------------------------------------------------------
-        The next line must be commented out if you are note using the flow_index section in the settings.jsx file
-
-        See documentation  :   https://cozie.app/docs/change-settings
-    ------------------------------------------------------------------------------------------------------------ */
-    //refreshViews();
 
     if (evt.data.key === 'flow_index') {
         flowSelector = evt.data.data;
@@ -738,13 +691,6 @@ function processAllFiles() {
         if (fileData.time > flowSelectorUpdateTime) {
             flowSelectorUpdateTime = fileData.time;
             if (fileData.key === 'flow_index') {
-                /* ------------------------------------------------------------------------------------------------------------
-                    The next line must be commented out if you are note using the flow_index section in the settings.jsx file
-
-                    See documentation  :   https://cozie.app/docs/change-settings
-                ------------------------------------------------------------------------------------------------------------ */
-                // refreshViews();
-
                 flowSelector = fileData.data;
                 mapFlows(flowSelector);
                 console.log("settings updated via file transfer");

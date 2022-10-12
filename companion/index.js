@@ -122,18 +122,13 @@ function sendDataToInflux(data) {
     catch (error) {
         if (error instanceof TypeError) {
             user_id = "undefined"
-        }}
+    }}
 
     try {experiment_id = JSON.parse(settingsStorage.getItem('experiment_id')).name;}
     catch (error) {
         if (error instanceof TypeError) {
             experiment_id = "undefined"
-        }}
-
-    try {api_key = JSON.parse(settingsStorage.getItem('api_key')).name}
-    catch (error) {
-        api_key = "UBQpWptj9HaBJVAVEDOZ14aQoNh7EpTK9zccvBTa"
-    }
+    }}
 
     try {api_key = JSON.parse(settingsStorage.getItem('api_key')).name}
     catch (error) {
