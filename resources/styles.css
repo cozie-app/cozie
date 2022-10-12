@@ -13,7 +13,7 @@
     font-family: Seville-Book;
     text-length: 32;
     text-anchor: start;
-    x: 70%;
+    x: 71%;
     y: 30%;
     fill: #a0a0a0;
 }
@@ -23,7 +23,7 @@
     font-family: Seville-Book;
     text-length: 32;
     text-anchor: start;
-    x: 300;
+    x: 270;
     y: 12%;
     fill: #a0a0a0;
     /*fill: #38f8df;*/
@@ -34,7 +34,7 @@
     font-family: Seville-Book;
     text-length: 32;
     text-anchor: start;
-    x: 35;
+    x: 65;
     y: 12%;
     fill: #a0a0a0;
     /*x: 260;
@@ -43,18 +43,18 @@
 }
 
 #hrmIcon {
-    x: 270;
-    y: 4%;
-    width: 22;
-    height: 22;
+    x: 240;
+    y: 5%;
+    width: 26;
+    height: 26;
     fill: #a0a0a0;
 }
 
 #stepIcon {
-    x: 7;
-    y: 4%;
-    width: 22;
-    height: 22;
+    x: 35;
+    y: 5%;
+    width: 26;
+    height: 26;
     fill: #a0a0a0;
 }
 
@@ -103,7 +103,7 @@
     font-family: Seville-Book;
     text-length: 32;
     text-anchor: start;
-    x: 25;
+    x: 85;
     y: 98%;
     fill: #a0a0a0;
 }

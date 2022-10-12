@@ -2,8 +2,8 @@ export default [{
     name: "thermal",
     displayName: "Thermal",
     type: "icon",
-    questionText: "Would you prefer to be?",
-    questionSecondText: "",
+    questionText: "Would you prefer",
+    questionSecondText: "to be?",
     answerDirectTo: {
         9: {
             next: "indoorOutdoor"

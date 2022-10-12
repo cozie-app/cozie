@@ -1,0 +1,15 @@
+<svg>
+  <defs>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="import" href="/mnt/sysassets/system_widget.defs" />
+
+    <!-- Additional Imports -->
+    <!-- <link rel="import" href="/mnt/sysassets/widgets/push_button_widget.defs" /> -->
+    <link rel="import" href="/mnt/sysassets/widgets/text_button.defs" />
+    <link rel="import" href="/mnt/sysassets/widgets/icon_button.defs" />
+    
+    <!-- <link rel="stylesheet" href="/mnt/sysassets/widgets/dynamic_textarea.css" />
+    <link rel="import" href="/mnt/sysassets/widgets/dynamic_textarea.defs" /> -->
+    <link rel="import" href="/mnt/sysassets/widgets/marquee_text_widget.defs" />
+  </defs>
+</svg>

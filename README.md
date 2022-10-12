@@ -2,14 +2,12 @@
 
 ## What is Cozie?
 
-[Cozie](https://cozie.app/) is a Fitbit Ionic, Versa, Versa Lite and Versa 2 clock face that can ask people questions. It is useful for [experience sampling research](https://en.wikipedia.org/wiki/Experience_sampling_method) and was designed for the built environment, although there are also forks focused on [Covid-19 symptoms tracking](https://github.com/pjayathissa/cozie-covid)
-
-#### Please cite us if you use this software: 
-[Jayathissa, Prageeth, Matias Quintana, Tapeesh Sood, Negin Nazarian, and Clayton Miller. 2019. “Is Your Clock-Face Cozie? A Smartwatch Methodology for the in-Situ Collection of Occupant Comfort Data.” Journal of Physics. Conference Series 1343 (1): 012145.](https://iopscience.iop.org/article/10.1088/1742-6596/1343/1/012145)
+[Cozie](https://cozie.app/) is a Fitit Ionic, Versa, Versa Lite and Versa 2 clock face that can ask people questions. It is useful for [experience sampling research](https://en.wikipedia.org/wiki/Experience_sampling_method) and was designed for the built environment, although there are also forks focused on [Covid-19 symptoms tracking](https://github.com/pjayathissa/cozie-covid)
 
 The foundation for this project is the [BUDS Lab](https://www.budslab.org/) efforts towards human sujective feedback in the built environment:
 
-- [Humans-as-a-sensor for buildings: Intensive longitudinal indoor comfort models](https://arxiv.org/abs/2007.02014)
+- [Is your clock-face cozie? A smartwatch methodology for the in-situ collection of occupant comfort data](https://www.researchgate.net/publication/337376844_Is_your_clock-face_cozie_A_smartwatch_methodology_for_the_in-situ_collection_of_occupant_comfort_data)
+- [Indoor Comfort Personalities: Scalable Occupant Preference Capture Using Micro Ecological Momentary Assessments](https://www.researchgate.net/publication/338527635_Indoor_Comfort_Personalities_Scalable_Occupant_Preference_Capture_Using_Micro_Ecological_Momentary_Assessments)
 
 ## Tutorials
 
@@ -23,8 +21,7 @@ Documentation found [here](https://www.budslab.org/website-dev/docs/home) and a 
 
 ## License
 
-
-The Cozie clockface is open-sourced under at [LGPLv3 License](https://github.com/buds-lab/cozie/blob/master/LICENSE)
+The Cozie clockface is open-sourced under at [GPLv3 License](https://github.com/buds-lab/cozie/blob/master/LICENSE)
 
 Copyright © 2018-2020, BUDS Lab
 
@@ -69,4 +66,3 @@ Copyright © 2018-2020, BUDS Lab
  "experiment_id":"debug",  # Experiment ID as per selection in settings
  }
  ```
-

@@ -1,0 +1,11 @@
+<svg class="background">
+  <link rel="import" href="components/buttons.view" />
+  <link rel="import" href="views/clockface.view" />
+  <link rel="import" href="views/thankyou.view" />
+  <link rel="import" href="views/gui_stop_survey.view" />
+  <link rel="import" href="views/clockblock.view" />
+  <link rel="import" href="views/json-flow.view" />
+  <link rel="import" href="views/json-flow2q.view" />
+  <link rel="import" href="views/json-flow4q.view" />
+</svg>
+
