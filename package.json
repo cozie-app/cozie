@@ -4,13 +4,13 @@
   "private": true,
   "license": "UNLICENSED",
   "devDependencies": {
-    "@fitbit/sdk": "~6.1.0",
+    "@fitbit/sdk": "~5.0.0",
     "@fitbit/sdk-cli": "^1.7.3"
   },
   "fitbit": {
-    "appUUID": "e5f78e75-60f1-4900-b972-c46fb1e2dc7f",
+    "appUUID": "354ed931-1207-4e2f-a92e-3383bd396f68",
     "appType": "clockface",
-    "appDisplayName": "test",
+    "appDisplayName": "Cozie 2",
     "iconFile": "resources/icon.png",
     "wipeColor": "#ffffff",
     "requestedPermissions": [
