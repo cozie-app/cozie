@@ -41,6 +41,7 @@ Copyright © 2018-2020, BUDS Lab
  1. `npx fitbit-build` will build the project
  2. `npx fitbit` opens the browser, and logs into your fitbit account. From here you can connect to devices and install the app
  3. `bi` to building and install the application
+ 4.  Install the Fitbit Simulator for [Windows](https://simulator-updates.fitbit.com/download/stable/win) / [macOS](https://simulator-updates.fitbit.com/download/stable/mac)
 
  ### Document structure sent by Cozie
  ```python
@@ -68,3 +69,7 @@ Copyright © 2018-2020, BUDS Lab
  "experiment_id":"debug",  # Experiment ID as per selection in settings
  }
  ```
+
+### More Information
+ - [Getting Started with the Fitbit Software Development Kit (SDK)](https://dev.fitbit.com/getting-started/)
+
