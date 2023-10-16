@@ -2,7 +2,7 @@
 
 ## What is Cozie?
 
-[Cozie](https://cozie.app/) is a Fitit Ionic, Versa, Versa Lite and Versa 2 clock face that can ask people questions. It is useful for [experience sampling research](https://en.wikipedia.org/wiki/Experience_sampling_method) and was designed for the built environment, although there are also forks focused on [Covid-19 symptoms tracking](https://github.com/pjayathissa/cozie-covid)
+[Cozie](https://cozie-fitbit.app/) is a Fitit Ionic, Versa, Versa Lite and Versa 2 clock face that can ask people questions. It is useful for [experience sampling research](https://en.wikipedia.org/wiki/Experience_sampling_method) and was designed for the built environment, although there are also forks focused on [Covid-19 symptoms tracking](https://github.com/pjayathissa/cozie-covid)
 
 The foundation for this project is the [BUDS Lab](https://www.budslab.org/) efforts towards human sujective feedback in the built environment:
 
@@ -11,7 +11,7 @@ The foundation for this project is the [BUDS Lab](https://www.budslab.org/) effo
 
 ## Tutorials
 
-Documentation found [here](https://www.budslab.org/website-dev/docs/home) and a shortcut to the [video tutorials](https://www.youtube.com/playlist?list=PLkQs5WJXVHbiBDjmv-1tBYNUQOkmNCctA) related to helping with the project or forking for yourself.
+Documentation found [here](https://cozie-fitbit.app/docs/home) and a shortcut to the [video tutorials](https://www.youtube.com/playlist?list=PLkQs5WJXVHbiBDjmv-1tBYNUQOkmNCctA) related to helping with the project or forking for yourself.
 
 ## Download Cozie Clock Face
 
