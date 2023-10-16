@@ -15,7 +15,9 @@ Documentation found [here](https://cozie-fitbit.app/docs/home) and a shortcut to
 
 ## Download Cozie Clock Face
 
-[Latest Stable Release](https://gallery.fitbit.com/details/512ce6c5-f633-4f7b-853c-891869f5e3d8)
+[Latest Stable Release for Fitbit Ionic, Versa, Versa Light & Versa 2](https://gallery.fitbit.com/details/512ce6c5-f633-4f7b-853c-891869f5e3d8)
+
+[Latest Stable Release for Fitbit Versa 3 & Sense](https://gallery.fitbit.com/details/354ed931-1207-4e2f-a92e-3383bd396f68)
 
 [Beta Development Version](https://gallery.fitbit.com/details/d787c911-ce11-432e-8b68-69da0f3446c8)
 
