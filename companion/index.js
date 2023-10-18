@@ -55,7 +55,7 @@ function sendSettingData(data) {
         // Note that the index.js is checking the time, and will only update via file transfer if the time made in data.time is greater
         console.log("No peerSocket connection. Attempting to send via file transfer");
 
-        //Fire the Guideed Missile via outbox Woosh
+        //Fire the Guided Missile via outbox Woosh
         outbox.enqueue('flow_index.cbor', cbor.encode({data: data.value.selected, time: data.time, key: data.key}))
             .then((ft) => {
                 console.log(`Transfer of ${ft.name} successfully queued.`);
@@ -75,7 +75,7 @@ peerSocket.addEventListener("message", (evt) => {
     //get user id
     if (evt.data) {
         // AWS API gateway link, triggers lambda function
-        console.log('data recieved at companion, preparing to send to influx')
+        console.log('data received at companion, preparing to send to influx')
         sendDataToInflux(evt.data)
     } else {
         console.log("Error! Can not send request to server.")
