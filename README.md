@@ -44,31 +44,32 @@ Copyright © 2018-2020, BUDS Lab
  4.  Install the Fitbit Simulator for [Windows](https://simulator-updates.fitbit.com/download/stable/win) / [macOS](https://simulator-updates.fitbit.com/download/stable/mac)
 
  ### Document structure sent by Cozie
- ```python
- {
- "startFeedback":"2019-11-22T01:57:14.342Z",  # Timestamp when the user started the survey (i.e. pressed one of the two buttons in the clock face)
- "heartRate":60,  # heart rate measured when the user completed the survey
- "voteLog":40,  # counter which stores information on how many times the user completed the survey, used for debugging to check that no responses where lost
- "comfort":10,  # Clock face question, 10 = "Comfy", 9 = "Not Comfy" 
- "indoorOutdoor":11,  # Location, 9 = "Outdoor", 11 = "Indoor",
- "change": 10, # Change location, activity or clothing, 11 = "Yes Change", 10 = "No Change"
- "location": 10, # Where are you, 8 = "Portable", 9 = "Work", 10 = "Other", 11 = "Home"
- "thermal":9,  # Thermal preference, 9 = "Warmer", 10 = "No Change", 11 = "Cooler"
- "light":9,  # Light preference, 9 = "Brighter", 10 = "No Change", 11 = "Dimmer"
- "noise":9,  # Noise preference, 9 = "Louder", 10 = "No Change", 11 = "Quiter"
- "clothing":11,  # Clothing, 8="very light", 9 = "Light", 10 = "Medium", 11 = "Heavy"
- "met":11,  # Metabolic rate, 8="resting", 9 = "sitting", 10 = "standing", 11 = "exercising"
- "air-vel":11,  # Perceived air movement, 9 = "Not Perceived", 11 = "Perceived"
- "mood":11,  # Mood, 9 = "Sad", 10 = "Neutral", 11 = "Happy"
- "responseSpeed":2.577,  # Time in seconds it took to complete the survey
- "endFeedback":"2019-11-22T01:57:16.919Z",  # Timestamp when the user completed the survey
- "lat":48.13194,"lon":11.54944,  # Latitude and longitude provided by the GPS of the phone
- "setLocation":True,
- "bodyPresence":True, # passes information whether the user is wearing the watch or not
- "user_id":"debug",  # User ID as per selection in settings
- "experiment_id":"debug",  # Experiment ID as per selection in settings
- }
- ```
+
+```python
+{
+ "airSpeed": 10, # Can you perceive air movement around you?, 10="Yes", 11="No", 
+ "anyChange": 11, # Any changes in clo, loc, or met past 10-m?, 10="No", 11="Yes", 
+ "clothing": 9, # What are you wearing?, 9="Medium", 10="Heavy", 11="Light", 
+ "indoorOutdoor": 10, # Are you?, 10="Outdoor", 11="Indoor", 
+ "light": 11, # Light preference, 9="No Change", 10="Brighter", 11="Dimmer", 
+ "location": 10, # Where are you?, 9="Neither", 10="Office", 11="Home", 
+ "met": 9, # Activity, lat 10-min?, 9="Sitting", 10="Standing", 11="Resting", 
+ "mood": 10, # What mood are you in?, 9="Neutral", 10="Bad", 11="Good", 
+ "noise": 10, # Sound preference, 9="No Change", 10="Louder", 11="Quieter", 
+ "thermal": 12, # Would you prefer to be?, 9="No change", 10="Warmer", 11="Cooler", 12="Something else", 
+ "comfort": 9, # Clock face question, 10 = "Comfy", 9 = "Not Comfy" 
+ "voteLog": 14, # Counter which stores information on how many times the user completed the survey, used for debugging to check that no responses where lost
+ "responseSpeed": 10.48, # # Time in seconds it took to complete the survey
+ "heartRate": 76, # Heart rate [bpm] measured when the user completed the survey
+ "restingHR": 58, # Resting heart rate [bpm]
+ "BMR": 1216, # Basal metabolic rate [cal/d]
+ "bodyPresence": True, # Passes information whether the user is wearing the watch or not
+ "lat":48.13194, # Geographical latitude [°] provided by the GPS of the phone
+ "lon":11.54944, # Geographifcal longtiude [°] provided by the GPS of the phone
+ "userid": alpha01, # User ID as per selection in settings
+ "experimentid": alpha # Experiment ID as per selection in settings
+}
+```
 
 ### More Information
  - [Getting Started with the Fitbit Software Development Kit (SDK)](https://dev.fitbit.com/getting-started/)
