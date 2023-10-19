@@ -59,20 +59,10 @@ function mySettings(props) {
 
             <Section>
                 <TextInput
-                    label="Unique Experiment ID (required)"
+                    label="Experiment ID (required)"
                     settingsKey="experiment_id"
                     oninput={selection =>
                         props.settingsStorage.setItem("experiment_id", selection)
-                    }
-                />
-            </Section>
-
-            <Section>
-                <TextInput
-                    label="API key (required)"
-                    settingsKey="api_key"
-                    oninput={selection =>
-                        props.settingsStorage.setItem("api_key", selection)
                     }
                 />
             </Section>
