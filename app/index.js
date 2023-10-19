@@ -187,6 +187,7 @@ for (const button of allButtons)
         {
             case 'startSurvey':
                 getDataFromSensors();
+                feedbackData['comfort'] = button.value; // Pushing the from the clockface into the feedback data object (comfy or not comfy)
                 viewsStack.push(viewsArray[4]); // Start the survey by the first question
                 break;
             case 'flowControl':
