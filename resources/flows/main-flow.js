@@ -199,7 +199,7 @@ export default [{
             next: "light"
         }
     },
-    iconText: ["Quiter", "Louder", "No Change"],
+    iconText: ["Quieter", "Louder", "No Change"],
     iconColors: ["fb-orange", "fb-purple", "fb-green"],
     iconImages: [
         "images/icons/prefer_quieter.png",

@@ -1,5 +1,5 @@
 /*
-This is the main function that handles the Cozie clock face on the Fitbit.
+This is the main function that handles the Cozie clock face on the FItbit.
 
 Here we are importing the Fitbit APIs, external modules we have added and more.
 
